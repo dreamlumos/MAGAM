@@ -3,9 +3,13 @@ import pandas as pd
 
 class BasicFunctions:
 
+	functions = ["product", "distance", "time"]
+
+	@staticmethod
 	def product(users, activities):
 		return users.dot(activities)
 
+	@staticmethod
 	def distance(users, activities):
 
 		nb_users, _ = users.shape
@@ -18,6 +22,7 @@ class BasicFunctions:
 		
 		return recommendations
 
+	@staticmethod
 	def time(users, activities):
 
 		users = users.flatten()

@@ -109,7 +109,7 @@ class Aspects(QWidget):
 
         # Creating the Aspects objects and putting them in a list
         for drop_menu in self.drop_menu_list:
-            a = Aspect.create_from_csv(drop_menu.aspect_type, drop_menu.users_file, drop_menu.activities_file, (0, 5), (0, 5))
+            a = Aspect.create_from_csv(drop_menu.aspect_type, drop_menu.users_file, (0, 5), drop_menu.activities_file, (0, 5))
             self.system_state.data.add_aspect(a)
 
         self.parent.set_page_results()

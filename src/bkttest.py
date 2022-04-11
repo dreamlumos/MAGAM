@@ -10,10 +10,11 @@ if __name__ == '__main__':
 
     # Fetch Assistments and CognitiveTutor data (optional - if you have your own dataset, that's fine too!)
     # model.fetch_dataset('https://raw.githubusercontent.com/CAHLR/pyBKT-examples/master/data/as.csv', '.')
-    model.fetch_dataset('https://raw.githubusercontent.com/CAHLR/pyBKT-examples/master/data/ct.csv', '.')
+    model.fetch_dataset('https://raw.githubusercontent.com/CAHLR/pyBKT-examples/master/data/ct.csv', '../data/bkt_data')
 
     # Train a simple BKT model on all skills in the CT dataset
     model.fit(data_path = 'ct.csv')
+    # model.fit(data_path = '../data/bkt_data/ct.csv')
 
     # # Train a simple BKT model on one skill in the CT dataset
     # # Note that calling fit deletes any previous trained BKT model!

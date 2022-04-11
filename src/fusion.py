@@ -3,9 +3,13 @@ import pandas as pd
 
 class FusionFunctions:
 
+	functions = ["mean", "value_multiplication", "min", "max"]
+
+	@staticmethod
 	def mean(r1, r2, w1=1, w2=1):
 		return np.average([r1, r2], axis=0, weights=[w1, w2])
-		
+	
+	@staticmethod
 	def value_multiplication(r1, r2):
 
 		rows, columns = r1.shape
@@ -17,9 +21,11 @@ class FusionFunctions:
 
 		return recommendations
 
+	@staticmethod
 	def min(r1, r2):
 		return np.minimum(r1, r2)
 
+	@staticmethod
 	def max(r1, r2):
 		return np.maximum(r1, r2)
 
