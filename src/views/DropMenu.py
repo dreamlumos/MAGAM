@@ -82,9 +82,10 @@ class DropMenu(QWidget):
 
     def load_acts_file(self):
 
-        file_name = QFileDialog.getOpenFileName(self, "Open File", "./", "CSV (*.csv)")
+        file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"        self.activities_file = file_name[0]
+        self.activities_file = file_name[0]
         if len(file_name[0]) == 0:
             self.browse_button_acts.setText("Browse...")
         else:
