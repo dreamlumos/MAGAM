@@ -5,13 +5,7 @@ from .WelcomeScreen import *
 from .PickUI import *
 from .Aspects import *
 from .Sorry import *
-
-def printRemove():
-    print("removing an aspect")
-
-
-def printAdd():
-    print("adding an aspect")
+from .Results import *
 
 
 class MainWindow(QWidget):
