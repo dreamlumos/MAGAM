@@ -74,15 +74,22 @@ class DropMenu(QWidget):
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"
         self.users_file = file_name[0]
-        self.browse_button_users.setText(path_leaf(file_name[0]))
+        if len(file_name[0]) == 0:
+            self.browse_button_users.setText("Browse...")
+        else:
+            self.browse_button_users.setText(path_leaf(file_name[0]))
         self.check_filled()
 
     def load_acts_file(self):
-        file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)") 
+
+        file_name = QFileDialog.getOpenFileName(self, "Open File", "./", "CSV (*.csv)")
         # TODO: in final version set QFileDialog open location as "./"
-        # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"
-        self.activities_file = file_name[0]  
-        self.browse_button_acts.setText(path_leaf(file_name[0]))
+        # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"        self.activities_file = file_name[0]
+        if len(file_name[0]) == 0:
+            self.browse_button_acts.setText("Browse...")
+        else:
+            self.browse_button_acts.setText(path_leaf(file_name[0]))
+
         self.check_filled()
 
     def check_filled(self):
