@@ -5,11 +5,14 @@ from .DropMenu import *
 from models.Aspect import *
 
 class Aspects(QWidget):
-    def __init__(self, parent=None):
-        # QWidget.__init__(self, parent)
+
+    def __init__(self, system_state, parent=None):
+
         super(Aspects, self).__init__(parent)
 
-        self.list_of_aspects = []
+        self.parent = parent
+        self.system_state = system_state
+
         self.drop_menu_list = []
         self.remove_btns = []
 
@@ -105,11 +108,13 @@ class Aspects(QWidget):
         print("Calculating...")
 
         # Creating the Aspects objects and putting them in a list
-        for m in self.drop_menu_list:
-            self.list_of_aspects.append(self.create_aspect_object(m))
-        # self.system_state.data.add_aspect(Aspect)
+        for drop_menu in self.drop_menu_list:
+            a = Aspect.create_from_csv(drop_menu.aspect_type, drop_menu.users_file, drop_menu.activities_file, (0, 5), (0, 5))
+            self.system_state.data.add_aspect(a)
+
+        self.parent.set_page_results()
 
     def create_aspect_object(self, drop_menu):
         # print(drop_menu.aspect, drop_menu.user, drop_menu.activity)
-        a = Aspect.create_from_csv(drop_menu.aspect, drop_menu.user, drop_menu.activity, [0, 5], [0, 5])
+        
         return a

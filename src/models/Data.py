@@ -7,6 +7,7 @@ class Data:
 	def add_aspect(self, aspect):
 
 		self.aspects.append(aspect)
+		print("Aspect added")
 
 	def export_to_pkl(self):
 		# TODO

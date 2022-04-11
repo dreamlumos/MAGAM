@@ -4,21 +4,16 @@ from PyQt5.QtCore import *
 from .WelcomeScreen import *
 from .PickUI import *
 from .Aspects import *
+from .Results import *
 from .Sorry import *
-
-def printRemove():
-    print("removing an aspect")
-
-
-def printAdd():
-    print("adding an aspect")
-
 
 class MainWindow(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, system_state, parent=None):
         super(MainWindow, self).__init__(parent)
         # self.resize(600, 500)
+
+        self.system_state = system_state
 
         # Create stack and horizontal layout
         self.Stack = QStackedWidget()
@@ -26,52 +21,62 @@ class MainWindow(QWidget):
         hbox.addWidget(self.Stack)
 
         # Add Welcome widget and object
-        self.welcome = WelcomeScreen(self)
-        self.Stack.addWidget(self.welcome)
-        # Connect welcome button to next page
-        self.welcome.welcome_btn.clicked.connect(self.set_page_pick)
-
-        # Add PickUI widget and object
-        self.pick = PickUI(self)
-        self.Stack.addWidget(self.pick)
-        # Connect buttons to switch pages
-        self.pick.debutant.clicked.connect(self.set_page_calcul)
-        self.pick.expert.clicked.connect(self.set_page_sorry)
-
-        # Add Aspects widget and object
-        self.asp = Aspects(self)
-        self.Stack.addWidget(self.asp)
-
-        # Add SorryPage widget and object
-        self.sorry_page = SorryPage(self)
-        self.Stack.addWidget(self.sorry_page)
-        # Connect back button to Pick page
-        self.sorry_page.back.clicked.connect(self.set_page_pick)
+        WelcomeScreen_widget = WelcomeScreen(self)
+        WelcomeScreen_widget.welcome_btn.clicked.connect(self.set_page_pick)
+        self.WelcomeScreen_index = self.Stack.addWidget(WelcomeScreen_widget)
 
         self.setGeometry(700, 250, 500, 400)
-        self.setWindowTitle('Interface demo')
+        self.setWindowTitle('MAGAM')
 
-    def next_page(self):
-        new_index = self.Stack.currentIndex() + 1
-        if new_index < len(self.Stack):
-            self.display(new_index)
+    # Unused for the moment : 
 
-    def prev_page(self):
-        new_index = self.Stack.currentIndex() - 1
-        if new_index >= 0:
-            self.display(new_index)
+    # def next_page(self):
+    #     new_index = self.Stack.currentIndex() + 1
+    #     if new_index < len(self.Stack):
+    #         self.display(new_index)
 
-    def set_page_sorry(self):
-        self.display(3)
-        self.setWindowTitle("Sorry!")
+    # def prev_page(self):
+    #     new_index = self.Stack.currentIndex() - 1
+    #     if new_index >= 0:
+    #         self.display(new_index)
 
     def set_page_pick(self):
-        self.display(1)
-        self.setWindowTitle("pick an UI")
 
-    def set_page_calcul(self):
-        self.display(2)
-        self.setWindowTitle("Calcul des recommandations d'activités")
+        if not(hasattr(self, 'PickUI_index')):
+            PickUI_widget = PickUI(self)
+            PickUI_widget.debutant.clicked.connect(self.set_page_input) # move to PickUI ?
+            PickUI_widget.expert.clicked.connect(self.set_page_sorry) # move to PickUI ?
+            self.PickUI_index = self.Stack.addWidget(PickUI_widget)
+
+        self.display(self.PickUI_index)
+        self.setWindowTitle("Pick an UI")
+
+    def set_page_input(self):
+
+        if not(hasattr(self, 'Input_index')):
+            Aspects_widget = Aspects(self.system_state, self)
+            self.Input_index = self.Stack.addWidget(Aspects_widget)
+
+        self.display(self.Input_index)
+        self.setWindowTitle("Input aspects")
+
+    def set_page_results(self):
+        if not(hasattr(self, 'Results_index')):
+            Results_widget = Results(self)
+            self.Results_index = self.Stack.addWidget(Results_widget)
+
+        self.display(self.Results_index)
+        self.setWindowTitle("Results")
+
+    def set_page_sorry(self):
+
+        if not(hasattr(self, 'Results_index')):
+            Sorry_widget = Sorry(self)
+            Sorry_widget.back.clicked.connect(self.set_page_pick)
+            self.Sorry_index = self.Stack.addWidget(Sorry_widget)
+
+        self.display(self.Sorry_index)
+        self.setWindowTitle("Sorry!")
 
     def display(self, i):
         self.Stack.setCurrentIndex(i)
