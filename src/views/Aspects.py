@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from .DropMenu import *
 from models.Aspect import *
+from src.fusion import *
+
 
 class Aspects(QWidget):
 
@@ -15,6 +17,7 @@ class Aspects(QWidget):
 
         self.drop_menu_list = []
         self.remove_btns = []
+        self.fusion = FusionFunctions.functions[0]  # by default for now
 
         self.dropmenu = DropMenu(parent=self)
         new_btn = QPushButton("-", self)
@@ -31,12 +34,19 @@ class Aspects(QWidget):
         self.add_aspect_btn = QPushButton("Add an aspect", self)
         self.calc_btn = QPushButton("Calculate", self)
         self.calc_btn.setEnabled(False)
+        self.pick_fusion = QComboBox()
+        # self.pick_calc_btn.addItems(["------"])
+        self.pick_fusion.addItems(FusionFunctions.functions)
 
         self.layout.addWidget(self.add_aspect_btn, 2, 2)
         self.layout.addWidget(self.calc_btn, 2, 3)
+        self.layout.addWidget(QLabel("Fusion Function"), 0, 3)
+        self.layout.addWidget(self.pick_fusion, 1, 3)
 
         self.add_aspect_btn.clicked.connect(self.add_aspect)
-        self.calc_btn.clicked.connect(self.calculate)
+        # self.calc_btn.clicked.connect(self.calculate)
+        self.calc_btn.clicked.connect(self.confirm_calcul)
+        self.pick_fusion.currentIndexChanged.connect(self.fusion_picked)
         new_btn.clicked.connect(lambda state, x=0: self.remove_aspect(x))
 
     def add_aspect(self):
@@ -78,13 +88,16 @@ class Aspects(QWidget):
 
         self.check()
 
+    def fusion_picked(self):
+        self.fusion = self.pick_fusion.currentText()
+
     def check(self):
         # checks whether all menus are filled to enable the calculate button
 
         all_filled = True
         # Can't calculate if all items have not been selected
         for aspect_menu in self.drop_menu_list:
-            if aspect_menu.filled == False:
+            if not aspect_menu.filled:
                 all_filled = False
 
         self.calc_btn.setEnabled(all_filled)  
@@ -101,17 +114,36 @@ class Aspects(QWidget):
         #             ok = False
         # return ok
 
+    def confirm_calcul(self):
+        msg = QMessageBox(self)
+        msg.setWindowTitle("Calculation")
+        s = ""
+        for i in range(len(self.drop_menu_list)):
+            s += "Function '" + self.drop_menu_list[i].function + "' for the " + self.drop_menu_list[i].aspect_type + \
+                 " aspect\n"
+        msg.setText(f"Fusion function {self.fusion} will be used on:\n" + s)
+
+        msg.setStandardButtons(QMessageBox.Cancel | QMessageBox.Ok)
+        msg.show()
+        res = msg.exec()
+        if res == QMessageBox.Ok:
+            self.calculate()
+
     def calculate(self):
         # if not self.check():
         #     print("Can't calculate, all aspects are not different.")
         #     return
+
+        # msg.setDefaultButton(QMessageBox.Retry)
+        # msg.setInformativeText("informative text, ya!")
+        # msg.setDetailedText("details")
+        # msg.buttonClicked.connect(self.popup_button)
         print("Calculating...")
 
         # Creating the Aspects objects and putting them in a list
         for drop_menu in self.drop_menu_list:
             a = Aspect.create_from_csv(drop_menu.aspect_type, drop_menu.users_file, (0, 5), drop_menu.activities_file, (0, 5))
             self.system_state.data.add_aspect(a)
-
         self.parent.set_page_results()
 
     def create_aspect_object(self, drop_menu):

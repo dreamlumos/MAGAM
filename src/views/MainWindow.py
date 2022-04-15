@@ -63,9 +63,12 @@ class MainWindow(QWidget):
     def set_page_results(self):
         if not(hasattr(self, 'Results_index')):
             Results_widget = Results(self.system_state, self)
+            print("Setting results page x3")
             self.Results_index = self.Stack.addWidget(Results_widget)
+            print("Setting results page x4")
 
         self.display(self.Results_index)
+        print("Setting results page x5")
         self.setWindowTitle("Results")
 
     def set_page_sorry(self):

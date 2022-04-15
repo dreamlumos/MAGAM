@@ -13,6 +13,6 @@ class SystemState:
 
     def __str__(self):
         s = "\n__System State__\n"
-        s + "Mode: " + self.mode
+        s += "Mode: " + self.mode
 
         return s

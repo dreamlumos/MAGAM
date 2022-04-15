@@ -2,6 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from models.Aspect import *
+from src.calculations import *
 import ntpath
 
 def path_leaf(path):
@@ -23,6 +24,7 @@ class DropMenu(QWidget):
         self.aspect_type = None 
         self.users_file = None
         self.activities_file = None
+        self.function = BasicFunctions.functions[0]  # by default for now
 
         layout = QVBoxLayout()
 
@@ -39,6 +41,9 @@ class DropMenu(QWidget):
         # Call aspect_change() if a new aspect type is selected in the drop-down menu
         self.cb_aspect.currentIndexChanged.connect(self.aspect_change)
         layout.addWidget(self.cb_aspect)
+
+        self.pick_function = QComboBox()
+        self.pick_function.addItems(BasicFunctions.functions)
 
         # M matrix dropdown menu
         label_users = QLabel("Upload M matrix (users)", self)
@@ -57,10 +62,16 @@ class DropMenu(QWidget):
         self.browse_button_acts.clicked.connect(self.load_acts_file)
         layout.addWidget(self.browse_button_acts)
 
+        layout.addWidget(QLabel("Function"))
+        layout.addWidget(self.pick_function)
+
         self.setLayout(layout)
         # self.setWindowTitle("combo box demo")
 
         self.filled = False
+
+    def function_picked(self):
+        self.function = self.pick_function.currentText()
 
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":
@@ -94,11 +105,11 @@ class DropMenu(QWidget):
         self.check_filled()
 
     def check_filled(self):
-        if self.aspect_type == None:
+        if self.aspect_type is None:
             self.filled = False
-        elif self.users_file == None:
+        elif self.users_file is None:
             self.filled = False
-        elif self.activities_file == None:
+        elif self.activities_file is None:
             self.filled = False
         else: 
             self.filled = True
