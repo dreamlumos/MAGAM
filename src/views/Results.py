@@ -10,6 +10,7 @@ class Results(QWidget):
     def __init__(self, system_state, parent=None):
         # Recommendations as seen from the selection side, ie which activity for which student
         super(Results, self).__init__(parent)
+        print("hello")
 
         self.system_state = system_state
         self.layout = QGridLayout(self)
@@ -19,20 +20,31 @@ class Results(QWidget):
         # Idem for activities
         users = self.system_state.data.aspects[0].user_names  # exemple, to test the code, for one aspect only
         activities = self.system_state.data.aspects[0].activity_names
-        u = self.system_state.data.aspects[0].users
-        a = self.system_state.data.aspects[0].activities
+        # print("hello")
+        func = self.system_state.data.aspects[0].calc_function
+        print(func)
+        # u = self.system_state.data.aspects[0].users
+        # a = self.system_state.data.aspects[0].activities
 
         # is calculate_recommendations from Aspect called anywhere? ill call it here for now
         # tho it should prob be done in the controller
         # self.system_state.data.aspects[0].calculate_recommendations(product)  # i have no idea how this works help
+        if func == BasicFunctions.functions[0]:
+            self.system_state.data.aspects[0].calculate_recommendations(BasicFunctions.product)
+        elif func == BasicFunctions.functions[1]:
+            self.system_state.data.aspects[0].calculate_recommendations(BasicFunctions.distance)
+        elif func == BasicFunctions.functions[1]:
+            self.system_state.data.aspects[0].calculate_recommendations(BasicFunctions.time)
+
         # TODO
         # for now ill just recopy the code from calculations
 
-        r = u.dot(a)  # again, by default to test, it's a product
+        # r = u.dot(a)  # again, by default to test, it's a product
 
-        # rec = self.system_state.data.aspects[0].recommendations
+        rec = self.system_state.data.aspects[0].recommendations
+        # print(rec)
 
-        curr_calcul = QLabel(f"Function {self.system_state.data.aspects[0].calc_function} has been applied.")
+        curr_calcul = QLabel(f"Function {func} has been applied.")
         self.layout.addWidget(curr_calcul, 0, 1)
 
         self.qtable = QTableWidget(len(users)+1, len(activities)+1, self)
@@ -57,7 +69,7 @@ class Results(QWidget):
         for i in range(len(users)):
             for j in range(len(activities)):
                 # print(r[i][j])
-                s = str(r[i][j])
+                s = str(rec[i][j])
                 item = QTableWidgetItem(s)
                 # item.setData(Qt.DisplayRole, r[i][j])
                 item.setTextAlignment(Qt.AlignCenter)

@@ -6,7 +6,7 @@ class Aspect:
 
 	aspect_types = ["Didactic", "Pedagogic", "Motivational", "Strategic", "Learning style", "Gaming"]
 
-	def __init__(self, aspect_type, users, user_names, users_scale, activities, activity_names, activities_scale):
+	def __init__(self, aspect_type, users, user_names, users_scale, activities, activity_names, activities_scale, func):
 		"""
 		aspect_type : string
 		users : ndarray
@@ -25,11 +25,11 @@ class Aspect:
 		self.activity_names = activity_names
 		self.activities_scale = activities_scale
 
-		self.calc_function = None # function
+		self.calc_function = func # function
 		self.recommendations = None # ndarray
 
 	@classmethod
-	def create_from_csv(cls, aspect_type, users_file, users_scale, activities_file, activities_scale):
+	def create_from_csv(cls, aspect_type, users_file, users_scale, activities_file, activities_scale, func):
 		"""
 		users_file: name of CSV file containing users
 		activities_file: name of CSV file containing activities
@@ -47,7 +47,7 @@ class Aspect:
 		# note: df left here in case necessary later for lookup purposes (using row or column names)
 		# maybe create a class which keeps both ndarray and df?
 
-		return cls(aspect_type, users, user_names, users_scale, activities, activity_names, activities_scale)
+		return cls(aspect_type, users, user_names, users_scale, activities, activity_names, activities_scale, func)
 
 	@classmethod 
 	def create_from_json(cls, aspect_type, users_file, users_scale, activities_file, activities_scale):
@@ -64,7 +64,7 @@ class Aspect:
 		function: function to be used to calculate the recommendations, must take a users ndarray, and an activities ndarray
 		"""
 
-		self.calc_function = function # store name or function? storing in case we want to export the data to review later
+		# self.calc_function = function # store name or function? storing in case we want to export the data to review later
 		self.recommendations = function(self.users, self.activities)
 
 		# to store or not to store the result as a class attribute? 

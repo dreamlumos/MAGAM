@@ -43,6 +43,7 @@ class DropMenu(QWidget):
         layout.addWidget(self.cb_aspect)
 
         self.pick_function = QComboBox()
+        self.pick_function.currentIndexChanged.connect(self.function_picked)
         self.pick_function.addItems(BasicFunctions.functions)
 
         # M matrix dropdown menu
@@ -72,6 +73,7 @@ class DropMenu(QWidget):
 
     def function_picked(self):
         self.function = self.pick_function.currentText()
+        print(self.function)
 
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":
