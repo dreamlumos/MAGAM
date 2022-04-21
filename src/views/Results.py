@@ -22,7 +22,7 @@ class Results(QWidget):
         activities = self.system_state.data.aspects[0].activity_names
         # print("hello")
         func = self.system_state.data.aspects[0].calc_function
-        print(func)
+        # print(func)
         # u = self.system_state.data.aspects[0].users
         # a = self.system_state.data.aspects[0].activities
 
