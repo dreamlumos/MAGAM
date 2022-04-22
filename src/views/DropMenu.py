@@ -2,7 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from models.Aspect import *
-from src.calculations import *
+from calculations import *
 import ntpath
 
 def path_leaf(path):

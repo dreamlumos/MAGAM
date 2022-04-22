@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from .DropMenu import *
 from models.Aspect import *
-from src.fusion import *
+from fusion import *
 
 
 class Aspects(QWidget):
