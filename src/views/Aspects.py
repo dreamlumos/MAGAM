@@ -4,7 +4,6 @@ from PyQt5.QtCore import *
 from .DropMenu import *
 from models.Aspect import *
 from src.fusion import *
-from .Results import *
 
 
 class Aspects(QWidget):
@@ -17,20 +16,14 @@ class Aspects(QWidget):
         self.system_state = system_state
 
         self.drop_menu_list = []
-        # self.remove_btns = []
         self.fusion = FusionFunctions.functions[0]  # by default for now
 
         self.dropmenu = DropMenu(self.remove_aspect, parent=self)
-        # new_btn = QPushButton("- 0", self)
-        # self.remove_btns.append(new_btn)
-        # new_btn.setEnabled(False)
-        # new_btn.setMaximumSize(35, 25)
 
         self.drop_menu_list.append(self.dropmenu)
 
         self.layout = QGridLayout(self)
         self.layout.addWidget(self.dropmenu, 1, 0)
-        # self.layout.addWidget(new_btn, 0, 0, alignment=Qt.AlignRight)
 
         self.add_aspect_btn = QPushButton("Add an aspect", self)
         self.calc_btn = QPushButton("Calculate", self)
@@ -48,58 +41,27 @@ class Aspects(QWidget):
         # self.calc_btn.clicked.connect(self.calculate)
         self.calc_btn.clicked.connect(self.confirm_calcul)
         self.pick_fusion.currentIndexChanged.connect(self.fusion_picked)
-        # new_btn.clicked.connect(lambda state, x=self.remove_btns.index(new_btn): self.remove_aspect(x))
 
     def add_aspect(self):
-        print("len of menu : ", len(self.drop_menu_list))
-        print(self.drop_menu_list)
-        # print("len of remove btns : ", len(self.remove_btns))
-
         self.calc_btn.setEnabled(False)
         # Add an aspect
         l = len(self.drop_menu_list)
         new_drop_menu = DropMenu(self.remove_aspect, parent=self)
         self.drop_menu_list.append(new_drop_menu)
-        #
-        # new_btn = QPushButton(f"- {len(self.drop_menu_list)-1}", self)
-        # new_btn.setMaximumSize(35, 25)
-        # Connect the "-" button to remove this aspect
-        # self.remove_btns.append(new_btn)
-        # new_btn.clicked.connect(lambda state, x=self.remove_btns.index(new_btn): self.remove_aspect(x))
-
-        # Enable the remove buttons if there's more than one aspect
-        # for b in self.remove_btns:
-        #     b.setEnabled(len(self.drop_menu_list) > 1)
 
         curr = len(self.drop_menu_list)
         self.layout.addWidget(self.drop_menu_list[-1], 1, l)
-        # self.layout.addWidget(new_btn, 0, l, alignment=Qt.AlignRight)
 
     def remove_aspect(self, widg):
-        print("len of menu : ", len(self.drop_menu_list))
-        # print("len of remove btns : ", len(self.remove_btns))
-        # del_menu = self.drop_menu_list[i]
         # Remove the aspect from the display
-        if len(self.drop_menu_list) <= 1:
-            return
         self.layout.removeWidget(widg)
         # self.layout.removeWidget(self.remove_btns[i])
         for k in range(len(self.drop_menu_list)):
             print(self.drop_menu_list[k])
         # Remove the aspect from the list
-        print(self.drop_menu_list)
-        print(widg)
         self.drop_menu_list.remove(widg)
         widg.deleteLater()
-        print(self.drop_menu_list)
-        # self.remove_btns.pop(i)
-        print("len of menu : ", len(self.drop_menu_list))
-        # print("len of remove btns : ", len(self.remove_btns))
-
         # Enable the remove buttons if there's more than one aspect
-        # for b in self.remove_btns:
-        #     b.setEnabled(len(self.drop_menu_list) > 1)
-
         self.check()
 
     def fusion_picked(self):
@@ -159,9 +121,7 @@ class Aspects(QWidget):
             print(drop_menu.function)
             a = Aspect.create_from_csv(drop_menu.aspect_type, drop_menu.users_file, (0, 5), drop_menu.activities_file, (0, 5), drop_menu.function)
             self.system_state.data.add_aspect(a)
-        # self.parent.set_page_results()
-        self.results_widget = Results(self.system_state, self)
-        self.layout.addWidget(self.results_widget, 2, 0)
+        self.parent.set_page_results()
 
     # def create_aspect_object(self, drop_menu):
     #     # print(drop_menu.aspect, drop_menu.user, drop_menu.activity)

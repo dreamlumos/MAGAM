@@ -2,7 +2,7 @@ import PyQt5.QtBluetooth
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from src.calculations import *
+from calculations import *
 
 
 class Results(QWidget):
