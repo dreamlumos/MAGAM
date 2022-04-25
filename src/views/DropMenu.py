@@ -2,7 +2,9 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from models.Aspect import *
-from src.calculations import *
+from calculations import *
+from .Aspects import *
+
 import ntpath
 
 def path_leaf(path):
@@ -12,8 +14,9 @@ def path_leaf(path):
 class DropMenu(QWidget):
 
     # A drop-down menu for aspects, M matrices, Q Matrices
-    def __init__(self, parent=None):
+    def __init__(self, remove, parent=None):
         QWidget.__init__(self, parent)
+        self.remove = remove
         self.setGeometry(700, 250, 500, 400)
 
         self.parent = parent
@@ -27,6 +30,12 @@ class DropMenu(QWidget):
         self.function = BasicFunctions.functions[0]  # by default for now
 
         layout = QVBoxLayout()
+
+        remove_btn = QPushButton("-", self)
+        # new_btn.setEnabled(False)
+        remove_btn.setMaximumSize(35, 25)
+        remove_btn.clicked.connect(lambda state, x=self: self.remove(x))
+        layout.addWidget(remove_btn)
 
         # Aspect types dropdown menu
         label_aspect = QLabel("Aspect Type", self)
@@ -74,6 +83,10 @@ class DropMenu(QWidget):
     def function_picked(self):
         self.function = self.pick_function.currentText()
         print(self.function)
+
+    def remove(self):
+        print("OK removing this menu")
+
 
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":

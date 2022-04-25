@@ -24,7 +24,6 @@ class BasicFunctions:
 
 	@staticmethod
 	def time(users, activities):
-
 		users = users.flatten()
 		activities = activities.flatten()
 
@@ -37,5 +36,5 @@ class BasicFunctions:
 					recommendations[i,j] = 0
 				else:
 					recommendations[i,j] = 1 - (users[i] - activities[j])/users[i]
-		
+		# print("rec time :", recommendations)
 		return recommendations
