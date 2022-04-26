@@ -63,6 +63,10 @@ class DropMenu(QWidget):
         self.browse_button_users = QPushButton("Browse...", self)
         self.browse_button_users.clicked.connect(self.load_users_file)
         layout.addWidget(self.browse_button_users)
+        # Manually input the data
+        self.create_users_table = QPushButton("Create Users Table")
+        self.create_users_table.clicked.connect(self.create_users)
+        layout.addWidget(self.create_users_table)
 
         # Q matrix dropdown menu
         label_activities = QLabel("Upload Q matrix (activities)", self)
@@ -71,6 +75,10 @@ class DropMenu(QWidget):
         self.browse_button_acts = QPushButton("Browse...", self)
         self.browse_button_acts.clicked.connect(self.load_acts_file)
         layout.addWidget(self.browse_button_acts)
+        # Manually input the data
+        self.create_activities_table = QPushButton("Create Activities Table")
+        self.create_activities_table.clicked.connect(self.create_acts)
+        layout.addWidget(self.create_activities_table)
 
         layout.addWidget(QLabel("Function"))
         layout.addWidget(self.pick_function)
@@ -87,6 +95,14 @@ class DropMenu(QWidget):
     def remove(self):
         print("OK removing this menu")
 
+    # TODO: make it a pop-up window
+    def create_users(self):
+        print("You can now manually input the Users table")
+        self.parent.parent.set_page_data_manually()
+
+    def create_acts(self):
+        print("You can now manually input the Activities table")
+        self.parent.parent.set_page_data_manually()
 
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":

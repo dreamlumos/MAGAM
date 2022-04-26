@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from .DropMenu import *
 from models.Aspect import *
-from src.fusion import *
+from fusion import *
 
 
 class Aspects(QWidget):
@@ -13,6 +13,7 @@ class Aspects(QWidget):
         super(Aspects, self).__init__(parent)
 
         self.parent = parent
+        print(type(self.parent))
         self.system_state = system_state
 
         self.drop_menu_list = []
@@ -39,7 +40,7 @@ class Aspects(QWidget):
 
         self.add_aspect_btn.clicked.connect(self.add_aspect)
         # self.calc_btn.clicked.connect(self.calculate)
-        self.calc_btn.clicked.connect(self.confirm_calcul)
+        self.calc_btn.clicked.connect(self.calculate)
         self.pick_fusion.currentIndexChanged.connect(self.fusion_picked)
 
     def add_aspect(self):
