@@ -65,7 +65,7 @@ class MainWindow(QWidget):
     def set_page_data_manually(self):
         if not(hasattr(self, 'Data_Input')):
             data_input_widget = Input(self)
-            data_input_widget.ok_btn.clicked.connect(self.set_page_input)
+            # data_input_widget.ok_btn.clicked.connect(self.set_page_input)
             self.Data_Input = self.Stack.addWidget(data_input_widget)
 
         self.display(self.Data_Input)

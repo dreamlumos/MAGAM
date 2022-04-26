@@ -1,8 +1,12 @@
+import datetime
+
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from .DropMenu import *
 from models.Aspect import *
+import pandas
+import time
 
 
 class Input(QWidget):
@@ -31,8 +35,8 @@ class Input(QWidget):
         activities = []  # Activity title here
         aspects = []  # Property here
 
-        c = 4
-        r = 5
+        c = 3
+        r = 4
 
         self.qtable = QTableWidget(r+1, c+1)
         self.qtable.verticalHeader().setVisible(False)
@@ -75,7 +79,7 @@ class Input(QWidget):
         self.layout.addWidget(remove_col_btn, 3, 4)
 
         self.ok_btn = QPushButton("Save as a .csv")
-        # self.ok_btn.clicked.connect(self.save)
+        self.ok_btn.clicked.connect(self.save_as_csv)
         self.layout.addWidget(self.ok_btn, 4, 4)
 
     def add_row(self):
@@ -95,4 +99,23 @@ class Input(QWidget):
     #     # TODO: Actually save it as a .csv!
         # print(type(self.parent()))
         # self.parent.set_page_sorry()
+
+    def save_as_csv(self):
+        col_count = self.qtable.columnCount()
+        row_count = self.qtable.rowCount()
+        headers = [str(self.qtable.item(0, i).text()) for i in range(1,col_count)]
+        ind = [str(self.qtable.item(i, 0).text()) for i in range(1,row_count)]
+        print(headers)
+        print(ind)
+
+        df_row = []
+        for row in range(1,row_count):
+            df_col = []
+            for col in range(1,col_count):
+                table_item = self.qtable.item(row, col)
+                df_col.append('' if table_item is None else str(table_item.text()))
+            df_row.append(df_col)
+
+        df = pandas.DataFrame(df_row, index=ind, columns=headers)
+        new_csv = df.to_csv('myfile_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv')
 

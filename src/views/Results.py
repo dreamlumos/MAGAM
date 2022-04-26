@@ -2,7 +2,7 @@ import PyQt5.QtBluetooth
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from calculations import *
+from calculations import BasicFunctions
 
 
 class Results(QWidget):
@@ -10,7 +10,6 @@ class Results(QWidget):
     def __init__(self, system_state, parent=None):
         # Recommendations as seen from the selection side, ie which activity for which student
         super(Results, self).__init__(parent)
-        print("hello")
 
         self.system_state = system_state
         self.layout = QGridLayout(self)
@@ -22,27 +21,15 @@ class Results(QWidget):
         activities = self.system_state.data.aspects[0].activity_names
         # print("hello")
         func = self.system_state.data.aspects[0].calc_function
-        # print(func)
-        # u = self.system_state.data.aspects[0].users
-        # a = self.system_state.data.aspects[0].activities
 
-        # is calculate_recommendations from Aspect called anywhere? ill call it here for now
-        # tho it should prob be done in the controller
-        # self.system_state.data.aspects[0].calculate_recommendations(product)  # i have no idea how this works help
         if func == BasicFunctions.functions[0]:
             self.system_state.data.aspects[0].calculate_recommendations(BasicFunctions.product)
         elif func == BasicFunctions.functions[1]:
             self.system_state.data.aspects[0].calculate_recommendations(BasicFunctions.distance)
-        elif func == BasicFunctions.functions[1]:
+        elif func == BasicFunctions.functions[2]:
             self.system_state.data.aspects[0].calculate_recommendations(BasicFunctions.time)
 
-        # TODO
-        # for now ill just recopy the code from calculations
-
-        # r = u.dot(a)  # again, by default to test, it's a product
-
         rec = self.system_state.data.aspects[0].recommendations
-        # print(rec)
 
         curr_calcul = QLabel(f"Function {func} has been applied.")
         self.layout.addWidget(curr_calcul, 0, 1)
