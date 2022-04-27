@@ -107,16 +107,7 @@ class Aspects(QWidget):
             self.calculate()
 
     def calculate(self):
-        # if not self.check():
-        #     print("Can't calculate, all aspects are not different.")
-        #     return
-
-        # msg.setDefaultButton(QMessageBox.Retry)
-        # msg.setInformativeText("informative text, ya!")
-        # msg.setDetailedText("details")
-        # msg.buttonClicked.connect(self.popup_button)
         print("Calculating...")
-
         # Creating the Aspects objects and putting them in a list
         for drop_menu in self.drop_menu_list:
             print(drop_menu.function)

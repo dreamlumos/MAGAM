@@ -23,7 +23,8 @@ class MainWindow(QWidget):
 
         # Add Welcome widget and object
         WelcomeScreen_widget = WelcomeScreen(self)
-        WelcomeScreen_widget.welcome_btn.clicked.connect(self.set_page_pick)
+        # WelcomeScreen_widget.welcome_btn.clicked.connect(self.set_page_pick)
+        WelcomeScreen_widget.welcome_btn.clicked.connect(self.set_page_input)
         self.WelcomeScreen_index = self.Stack.addWidget(WelcomeScreen_widget)
 
         self.setGeometry(700, 250, 500, 400)
@@ -54,7 +55,6 @@ class MainWindow(QWidget):
         self.setWindowTitle("Pick an UI")
 
     def set_page_input(self):
-
         if not(hasattr(self, 'Input_index')):
             Aspects_widget = Aspects(self.system_state, self)
             self.Input_index = self.Stack.addWidget(Aspects_widget)
@@ -65,11 +65,19 @@ class MainWindow(QWidget):
     def set_page_data_manually(self):
         if not(hasattr(self, 'Data_Input')):
             data_input_widget = Input(self)
-            # data_input_widget.ok_btn.clicked.connect(self.set_page_input)
+            data_input_widget.ok_btn.clicked.connect(lambda state, x=data_input_widget: self.delete_data_page(x))
+            data_input_widget.cancel_btn.clicked.connect(self.set_page_input)
             self.Data_Input = self.Stack.addWidget(data_input_widget)
 
         self.display(self.Data_Input)
         self.setWindowTitle("Manually input your data")
+
+    def delete_data_page(self, widg):
+        if hasattr(self, 'Data_Input'):
+            widg.deleteLater()
+            delattr(self, 'Data_Input')
+            print(hasattr(self, 'Data_Input'))
+            self.set_page_input()
 
     def set_page_results(self):
         if not(hasattr(self, 'Results_index')):

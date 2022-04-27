@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from models.Aspect import *
 from calculations import *
 from .Aspects import *
+from .BKT import *
 
 import ntpath
 
@@ -67,6 +68,11 @@ class DropMenu(QWidget):
         self.create_users_table = QPushButton("Create Users Table")
         self.create_users_table.clicked.connect(self.create_users)
         layout.addWidget(self.create_users_table)
+        # Create using BKT for aspect type didactic
+        self.create_with_BKT = QPushButton("Create With BKT")
+        self.create_with_BKT.setEnabled(True)
+        self.create_with_BKT.clicked.connect(self.create_BKT)
+        layout.addWidget(self.create_with_BKT)
 
         # Q matrix dropdown menu
         label_activities = QLabel("Upload Q matrix (activities)", self)
@@ -104,11 +110,32 @@ class DropMenu(QWidget):
         print("You can now manually input the Activities table")
         self.parent.parent.set_page_data_manually()
 
+    def create_BKT(self):
+        print("ok")
+        d = BKT(self)
+        # d = QDialog()
+        #
+        # b1 = QPushButton("Browse...", d)
+        # b1.move(50, 50)
+        # d.setWindowTitle("Dialog")
+        # d.setWindowModality(Qt.ApplicationModal)
+        d.exec_()
+        self.users_file = BKT.users_file[0]
+        if len(BKT.users_file[0]) == 0:
+            self.browse_button_users.setText("Browse...")
+        else:
+            self.browse_button_users.setText(path_leaf(BKT.users_file[0]))
+
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":
             self.aspect_type = None
         else:
             self.aspect_type = self.cb_aspect.currentText()
+            # Enable BKT for didactic aspect
+            if self.aspect_type == Aspect.aspect_types[0]:
+                self.create_with_BKT.setEnabled(True)
+            else:
+                self.create_with_BKT.setEnabled(False)
         self.check_filled()
 
     def load_users_file(self):

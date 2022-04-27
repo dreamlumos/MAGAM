@@ -15,25 +15,14 @@ class Input(QWidget):
 
         self.layout = QGridLayout(self)
 
-        curr_calcul = QLabel("User or Activities!")
+        close = False
 
-        # size_choice = QFormLayout
-        #
-        # size_choice.addRow("Number of students/activities")
-        # size_choice.addRow("Number of properties")
+        curr_calcul = QLabel("User or Activities!")
 
         self.layout.addWidget(curr_calcul, 0, 1)
         # create = QPushButton("Create default table")
         # create.clicked.connect(lambda state, x=5, y=4: self.remove_aspect(x, y))
         # self.layout.addWidget(create, 1, 1)
-
-    # def table(self, r, c):
-        # Create a matrix with students on the Y axis, activities on the X axis
-        # Get the students from the first line of users' csv files
-        # Idem for activities
-        users = []  # Student name here
-        activities = []  # Activity title here
-        aspects = []  # Property here
 
         c = 3
         r = 4
@@ -82,6 +71,9 @@ class Input(QWidget):
         self.ok_btn.clicked.connect(self.save_as_csv)
         self.layout.addWidget(self.ok_btn, 4, 4)
 
+        self.cancel_btn = QPushButton("Cancel")
+        self.layout.addWidget(self.cancel_btn, 4, 3)
+
     def add_row(self):
         self.qtable.insertRow(self.qtable.rowCount())
 
@@ -93,12 +85,6 @@ class Input(QWidget):
 
     def remove_column(self):
         self.qtable.removeColumn(self.qtable.columnCount()-1)
-
-    # def save(self):
-    #     print("Table saved as a .csv")
-    #     # TODO: Actually save it as a .csv!
-        # print(type(self.parent()))
-        # self.parent.set_page_sorry()
 
     def save_as_csv(self):
         col_count = self.qtable.columnCount()
@@ -117,5 +103,15 @@ class Input(QWidget):
             df_row.append(df_col)
 
         df = pandas.DataFrame(df_row, index=ind, columns=headers)
-        new_csv = df.to_csv('myfile_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv')
+        name = 'myfile_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
+        df.to_csv(name)
+        print(name)
+        close = True
+        f = open(name, "r")
+        print("OK")
+        print(f.read())
+        #
+    # def back(self):
+    #
+
 
