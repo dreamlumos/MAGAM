@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from models.Aspect import *
 from calculations import *
+from .Aspects import *
+
 import ntpath
 
 def path_leaf(path):
@@ -12,8 +14,9 @@ def path_leaf(path):
 class DropMenu(QWidget):
 
     # A drop-down menu for aspects, M matrices, Q Matrices
-    def __init__(self, parent=None):
+    def __init__(self, remove, parent=None):
         QWidget.__init__(self, parent)
+        self.remove = remove
         self.setGeometry(700, 250, 500, 400)
 
         self.parent = parent
@@ -27,6 +30,12 @@ class DropMenu(QWidget):
         self.function = BasicFunctions.functions[0]  # by default for now
 
         layout = QVBoxLayout()
+
+        remove_btn = QPushButton("-", self)
+        # new_btn.setEnabled(False)
+        remove_btn.setMaximumSize(35, 25)
+        remove_btn.clicked.connect(lambda state, x=self: self.remove(x))
+        layout.addWidget(remove_btn)
 
         # Aspect types dropdown menu
         label_aspect = QLabel("Aspect Type", self)
@@ -54,6 +63,10 @@ class DropMenu(QWidget):
         self.browse_button_users = QPushButton("Browse...", self)
         self.browse_button_users.clicked.connect(self.load_users_file)
         layout.addWidget(self.browse_button_users)
+        # Manually input the data
+        self.create_users_table = QPushButton("Create Users Table")
+        self.create_users_table.clicked.connect(self.create_users)
+        layout.addWidget(self.create_users_table)
 
         # Q matrix dropdown menu
         label_activities = QLabel("Upload Q matrix (activities)", self)
@@ -62,6 +75,10 @@ class DropMenu(QWidget):
         self.browse_button_acts = QPushButton("Browse...", self)
         self.browse_button_acts.clicked.connect(self.load_acts_file)
         layout.addWidget(self.browse_button_acts)
+        # Manually input the data
+        self.create_activities_table = QPushButton("Create Activities Table")
+        self.create_activities_table.clicked.connect(self.create_acts)
+        layout.addWidget(self.create_activities_table)
 
         layout.addWidget(QLabel("Function"))
         layout.addWidget(self.pick_function)
@@ -74,6 +91,18 @@ class DropMenu(QWidget):
     def function_picked(self):
         self.function = self.pick_function.currentText()
         print(self.function)
+
+    def remove(self):
+        print("OK removing this menu")
+
+    # TODO: make it a pop-up window
+    def create_users(self):
+        print("You can now manually input the Users table")
+        self.parent.parent.set_page_data_manually()
+
+    def create_acts(self):
+        print("You can now manually input the Activities table")
+        self.parent.parent.set_page_data_manually()
 
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":

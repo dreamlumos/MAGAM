@@ -13,23 +13,18 @@ class Aspects(QWidget):
         super(Aspects, self).__init__(parent)
 
         self.parent = parent
+        print(type(self.parent))
         self.system_state = system_state
 
         self.drop_menu_list = []
-        self.remove_btns = []
         self.fusion = FusionFunctions.functions[0]  # by default for now
 
-        self.dropmenu = DropMenu(parent=self)
-        new_btn = QPushButton("-", self)
-        self.remove_btns.append(new_btn)
-        new_btn.setEnabled(False)
-        new_btn.setMaximumSize(35, 25)
+        self.dropmenu = DropMenu(self.remove_aspect, parent=self)
 
         self.drop_menu_list.append(self.dropmenu)
 
         self.layout = QGridLayout(self)
         self.layout.addWidget(self.dropmenu, 1, 0)
-        self.layout.addWidget(new_btn, 0, 0, alignment=Qt.AlignRight)
 
         self.add_aspect_btn = QPushButton("Add an aspect", self)
         self.calc_btn = QPushButton("Calculate", self)
@@ -45,47 +40,29 @@ class Aspects(QWidget):
 
         self.add_aspect_btn.clicked.connect(self.add_aspect)
         # self.calc_btn.clicked.connect(self.calculate)
-        self.calc_btn.clicked.connect(self.confirm_calcul)
+        self.calc_btn.clicked.connect(self.calculate)
         self.pick_fusion.currentIndexChanged.connect(self.fusion_picked)
-        new_btn.clicked.connect(lambda state, x=0: self.remove_aspect(x))
 
     def add_aspect(self):
         self.calc_btn.setEnabled(False)
         # Add an aspect
         l = len(self.drop_menu_list)
-        new_drop_menu = DropMenu(parent=self)
+        new_drop_menu = DropMenu(self.remove_aspect, parent=self)
         self.drop_menu_list.append(new_drop_menu)
-
-        new_btn = QPushButton("-", self)
-        new_btn.setMaximumSize(35, 25)
-        # Connect the "-" button to remove this aspect
-        new_btn.clicked.connect(lambda state, x=l: self.remove_aspect(x))
-        self.remove_btns.append(new_btn)
-
-        # Enable the remove buttons if there's more than one aspect
-        for b in self.remove_btns:
-            b.setEnabled(len(self.drop_menu_list) > 1)
 
         curr = len(self.drop_menu_list)
         self.layout.addWidget(self.drop_menu_list[-1], 1, l)
-        self.layout.addWidget(new_btn, 0, l, alignment=Qt.AlignRight)
 
-    def remove_aspect(self, i):
-        # TODO: liste des colonnes (one widget)
-        del_menu = self.drop_menu_list[i]
+    def remove_aspect(self, widg):
         # Remove the aspect from the display
-        self.layout.removeWidget(del_menu)
-        self.layout.removeWidget(self.remove_btns[i])
+        self.layout.removeWidget(widg)
+        # self.layout.removeWidget(self.remove_btns[i])
         for k in range(len(self.drop_menu_list)):
             print(self.drop_menu_list[k])
         # Remove the aspect from the list
-        self.drop_menu_list.pop(i)
-        self.remove_btns.pop(i)
-
+        self.drop_menu_list.remove(widg)
+        widg.deleteLater()
         # Enable the remove buttons if there's more than one aspect
-        for b in self.remove_btns:
-            b.setEnabled(len(self.drop_menu_list) > 1)
-
         self.check()
 
     def fusion_picked(self):

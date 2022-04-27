@@ -5,6 +5,7 @@ from .WelcomeScreen import *
 from .PickUI import *
 from .Aspects import *
 from .Results import *
+from .Input import *
 from .Sorry import *
 
 class MainWindow(QWidget):
@@ -45,6 +46,7 @@ class MainWindow(QWidget):
         if not(hasattr(self, 'PickUI_index')):
             PickUI_widget = PickUI(self)
             PickUI_widget.debutant.clicked.connect(self.set_page_input) # move to PickUI ?
+            # PickUI_widget.debutant.clicked.connect(self.set_page_data_manually) # move to PickUI ?
             PickUI_widget.expert.clicked.connect(self.set_page_sorry) # move to PickUI ?
             self.PickUI_index = self.Stack.addWidget(PickUI_widget)
 
@@ -60,19 +62,24 @@ class MainWindow(QWidget):
         self.display(self.Input_index)
         self.setWindowTitle("Input aspects")
 
+    def set_page_data_manually(self):
+        if not(hasattr(self, 'Data_Input')):
+            data_input_widget = Input(self)
+            # data_input_widget.ok_btn.clicked.connect(self.set_page_input)
+            self.Data_Input = self.Stack.addWidget(data_input_widget)
+
+        self.display(self.Data_Input)
+        self.setWindowTitle("Manually input your data")
+
     def set_page_results(self):
         if not(hasattr(self, 'Results_index')):
             Results_widget = Results(self.system_state, self)
-            print("Setting results page x3")
             self.Results_index = self.Stack.addWidget(Results_widget)
-            print("Setting results page x4")
 
         self.display(self.Results_index)
-        print("Setting results page x5")
         self.setWindowTitle("Results")
 
     def set_page_sorry(self):
-
         if not(hasattr(self, 'Results_index')):
             Sorry_widget = Sorry(self)
             Sorry_widget.back.clicked.connect(self.set_page_pick)
