@@ -120,11 +120,13 @@ class DropMenu(QWidget):
         # d.setWindowTitle("Dialog")
         # d.setWindowModality(Qt.ApplicationModal)
         d.exec_()
-        self.users_file = BKT.users_file[0]
-        if len(BKT.users_file[0]) == 0:
-            self.browse_button_users.setText("Browse...")
-        else:
-            self.browse_button_users.setText(path_leaf(BKT.users_file[0]))
+        print(d.final_file)
+        if d.final_file:
+            self.users_file = d.final_file[0]
+            if len(d.final_file[0]) == 0:
+                self.browse_button_users.setText("Browse...")
+            else:
+                self.browse_button_users.setText(path_leaf(d.final_file[0]))
 
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":

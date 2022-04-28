@@ -10,6 +10,7 @@ def path_leaf(path):
     head, tail = ntpath.split(path)
     return tail or ntpath.basename(head)
 
+
 class BKT(QDialog):
 
     def __init__(self, parent=None):
@@ -25,10 +26,11 @@ class BKT(QDialog):
         # QBtn.Ok.setEnabled(False)
         self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(False)
         self.buttonBox.accepted.connect(self.calculate_BKT)
+        # self.buttonBox.accepted.connect(self.ac)
         self.buttonBox.rejected.connect(self.reject)
 
         self.layout = QVBoxLayout()
-        message = QLabel("Something happened, is that OK?")
+        message = QLabel("Choose a file to be processes using BKT.")
         self.layout.addWidget(message)
 
         self.browse_button_users = QPushButton("Browse...", self)
@@ -43,6 +45,7 @@ class BKT(QDialog):
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"
         self.users_file = file_name[0]
+        print("users file:", self.users_file)
         if len(file_name[0]) == 0:
             self.browse_button_users.setText("Browse...")
         else:
@@ -52,6 +55,10 @@ class BKT(QDialog):
 
     def calculate_BKT(self):
         print("calculating bkt")
-        d = BKTData(self.users_file)
+        d = BKTData(self.users_file)  # {'User': 'user_id', 'KC': 'skill_name', 'IsCorrect': 'correct'}
+        print("bkt created")
         self.final_file = d.save_preds_to_csv()
-        self.accepted()
+        # d.deleteLater()
+        # del d
+        self.accept()
+

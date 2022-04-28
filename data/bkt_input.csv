@@ -1,4 +1,4 @@
-Question,KC,User,IsCorrect
+Question,skill_name,user_id,correct
 2,Addition,Bob,1
 10,3,Amy,0
 5,Multiplication,Amy,1
