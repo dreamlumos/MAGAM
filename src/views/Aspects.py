@@ -33,10 +33,10 @@ class Aspects(QWidget):
         # self.pick_calc_btn.addItems(["------"])
         self.pick_fusion.addItems(FusionFunctions.functions)
 
-        self.layout.addWidget(self.add_aspect_btn, 2, 2)
-        self.layout.addWidget(self.calc_btn, 2, 3)
-        self.layout.addWidget(QLabel("Fusion Function"), 0, 3)
-        self.layout.addWidget(self.pick_fusion, 1, 3)
+        self.layout.addWidget(self.add_aspect_btn, 2, 1)
+        self.layout.addWidget(self.calc_btn, 2, 2)
+        self.layout.addWidget(QLabel("Fusion Function"), 0, 2)
+        self.layout.addWidget(self.pick_fusion, 1, 2)
 
         self.add_aspect_btn.clicked.connect(self.add_aspect)
         # self.calc_btn.clicked.connect(self.calculate)
@@ -51,18 +51,23 @@ class Aspects(QWidget):
         self.drop_menu_list.append(new_drop_menu)
 
         curr = len(self.drop_menu_list)
+        print(l)
         self.layout.addWidget(self.drop_menu_list[-1], 1, l)
+        self.layout.addWidget(self.pick_fusion, 1, l+1)
 
     def remove_aspect(self, widg):
         # Remove the aspect from the display
         self.layout.removeWidget(widg)
         # self.layout.removeWidget(self.remove_btns[i])
-        for k in range(len(self.drop_menu_list)):
-            print(self.drop_menu_list[k])
         # Remove the aspect from the list
+        place = self.drop_menu_list.index(widg)
         self.drop_menu_list.remove(widg)
+        for k in range(place, len(self.drop_menu_list)):
+            # print(self.drop_menu_list[k])
+            self.layout.addWidget(self.drop_menu_list[k], 1, k)
+        l = len(self.drop_menu_list)
+        self.layout.addWidget(self.pick_fusion, 1, l)
         widg.deleteLater()
-        # Enable the remove buttons if there's more than one aspect
         self.check()
 
     def fusion_picked(self):
@@ -70,14 +75,15 @@ class Aspects(QWidget):
 
     def check(self):
         # checks whether all menus are filled to enable the calculate button
-
         all_filled = True
         # Can't calculate if all items have not been selected
         for aspect_menu in self.drop_menu_list:
             if not aspect_menu.filled:
                 all_filled = False
 
-        self.calc_btn.setEnabled(all_filled)  
+        self.calc_btn.setEnabled(all_filled)
+        if len(self.drop_menu_list) == 0:
+            self.calc_btn.setEnabled(False)
 
         # # Check if any aspects selected are the same
         # ok = True

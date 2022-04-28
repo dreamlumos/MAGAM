@@ -70,7 +70,7 @@ class DropMenu(QWidget):
         layout.addWidget(self.create_users_table)
         # Create using BKT for aspect type didactic
         self.create_with_BKT = QPushButton("Create With BKT")
-        self.create_with_BKT.setEnabled(True)
+        self.create_with_BKT.setEnabled(False)
         self.create_with_BKT.clicked.connect(self.create_BKT)
         layout.addWidget(self.create_with_BKT)
 
