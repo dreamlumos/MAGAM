@@ -2,6 +2,8 @@
 - normalisation
 - verifier l'ordre des colonnes et lignes sure ttes les matrices (alphanumerique?)
 # View
+- back button
+- fix fusion, add matrices and change button and recalculate button
 - [x] ~~fix the display of dropmenu in Aspects~~
 - check if there is a better way to manage aspects layout
 - multiple aspects calculation !!!

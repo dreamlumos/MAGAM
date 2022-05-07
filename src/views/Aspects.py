@@ -26,16 +26,19 @@ class Aspects(QWidget):
         self.layout = QGridLayout(self)
         self.layout.addWidget(self.dropmenu, 1, 0)
 
-        self.add_aspect_btn = QPushButton("Add an aspect", self)
+        self.add_aspect_btn = QPushButton(" + ", self)
+        self.add_aspect_btn.setMaximumSize(40, 35)
         self.calc_btn = QPushButton("Calculate", self)
-        self.calc_btn.setEnabled(False)
+        # self.calc_btn.setEnabled(False)
+        self.calc_btn.setEnabled(False)  # TODO modified here
         self.pick_fusion = QComboBox()
+        self.pick_fusion.setEnabled(False)
         # self.pick_calc_btn.addItems(["------"])
         self.pick_fusion.addItems(FusionFunctions.functions)
 
-        self.layout.addWidget(self.add_aspect_btn, 2, 1)
+        self.layout.addWidget(self.add_aspect_btn, 0, 1)
         self.layout.addWidget(self.calc_btn, 2, 2)
-        self.layout.addWidget(QLabel("Fusion Function"), 0, 2)
+        # self.layout.addWidget(QLabel("Fusion Function"), 0, 2)
         self.layout.addWidget(self.pick_fusion, 1, 2)
 
         self.add_aspect_btn.clicked.connect(self.add_aspect)
@@ -44,7 +47,7 @@ class Aspects(QWidget):
         self.pick_fusion.currentIndexChanged.connect(self.fusion_picked)
 
     def add_aspect(self):
-        self.calc_btn.setEnabled(False)
+        self.calc_btn.setEnabled(False)  # TODO changed here too
         # Add an aspect
         l = len(self.drop_menu_list)
         new_drop_menu = DropMenu(self.remove_aspect, parent=self)
@@ -52,8 +55,10 @@ class Aspects(QWidget):
 
         curr = len(self.drop_menu_list)
         print(l)
+        self.pick_fusion.setEnabled(curr > 1)
         self.layout.addWidget(self.drop_menu_list[-1], 1, l)
         self.layout.addWidget(self.pick_fusion, 1, l+1)
+        self.layout.addWidget(self.add_aspect_btn, 0, l+1)
 
     def remove_aspect(self, widg):
         # Remove the aspect from the display
@@ -67,6 +72,8 @@ class Aspects(QWidget):
             self.layout.addWidget(self.drop_menu_list[k], 1, k)
         l = len(self.drop_menu_list)
         self.layout.addWidget(self.pick_fusion, 1, l)
+        self.layout.addWidget(self.add_aspect_btn, 0, l)
+        self.pick_fusion.setEnabled(l > 1)
         widg.deleteLater()
         self.check()
 
@@ -81,6 +88,7 @@ class Aspects(QWidget):
             if not aspect_menu.filled:
                 all_filled = False
 
+        # TODO CHANGED here too
         self.calc_btn.setEnabled(all_filled)
         if len(self.drop_menu_list) == 0:
             self.calc_btn.setEnabled(False)
@@ -115,10 +123,13 @@ class Aspects(QWidget):
     def calculate(self):
         print("Calculating...")
         # Creating the Aspects objects and putting them in a list
+        title_list = []
         for drop_menu in self.drop_menu_list:
             print(drop_menu.function)
+            # TODO changed here too
             a = Aspect.create_from_csv(drop_menu.aspect_type, drop_menu.users_file, (0, 5), drop_menu.activities_file, (0, 5), drop_menu.function)
             self.system_state.data.add_aspect(a)
+            # title_list.append(drop_menu.aspect_type)
         self.parent.set_page_results()
 
     # def create_aspect_object(self, drop_menu):

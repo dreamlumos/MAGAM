@@ -32,7 +32,7 @@ class BKT(QDialog):
         self.buttonBox.rejected.connect(self.reject)
 
         self.layout = QVBoxLayout()
-        message = QLabel("Choose a file to be processes using BKT.")
+        message = QLabel("Choose a file to be processed using BKT.")
         self.layout.addWidget(message)
 
         self.browse_button_users = QPushButton("Browse...", self)
