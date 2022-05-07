@@ -9,15 +9,16 @@ import pandas
 import time
 
 
-class Input(QWidget):
-    def __init__(self, parent=None):
-        super(Input, self).__init__(parent)
+class InputUsers(QWidget):
+    def __init__(self, drop_menu, parent=None):
+        super(InputUsers, self).__init__(parent)
 
+        self.drop_menu = drop_menu
         self.layout = QGridLayout(self)
 
-        close = False
+        self.file_name = None
 
-        curr_calcul = QLabel("User or Activities!")
+        curr_calcul = QLabel("Users")
 
         self.layout.addWidget(curr_calcul, 0, 1)
         # create = QPushButton("Create default table")
@@ -35,7 +36,7 @@ class Input(QWidget):
         # Add the actual users and activities to the qtable
         for i in range(1, r+1):
             # item = QTableWidgetItem(users[i-1])
-            item = QTableWidgetItem("Student name or Activity title here")
+            item = QTableWidgetItem("Student name here")
             item.setTextAlignment(Qt.AlignCenter)
             self.qtable.setItem(i, 0, item)
 
@@ -103,14 +104,14 @@ class Input(QWidget):
             df_row.append(df_col)
 
         df = pandas.DataFrame(df_row, index=ind, columns=headers)
-        name = 'myfile_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
+        name = 'users_input_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
         df.to_csv(name)
         print(name)
-        close = True
-        f = open(name, "r")
-        print("OK")
-        print(f.read())
-        #
+        self.file_name = name
+        # self.drop_menu.users_file = name
+        DropMenu.set_users_file(self.drop_menu, name)
+        # print(self.drop_menu.users_file)
+
     # def back(self):
     #
 

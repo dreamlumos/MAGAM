@@ -5,7 +5,8 @@ from .WelcomeScreen import *
 from .PickUI import *
 from .Aspects import *
 from .Results import *
-from .Input import *
+from .InputUsers import *
+from .InputActs import *
 from .Sorry import *
 
 class MainWindow(QWidget):
@@ -62,21 +63,39 @@ class MainWindow(QWidget):
         self.display(self.Input_index)
         self.setWindowTitle("Input aspects")
 
-    def set_page_data_manually(self):
-        if not(hasattr(self, 'Data_Input')):
-            data_input_widget = Input(self)
-            data_input_widget.ok_btn.clicked.connect(lambda state, x=data_input_widget: self.delete_data_page(x))
+    def set_page_input_users(self, drop_menu):
+        if not(hasattr(self, 'Input_Users')):
+            data_input_widget = InputUsers(self, drop_menu)
+            data_input_widget.ok_btn.clicked.connect(lambda state, x=data_input_widget: self.delete_input_users(x))
             data_input_widget.cancel_btn.clicked.connect(self.set_page_input)
-            self.Data_Input = self.Stack.addWidget(data_input_widget)
+            self.Input_Users = self.Stack.addWidget(data_input_widget)
 
-        self.display(self.Data_Input)
-        self.setWindowTitle("Manually input your data")
+        self.display(self.Input_Users)
+        self.setWindowTitle("Manually input your users data")
 
-    def delete_data_page(self, widg):
-        if hasattr(self, 'Data_Input'):
+    def delete_input_users(self, widg):
+        if hasattr(self, 'Input_Users'):
+            file_name = widg.drop_menu.users_file
             widg.deleteLater()
-            delattr(self, 'Data_Input')
-            print(hasattr(self, 'Data_Input'))
+            delattr(self, 'Input_Users')
+            print(hasattr(self, 'Input_Users'))
+            self.set_page_input()
+
+    def set_page_input_acts(self):
+        if not(hasattr(self, 'Input_Acts')):
+            data_input_widget = InputActs(self)
+            data_input_widget.ok_btn.clicked.connect(lambda state, x=data_input_widget: self.delete_input_acts(x))
+            data_input_widget.cancel_btn.clicked.connect(self.set_page_input)
+            self.Input_Acts = self.Stack.addWidget(data_input_widget)
+
+        self.display(self.Input_Acts)
+        self.setWindowTitle("Manually input your activities data")
+
+    def delete_input_acts(self, widg):
+        if hasattr(self, 'Input_Acts'):
+            widg.deleteLater()
+            delattr(self, 'Input_Acts')
+            print(hasattr(self, 'Input_Acts'))
             self.set_page_input()
 
     def set_page_results(self):

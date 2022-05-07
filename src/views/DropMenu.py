@@ -25,8 +25,9 @@ class DropMenu(QWidget):
         # self.setMaximumSize(200, 150)
         # self.setMaximumHeight(400)
 
-        self.aspect_type = None 
-        self.users_file = None
+        self.aspect_type = None
+        if not(hasattr(self, "users_file")):
+            self.users_file = None
         self.activities_file = None
         self.function = BasicFunctions.functions[0]  # by default for now
 
@@ -98,35 +99,30 @@ class DropMenu(QWidget):
         self.function = self.pick_function.currentText()
         print(self.function)
 
-    def remove(self):
-        print("OK removing this menu")
-
     # TODO: make it a pop-up window
     def create_users(self):
         print("You can now manually input the Users table")
-        self.parent.parent.set_page_data_manually()
+        self.parent.parent.set_page_input_users(self)
+        # TODO input file name into the browse button !!!
+        print("created users input?")
 
     def create_acts(self):
         print("You can now manually input the Activities table")
-        self.parent.parent.set_page_data_manually()
+        self.parent.parent.set_page_input_acts()
 
     def create_BKT(self):
-        print("ok")
         d = BKT(self)
-        # d = QDialog()
-        #
-        # b1 = QPushButton("Browse...", d)
-        # b1.move(50, 50)
-        # d.setWindowTitle("Dialog")
-        # d.setWindowModality(Qt.ApplicationModal)
         d.exec_()
         print(d.final_file)
         if d.final_file:
-            self.users_file = d.final_file[0]
-            if len(d.final_file[0]) == 0:
+            self.users_file = d.final_file
+            if len(d.final_file) == 0:
                 self.browse_button_users.setText("Browse...")
             else:
-                self.browse_button_users.setText(path_leaf(d.final_file[0]))
+                self.browse_button_users.setText(path_leaf(d.final_file))
+        else:
+            if self.users_file:
+                self.browse_button_users.setText(path_leaf(self.users_file))
 
     def aspect_change(self):
         if self.cb_aspect.currentText() == "------":
@@ -142,12 +138,16 @@ class DropMenu(QWidget):
 
     def load_users_file(self):
         file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
+        print(file_name)
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"
-        self.users_file = file_name[0]
-        if len(file_name[0]) == 0:
+        print("here too:", self.users_file)
+        if self.users_file:
+            self.browse_button_users.setText(path_leaf(self.users_file))
+        elif len(file_name[0]) == 0:
             self.browse_button_users.setText("Browse...")
         else:
+            self.users_file = file_name[0]
             self.browse_button_users.setText(path_leaf(file_name[0]))
         self.check_filled()
 
@@ -156,12 +156,13 @@ class DropMenu(QWidget):
         file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"        self.activities_file = file_name[0]
-        self.activities_file = file_name[0]
-        if len(file_name[0]) == 0:
+        if self.activities_file:
+            self.browse_button_users.setText(path_leaf(self.activities_file))
+        elif len(file_name[0]) == 0:
             self.browse_button_acts.setText("Browse...")
         else:
+            self.activities_file = file_name[0]
             self.browse_button_acts.setText(path_leaf(file_name[0]))
-
         self.check_filled()
 
     def check_filled(self):
@@ -174,3 +175,9 @@ class DropMenu(QWidget):
         else: 
             self.filled = True
         self.parent.check()
+
+    def set_users_file(self, file):
+        self.users_file = file
+        print()
+        print(file)
+        print(self.users_file)
