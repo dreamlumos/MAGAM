@@ -32,7 +32,7 @@ class InputActs(QWidget):
         self.qtable.horizontalHeader().setVisible(False)
         self.layout.addWidget(self.qtable, 1, 1)
 
-        # Add the actual users and activities to the qtable
+        # Add the actual users and activities to the qtable_rec
         for i in range(1, r+1):
             # item = QTableWidgetItem(users[i-1])
             item = QTableWidgetItem("Activity title here")

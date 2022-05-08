@@ -29,7 +29,7 @@ class MainWindow(QWidget):
         WelcomeScreen_widget.welcome_btn.clicked.connect(self.set_page_aspects)
         self.WelcomeScreen_index = self.Stack.addWidget(WelcomeScreen_widget)
 
-        self.setGeometry(700, 250, 500, 400)
+        self.setGeometry(700, 250, 500, 700)
         self.setWindowTitle('MAGAM')
 
     # Unused for the moment : 

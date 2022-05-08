@@ -18,7 +18,6 @@ class DropMenu(QWidget):
     def __init__(self, remove, parent=None):
         QWidget.__init__(self, parent)
         self.remove = remove
-        self.setGeometry(700, 250, 500, 400)
 
         self.parent = parent
         self.setMinimumSize(100, 100)
@@ -62,7 +61,11 @@ class DropMenu(QWidget):
         label_users.setWordWrap(False)
         layout.addWidget(label_users)
 
-        self.browse_button_users = QPushButton("Browse...", self)
+        # self.browse_button_users = QPushButton("Browse...", self)
+        # TODO here remove the file_name
+        file_name = "C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_users.csv"
+        self.users_file = file_name
+        self.browse_button_users = QPushButton("C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_users.csv", self)
         self.browse_button_users.clicked.connect(self.load_users_file)
         layout.addWidget(self.browse_button_users)
         # Manually input the data
@@ -79,7 +82,10 @@ class DropMenu(QWidget):
         label_activities = QLabel("Upload Q matrix (activities)", self)
         layout.addWidget(label_activities)
 
-        self.browse_button_acts = QPushButton("Browse...", self)
+        # self.browse_button_acts = QPushButton("Browse...", self)
+        file_name = "C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_activities.csv"
+        self.activities_file = file_name
+        self.browse_button_acts = QPushButton("C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_activities.csv", self)
         self.browse_button_acts.clicked.connect(self.load_acts_file)
         layout.addWidget(self.browse_button_acts)
         # Manually input the data
@@ -142,7 +148,10 @@ class DropMenu(QWidget):
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"
         print("here too:", self.users_file)
-        if self.users_file:
+        if len(file_name[0]) > 0:
+            self.users_file = file_name[0]
+            self.browse_button_users.setText(path_leaf(file_name[0]))
+        elif self.users_file:
             self.browse_button_users.setText(path_leaf(self.users_file))
         elif len(file_name[0]) == 0:
             self.browse_button_users.setText("Browse...")
@@ -156,7 +165,10 @@ class DropMenu(QWidget):
         file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"        self.activities_file = file_name[0]
-        if self.activities_file:
+        if len(file_name[0]) > 0:
+            self.activities_file = file_name[0]
+            self.browse_button_acts.setText(path_leaf(file_name[0]))
+        elif self.activities_file:
             self.browse_button_users.setText(path_leaf(self.activities_file))
         elif len(file_name[0]) == 0:
             self.browse_button_acts.setText("Browse...")
