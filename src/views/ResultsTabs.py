@@ -2,6 +2,7 @@ import PyQt5.QtBluetooth
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from .Result import *
+from .FusionTab import *
 from PyQt5.QtCore import *
 
 
@@ -28,13 +29,17 @@ class ResultsTabs(QWidget):
             # for i in range(len(title_list)):
             # self.add_tabs(Result(self.system_state, i, self), system_state.data.aspects[i].aspect_type)
             # self.add_tabs(QWidget(), title_list[i])
-        # self.add_tabs()  # Fusion
+        self.add_tabs(FusionTab(self.system_state, self), "Fusion")  # Fusion
 
     def add_tabs(self, tab, title):
         self.tabs.addTab(tab, title)
         # self.tabs.insertTab(tab, "")
 
     def create_tab(self, indice):
+        layout = QVBoxLayout()
+
+        splitter = QSplitter(Qt.Horizontal)
+
         tab = QWidget()
         tab.layout = QGridLayout(self)
         title = self.system_state.data.aspects[indice].aspect_type
@@ -70,6 +75,9 @@ class ResultsTabs(QWidget):
         tab.layout.addWidget(rec.table4, 1, 1)
 
         tab.setLayout(tab.layout)
+        splitter.addWidget(tab)
+        splitter.addWidget(QTextEdit())
+
         self.add_tabs(tab, title)
 
     # @pyqtSlot()
