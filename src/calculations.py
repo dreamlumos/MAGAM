@@ -38,4 +38,5 @@ class BasicFunctions:
 				else:
 					recommendations[i,j] = 1 - (users[i] - activities[j])/users[i]
 		
-		return recommendationsd
+
+		return recommendations

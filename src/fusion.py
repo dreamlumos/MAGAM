@@ -3,7 +3,7 @@ import pandas as pd
 
 class FusionFunctions:
 
-	functions = ["mean", "value_multiplication", "min", "max"]
+	functions = ["Mean", "Value_multiplication", "Min", "Max"]
 
 	@staticmethod
 	def mean(r1, r2, w1=1, w2=1):
