@@ -43,7 +43,7 @@ class Result(QWidget):
         elif self.func == BasicFunctions.functions[2]:
             self.system_state.data.aspects[ind].calculate_recommendations(BasicFunctions.time)
 
-        self.rec = self.system_state.data.aspects[ind].recommendations
+        self.rec = self.system_state.data.aspects[ind].chosen_recommendations
 
         # curr_calcul = QLabel(f"Function {func} has been applied.")
         # self.layout.addWidget(curr_calcul, 0, 1)

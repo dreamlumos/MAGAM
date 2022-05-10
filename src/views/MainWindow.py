@@ -29,11 +29,12 @@ class MainWindow(QMainWindow):
         WelcomeScreen_widget.welcome_btn.clicked.connect(self.set_page_aspects)
         self.WelcomeScreen_index = self.Stack.addWidget(WelcomeScreen_widget)
 
-        self.setGeometry(400, 100, 1000, 900)
+        self.setGeometry(200, 50, 1000, 650)
         self.setWindowTitle('MAGAM')
 
         container = QWidget()
         container.setLayout(hbox)
+        container.setStyleSheet("QWidget#MWcontainer {background-color: #4F658A}")
         self.setCentralWidget(container)
 
     # Unused for the moment : 

@@ -26,7 +26,8 @@ class Aspect:
 		self.activities_scale = activities_scale
 
 		self.calc_function = func # function
-		self.recommendations = None # ndarray
+		self.recommendations_dict = dict() # key: function name, value: ndarray containing recommendations
+		self.chosen_recommendations = None;
 
 	@classmethod
 	def create_from_csv(cls, aspect_type, users_file, users_scale, activities_file, activities_scale, func):
@@ -64,9 +65,13 @@ class Aspect:
 		function: function to be used to calculate the recommendations, must take a users ndarray, and an activities ndarray
 		"""
 
+		if function not in self.recommendations_dict:
+			self.recommendations_dict[function] = function(self.users, self.activities)
+
+		self.chosen_recommendations = self.recommendations_dict[function]
+
 		# self.calc_function = function # store name or function? storing in case we want to export the data to review later
-		self.recommendations = function(self.users, self.activities)
 
 		# to store or not to store the result as a class attribute? 
 		# user will be able to visualise the results of different calculations, but there needs
-		# to be one selected result to be used in the fusion...
+		# to be one selected result to be used in the fusion...		

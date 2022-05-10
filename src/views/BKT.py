@@ -59,7 +59,7 @@ class BKT(QDialog):
         print("calculating bkt")
         d = BKTData(self.users_file)  # {'User': 'user_id', 'KC': 'skill_name', 'IsCorrect': 'correct'}
         # name = 'bkt_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
-        name = 'bkt_' + self.users_file + '.csv'
+        name = self.users_file
         self.final_file = d.save_preds_to_csv(name)
         print(self.final_file)
         self.final_file = name
