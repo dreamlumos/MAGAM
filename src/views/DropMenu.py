@@ -61,6 +61,16 @@ class DropMenu(QWidget):
         label_users.setWordWrap(False)
         layout.addWidget(label_users)
 
+        self.browse_btn = QRadioButton('Browse')
+        self.create_btn = QRadioButton('Create Table')
+        # self.browse_btn.toggled.connect(lambda: self.btnstate(self.browse_btn))
+        # self.create_btn.toggled.connect(lambda: self.btnstate(self.create_btn))
+        # self.load_btn = QPushButton("Load")
+        # self.load_btn.clicked.connect(self.check_radio_btns)
+        # layout.addWidget(self.browse_btn)
+        # layout.addWidget(self.create_btn)
+        # layout.addWidget(self.load_btn)
+
         # self.browse_button_users = QPushButton("Browse...", self)
         # TODO here remove the file_name
         file_name = "C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_users.csv"
@@ -100,6 +110,12 @@ class DropMenu(QWidget):
         # self.setWindowTitle("combo box demo")
 
         self.filled = False
+
+    # def check_radio_btns(self):
+    #     if self.browse_btn.isChecked():
+    #         self.load_users_file()
+    #     if self.create_btn.isChecked():
+    #         self.create_users()
 
     def function_picked(self):
         self.function = self.pick_function.currentText()

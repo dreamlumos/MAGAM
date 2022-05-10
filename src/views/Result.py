@@ -28,6 +28,9 @@ class Result(QWidget):
         # Create a matrix with students on the Y axis, activities_names on the X axis
         # Get the students from the first line of users_names' csv files
         # Idem for activities_names
+
+        aspect_name = self.system_state.data.aspects[ind].aspect_type
+
         users_names = self.system_state.data.aspects[ind].user_names  # for aspect number "ind"
         activities_names = self.system_state.data.aspects[ind].activity_names
         self.func = self.system_state.data.aspects[ind].calc_function
@@ -64,27 +67,69 @@ class Result(QWidget):
         # self.table1 = TableUser(self)
         # self.table1.users_table = self.users_table
 
-        self.table1 = QWidget()
+        self.table1 = QWidget(self)
         self.table1.layout = QVBoxLayout(self)
+        self.table1.layout.addWidget(QLabel("Users Table"))
         self.table1.layout.addWidget(self.users_table)
         # self.change_users_btn = QPushButton("Change Users Table")
-        self.change_users_btn = QPushButton("Browse...")
+        self.browse_users_btn = QRadioButton('Browse')
+        # self.table1.layout.addWidget(self.browse_users_btn)
+        self.create_users_btn = QRadioButton('Create Table')
+        self.bkt_btn = QRadioButton('BKT')
+        self.bkt_btn.setToolTip("Create new users table using BKT.")
+        radio_widg = QWidget()
+        radio_widg.layout = QHBoxLayout(self)
+        radio_widg.layout.addWidget(self.browse_users_btn)
+        radio_widg.layout.addWidget(self.create_users_btn)
+        if aspect_name == "Didactic":  # TODO dynamic check
+            radio_widg.layout.addWidget(self.bkt_btn)
+        radio_widg.layout.addStretch(1)
+        # self.table1.layout.addWidget(self.create_users_btn)
+
+        self.change_users_btn = QPushButton("Modify Table")
         self.change_users_btn.setToolTip("Change the users table.")
-        self.change_users_btn.clicked.connect(self.load_users_file)
-        self.table1.layout.addWidget(self.change_users_btn)
+        # self.change_users_btn.clicked.connect(self.load_users_file)
+        self.change_users_btn.clicked.connect(self.modify_users_table)
+        # self.table1.layout.addWidget(self.change_users_btn)
+        radio_widg.layout.addWidget(self.change_users_btn)
+        # radio_widg.layout.addStretch(1)
+        radio_widg.setLayout(radio_widg.layout)
+        self.table1.layout.addWidget(radio_widg)
         self.table1.setLayout(self.table1.layout)
 
         self.table2 = QWidget()
         self.table2.layout = QVBoxLayout(self)
+        self.table2.layout.addWidget(QLabel("Activities Table"))
         self.table2.layout.addWidget(self.acts_table)
-        self.change_acts_btn = QPushButton("Browse")
+        self.browse_acts_btn = QRadioButton('Browse')
+        # self.table2.layout.addWidget(self.browse_acts_btn)
+        self.create_acts_btn = QRadioButton('Create Table')
+        # self.table2.layout.addWidget(self.create_acts_btn)
+
+        radio_widg = QWidget()
+        radio_widg.layout = QHBoxLayout(self)
+        radio_widg.layout.addWidget(self.browse_acts_btn)
+        radio_widg.layout.addWidget(self.create_acts_btn)
+        radio_widg.layout.addStretch(1)
+        self.change_acts_btn = QPushButton("Modify Table")
         self.change_acts_btn.setToolTip("Change the activities table.")
-        self.change_acts_btn.clicked.connect(self.load_acts_file)
-        self.table2.layout.addWidget(self.change_acts_btn)
+        # self.change_users_btn.clicked.connect(self.load_users_file)
+        self.change_acts_btn.clicked.connect(self.modify_acts_table)
+        # self.table1.layout.addWidget(self.change_users_btn)
+        radio_widg.layout.addWidget(self.change_acts_btn)
+        # radio_widg.layout.addStretch(1)
+        radio_widg.setLayout(radio_widg.layout)
+        self.table2.layout.addWidget(radio_widg)
+        # self.change_acts_btn = QPushButton("Modify Table")
+        # self.change_acts_btn.setToolTip("Change the activities table.")
+        # self.change_acts_btn.clicked.connect(self.load_acts_file)
+        # self.change_acts_btn.clicked.connect(self.modify_acts_table)
+        # self.table2.layout.addWidget(self.change_acts_btn)
         self.table2.setLayout(self.table2.layout)
 
         self.table3 = QWidget()
         self.table3.layout = QVBoxLayout(self)
+        self.table3.layout.addWidget(QLabel("Recommendation Table"))
         self.table3.layout.addWidget(self.qtable_rec)
         self.change_func_btn = QComboBox()
         self.change_func_btn.setToolTip("Pick a different calculation function.")
@@ -97,12 +142,14 @@ class Result(QWidget):
 
         self.table4 = QWidget()
         self.table4.layout = QVBoxLayout(self)
+        self.table4.layout.addStretch(5)
         save_csv_btn = QPushButton("Save as .csv")
-        self.table4.layout.addWidget(save_csv_btn)
+        self.table4.layout.addWidget(save_csv_btn, Qt.AlignBottom)
+        self.table4.layout.addStretch(1)
         save_csv_btn.clicked.connect(self.to_csv)
         recalculate_btn = QPushButton("Recalculate")
         # recalculate_btn.clicked.connect()
-        self.table4.layout.addWidget(recalculate_btn)
+        self.table4.layout.addWidget(recalculate_btn, Qt.AlignBottom)
         self.table4.setLayout(self.table4.layout)
         self.table4.layout.setSpacing(0)
 
@@ -173,6 +220,14 @@ class Result(QWidget):
             df.to_csv(name)
             print(name)
             print(filename)
+
+    def modify_users_table(self):
+        if self.browse_users_btn.isChecked():
+            self.load_users_file()
+
+    def modify_acts_table(self):
+        if self.browse_acts_btn.isChecked():
+            self.load_acts_file()
 
     def load_users_file(self):
         file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")

@@ -12,7 +12,6 @@ def path_leaf(path):
     head, tail = ntpath.split(path)
     return tail or ntpath.basename(head)
 
-
 class BKT(QDialog):
 
     def __init__(self, parent=None):
@@ -58,10 +57,9 @@ class BKT(QDialog):
     def calculate_BKT(self):
         print("calculating bkt")
         d = BKTData(self.users_file)  # {'User': 'user_id', 'KC': 'skill_name', 'IsCorrect': 'correct'}
-        # name = 'bkt_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
-        name = self.users_file
+        name = 'bkt_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
+        # name = self.users_file
         self.final_file = d.save_preds_to_csv(name)
         print(self.final_file)
         self.final_file = name
         self.accept()
-
