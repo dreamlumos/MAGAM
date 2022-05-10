@@ -1,0 +1,3 @@
+@dark-blue #4F658A
+@light-blue #B0BACB
+@light-yellow #FAF2ED

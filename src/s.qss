@@ -1,0 +1,14 @@
+QMainWindow {
+	background-color: @light_yellow;
+	color: @dark_blue;
+	border: @dark_blue;
+}
+
+QPushButton {
+	background-color: @light_yellow;
+	color: @dark_blue;
+	border: @dark_blue;	
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 4px;
+}

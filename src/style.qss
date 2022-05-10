@@ -1,0 +1,46 @@
+QMainWindow {
+}
+
+QWidget {
+	background-color: #FAF2ED;
+	color: #4F658A;
+	font-family: "Segoe UI";
+	font-size: 14px;
+}
+
+QComboBox {
+	background-color: #FAF2ED;
+	color: #4F658A;
+	border: 1px solid #4F658A;
+    border-radius: 3px;
+	padding: 3px 10px 3px 10px;
+    min-width: 6em;
+}
+
+QComboBox:pressed, QComboBox:hover {
+    background-color: #B0BACB;
+    color: #FAF2ED;
+}
+
+QPushButton {
+	background-color: #FAF2ED;
+	color: #4F658A;
+	border: #4F658A;	
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+	padding: 3px 10px 3px 10px;
+}
+
+QPushButton:pressed, QPushButton:hover {
+    background-color: #B0BACB;
+    color: #FAF2ED;
+}
+
+QPushButton:disabled {
+	/*TODO*/
+}
+
+QTableWidget {
+	border: 1px solid #4F658A;
+}

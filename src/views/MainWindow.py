@@ -8,7 +8,7 @@ from .Results import *
 from .Input import *
 from .Sorry import *
 
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
 
     def __init__(self, system_state, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -18,7 +18,7 @@ class MainWindow(QWidget):
 
         # Create stack and horizontal layout
         self.Stack = QStackedWidget()
-        hbox = QHBoxLayout(self)
+        hbox = QHBoxLayout()
         hbox.addWidget(self.Stack)
 
         # Add Welcome widget and object
@@ -28,6 +28,10 @@ class MainWindow(QWidget):
 
         self.setGeometry(700, 250, 500, 400)
         self.setWindowTitle('MAGAM')
+
+        container = QWidget()
+        container.setLayout(hbox)
+        self.setCentralWidget(container)
 
     # Unused for the moment : 
 
