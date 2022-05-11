@@ -11,6 +11,9 @@ class SystemState:
     def set_mode(self, mode):  # check whether mode in modes?
         self.mode = mode
 
+    def get_data():
+        self.data
+
     def __str__(self):
         s = "\n__System State__\n"
         s += "Mode: " + self.mode

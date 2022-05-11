@@ -23,3 +23,7 @@
 
 # Soutenance
 - slides
+
+
+# Extra features
+- being able to load a recommendations table without users, activities, and a function

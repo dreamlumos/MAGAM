@@ -1,14 +1,12 @@
 import PyQt5.QtBluetooth
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from .Aspects import *
 from .Result import *
 from .EmptyTab import *
 from .FusionTab import *
 from models.Aspect import *
 from PyQt5.QtCore import *
-
-
-# from calculations import BasicFunctions
 
 
 class ResultsTabs(QWidget):
@@ -27,12 +25,14 @@ class ResultsTabs(QWidget):
         self.tabs.setMovable(True)
         self.tabs.tabCloseRequested.connect(lambda index: self.tabs.removeTab(index))
 
-        self.main_menu = QWidget()
-        self.main_menu.layout = QHBoxLayout(self)
-        qtable = QTableWidget(1000, 1000, self)
-        self.main_menu.layout.addWidget(qtable)
-        self.main_menu.setLayout(self.main_menu.layout)
-        self.tabs.addTab(self.main_menu, "Main Menu")
+        # self.main_menu = QWidget()
+        # self.main_menu.layout = QHBoxLayout(self)
+        # qtable = QTableWidget(1000, 1000, self)
+        # self.main_menu.layout.addWidget(qtable)
+        # self.main_menu.setLayout(self.main_menu.layout)
+        # self.tabs.addTab(self.main_menu, "Main Menu")
+
+        self.tabs.addTab(Aspects(system_state, self), "Aspects")
         self.tabs.tabBar().setTabButton(0, QTabBar.RightSide, None)
 
         # TODO add csv button

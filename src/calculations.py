@@ -3,7 +3,7 @@ import pandas as pd
 
 class BasicFunctions:
 
-	functions = ["product", "distance", "time"]
+	functions = {"product": product, "distance": distance, "time": time}
 
 	@staticmethod
 	def product(users, activities):

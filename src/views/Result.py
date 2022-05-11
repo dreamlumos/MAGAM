@@ -26,8 +26,6 @@ class Result(QWidget):
         # self.layout = QGridLayout(self)
 
         # Create a matrix with students on the Y axis, activities_names on the X axis
-        # Get the students from the first line of users_names' csv files
-        # Idem for activities_names
 
         aspect_name = self.system_state.data.aspects[ind].aspect_type
 
@@ -38,13 +36,7 @@ class Result(QWidget):
         users = self.system_state.data.aspects[ind].users
         activities = self.system_state.data.aspects[ind].activities
 
-        # Check the function picked by the user against the list of functions in BasicFunctions and calculate accordingly
-        if self.func == BasicFunctions.functions[0]:
-            self.system_state.data.aspects[ind].calculate_recommendations(BasicFunctions.product)
-        elif self.func == BasicFunctions.functions[1]:
-            self.system_state.data.aspects[ind].calculate_recommendations(BasicFunctions.distance)
-        elif self.func == BasicFunctions.functions[2]:
-            self.system_state.data.aspects[ind].calculate_recommendations(BasicFunctions.time)
+        self.system_state.data.aspects[ind].calculate_recommendations(BasicFunctions.functions[self.func])
 
         self.rec = self.system_state.data.aspects[ind].chosen_recommendations
 
@@ -52,7 +44,7 @@ class Result(QWidget):
 
         self.acts_table = self.create_QTable(activities[:, 0], activities_names, activities)
 
-        self.qtable_rec = self.create_QTable(users_names, activities_names, self.rec)
+        self.rec_table = self.create_QTable(users_names, activities_names, self.rec)
 
         self.table1 = QWidget(self)
         self.table1.layout = QVBoxLayout(self)
@@ -117,7 +109,7 @@ class Result(QWidget):
         self.table3 = QWidget()
         self.table3.layout = QVBoxLayout(self)
         self.table3.layout.addWidget(QLabel("Recommendation Table"))
-        self.table3.layout.addWidget(self.qtable_rec)
+        self.table3.layout.addWidget(self.rec_table)
         self.change_func_btn = QComboBox()
         self.change_func_btn.setToolTip("Pick a different calculation function.")
         curr_func = self.func
@@ -140,21 +132,21 @@ class Result(QWidget):
         self.table4.setLayout(self.table4.layout)
         self.table4.layout.setSpacing(0)
 
-        # self.qtable_rec = QTableWidget(len(users_names)+1, len(activities_names)+1, self)
-        # self.qtable_rec.verticalHeader().setVisible(False)
-        # self.qtable_rec.horizontalHeader().setVisible(False)
-        # self.layout.addWidget(self.qtable_rec, 1, 0)
+        # self.rec_table = QTableWidget(len(users_names)+1, len(activities_names)+1, self)
+        # self.rec_table.verticalHeader().setVisible(False)
+        # self.rec_table.horizontalHeader().setVisible(False)
+        # self.layout.addWidget(self.rec_table, 1, 0)
         #
-        # # Add the actual users_names and activities_names to the qtable_rec
+        # # Add the actual users_names and activities_names to the rec_table
         # for i in range(1, len(users_names)+1):
         #     item = QTableWidgetItem(users_names[i-1])
         #     item.setTextAlignment(Qt.AlignCenter)
-        #     self.qtable_rec.setItem(i, 0, item)
+        #     self.rec_table.setItem(i, 0, item)
         #
         # for i in range(1, len(activities_names)+1):
         #     item = QTableWidgetItem(activities_names[i-1])
         #     item.setTextAlignment(Qt.AlignCenter)
-        #     self.qtable_rec.setItem(0, i, item)
+        #     self.rec_table.setItem(0, i, item)
         #
         # # for now let it be empty
         # # display the rec table
@@ -165,20 +157,20 @@ class Result(QWidget):
         #         item = QTableWidgetItem(s)
         #         # item.setData(Qt.DisplayRole, r[i][j])
         #         item.setTextAlignment(Qt.AlignCenter)
-        #         self.qtable_rec.setItem(i+1, j+1, item)
+        #         self.rec_table.setItem(i+1, j+1, item)
         #
         # # for i in range(1, len(activities_names)):
         # #     for j in range(1, len(users_names)):
         # #         print("OK")
         #
         # # Resize the table to fit its content
-        # self.qtable_rec.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        # self.qtable_rec.resizeColumnsToContents()
+        # self.rec_table.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        # self.rec_table.resizeColumnsToContents()
         #
         # # recommandation table cannot be edited
-        # self.qtable_rec.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # self.qtable_rec.setSelectionMode(QAbstractItemView.NoSelection)
-        # self.qtable_rec.setSelectionBehavior(QAbstractItemView.SelectRows)
+        # self.rec_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        # self.rec_table.setSelectionMode(QAbstractItemView.NoSelection)
+        # self.rec_table.setSelectionBehavior(QAbstractItemView.SelectRows)
     # def usersTable or activTable been change:
         # check if the data inside is a number?
         # grey out rec table
@@ -190,15 +182,15 @@ class Result(QWidget):
         # update the rec table with the new results
 
     def to_csv(self):
-        col_count = self.qtable_rec.columnCount()
-        row_count = self.qtable_rec.rowCount()
-        headers = [str(self.qtable_rec.item(0, i).text()) for i in range(1, col_count)]
-        ind = [str(self.qtable_rec.item(i, 0).text()) for i in range(1, row_count)]
+        col_count = self.rec_table.columnCount()
+        row_count = self.rec_table.rowCount()
+        headers = [str(self.rec_table.item(0, i).text()) for i in range(1, col_count)]
+        ind = [str(self.rec_table.item(i, 0).text()) for i in range(1, row_count)]
         df_row = []
         for row in range(1, row_count):
             df_col = []
             for col in range(1, col_count):
-                table_item = self.qtable_rec.item(row, col)
+                table_item = self.rec_table.item(row, col)
                 df_col.append('' if table_item is None else str(table_item.text()))
             df_row.append(df_col)
 

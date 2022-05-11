@@ -1,77 +1,198 @@
 import pandas as pd
 import numpy as np
 
+import os
 
 class Aspect:
 
 	aspect_types = ["Didactic", "Pedagogic", "Motivational", "Strategic", "Learning style", "Gaming"]
 
-	def __init__(self, aspect_type, users, user_names, users_scale, activities, activity_names, activities_scale, func):
-		"""
-		aspect_type : string
-		users : ndarray
-		activities : ndarray
-		[users/activities]_names : list[str] 
-		[users/activities]_scale : tuple containing two floats representing the min and max values of the scale used
-		"""
+	def __init__(self):
 
+		self.aspect_type = None # str
+
+		# [users/activities]_file: str
+		# [users/activities]_array: Dataframe
+		# [users/activities]_names: list[str]
+		# [users/activities]_scale: tuple containing two floats representing the min and max values of the scale used
+
+		self.users_file = None
+		self.users_array = None
+		self.users_names = None # TODO: maybe remove
+		self.users_scale = None
+
+		self.activities_file = None
+		self.activities_array = None
+		self.activities_names = None # TODO: maybe remove
+		self.activities_scale = None
+
+		self.applied_function = None # function
+		self.recommendations_dict = dict() # key: function name, value: DataFrame containing recommendations
+
+	# ---- GENERAL ---- #
+
+	def get_aspect_type():
+		return self.aspect_type
+
+	def set_aspect_type(aspect_type):
 		self.aspect_type = aspect_type
 
-		self.users = users
-		self.user_names = user_names
+	def aspect_filled(self):
+		if self.users_array == None or self.activities_array == None:
+			return False
+		return True
+
+	def coherent(self, check_property_names=False):
+		# TODO: check property names?
+
+		nb_columns_users = len(self.users_array.columns)
+		nb_rows_users = len(self.activities_array.rows)
+		if nb_rows_users == nb_columns_users:
+			return true
+		else:
+			return false
+
+	# ---- USERS ---- #
+
+	def set_users(self, users_file=None, users_array=None):
+		"""
+		Either enter users_file OR users_array. If both are provided, users_file will be used.
+		Raises an IllegalArgumentError if neither is provided, or if the argument value is None.
+
+		:param users_file: CSV file containing the users (TODO: other formats)
+		:param users_array: array containing the users
+
+		:type users_file: str
+		:type users_array: Dataframe (TODO: other formats?)
+		"""
+
+		if users_file != None:
+			if os.path.isfile(users_file) and users_file.endswith('.csv'):
+				self.users_file = users_file
+				self.users_array = pd.read_csv(users_file, sep=',', index_col=0)
+			else:
+				raise NotImplementedError("Sorry, this type of input file is not implemented yet.")
+		elif users_array != None:
+			self.users_array = users_array
+		else:
+			raise IllegalArgumentError("Please input either a file or an array containing the users. If you did pass an argument, its value is probably 'None'. Please rectify that.")
+
+		self.users_names = list(users_array.columns.values)
+		reset_recommendations()
+
+	def get_users_file(self):
+		return self.users_file	
+
+	def get_users_array(self):
+		return self.users_array
+
+	def get_users_names(self);
+		return self.users_names
+
+	def set_users_scale(self, users_scale):
 		self.users_scale = users_scale
 
-		self.activities = activities
-		self.activity_names = activity_names
+	def get_users_scale(self):
+		return self.users_scale
+
+	# ---- ACTIVITIES ---- #
+
+	def set_activities(self, activities_file=None, activities_array=None):
+		"""
+		Either enter activities_file OR activities_array. If both are provided, activities_file will be used.
+		Raises an IllegalArgumentError if neither is provided, or if the argument value is None.
+
+		:param users_file: CSV file containing the users (TODO: other formats)
+		:param users_array: array containing the users
+
+		:type activities_file: str
+		:type activities_array: Dataframe (TODO: other formats?)
+		"""
+
+		if activities_file != None:
+			if os.path.isfile(users_file) and users_file.endswith('.csv'):
+				self.activities_file = activities_file
+				self.activities_array = pd.read_csv(activities_file, sep=',', index_col=0)
+			else:
+				raise NotImplementedError("Sorry, this type of input file is not implemented yet.")
+		elif activities_array != None:
+			self.activities_array = activities_array
+		else:
+			raise IllegalArgumentError("Please input either a file or an array containing the activities. If you did pass an argument, its value is probably 'None'. Please rectify that.")
+
+		activities_names = list(activities_array.columns.values)
+		reset_recommendations()
+
+	def get_activities_file(self):
+		return self.activities_file
+
+	def get_activities_array(self):
+		return self.activities_array
+
+	def get_activities_names(self);
+		return self.activities_names
+
+	def set_activities_scale(self, activities_scale):
 		self.activities_scale = activities_scale
 
-		self.calc_function = func # function
-		self.recommendations_dict = dict() # key: function name, value: ndarray containing recommendations
-		self.chosen_recommendations = None;
+	def get_activities_scale(self):
+		return self.activities_scale
 
-	@classmethod
-	def create_from_csv(cls, aspect_type, users_file, users_scale, activities_file, activities_scale, func):
+	# ---- RECOMMENDATIONS ---- #
+
+	def get_applied_function(self):
+		return self.applied_function
+
+	def set_applied_function(self, applied_function):
+		self.applied_function = applied_function
+		calculate_recommendations()
+
+	def get_recommendations(self, function=None):
 		"""
-		users_file: name of CSV file containing users
-		activities_file: name of CSV file containing activities
+		Calculates the recommendations.
+		Raises IllegalArgumentError if there is an issue with function or self.applied_function.
+
+		:param function: function to be applied to calculate the recommendations. If None, self.applied_function is used. The function should take two ndarrays, and return an ndarray or a DataFrame.
+
+		:rtype: DataFrame
 		"""
 
-		users_df = pd.read_csv(users_file, sep=',', index_col=0)
-		users = np.array(users_df)
-		users = users.T
-		user_names = list(users_df.columns.values)
+		if !aspect_filled():
+			print("Please fill up the ", self.aspect_type, "aspect first.")
+			return None
 
-		activities_df = pd.read_csv(activities_file, sep=',', index_col=0)
-		activities = np.array(activities_df)
-		activity_names = list(activities_df.columns.values)
+		if !coherent():
+			raise ValueError("The number of columns in the users array and the number of rows in the activities array are not equal. Please rectify this.")
 
-		# note: df left here in case necessary later for lookup purposes (using row or column names)
-		# maybe create a class which keeps both ndarray and df?
-
-		return cls(aspect_type, users, user_names, users_scale, activities, activity_names, activities_scale, func)
-
-	@classmethod 
-	def create_from_json(cls, aspect_type, users_file, users_scale, activities_file, activities_scale):
-		print("create_from_json: This method has yet to be implemented.")
-		# TODO
-
-	@classmethod 
-	def create_from_pkl(cls, aspect_type, users_file, users_scale, activities_file, activities_scale):
-		print("create_from_pkl: This method has yet to be implemented.")
-		# TODO
-
-	def calculate_recommendations(self, function):
-		"""
-		function: function to be used to calculate the recommendations, must take a users ndarray, and an activities ndarray
-		"""
+		if function == None:
+			if self.activities_array != None:
+				function = self.applied_function
+			else: 
+				print("Please either set a function to apply with set_applied_function(), or pass a function in the arguments.")
+				return None
 
 		if function not in self.recommendations_dict:
-			self.recommendations_dict[function] = function(self.users, self.activities)
+			try:
+				users = np.array(self.users_array)
+				users = users.T
+				activities = np.array(self.activities_array)
+				recommendations = function(users, activities)
 
-		self.chosen_recommendations = self.recommendations_dict[function]
+				if type(recommendations) == numpy.ndarray:
+					recommendations = np.array(recommendations)
+				self.recommendations_dict[function] = recommendations
 
-		# self.calc_function = function # store name or function? storing in case we want to export the data to review later
+			except Exception as err:
+				raise IllegalArgumentError("Failed to calculate the recommendations with this function:", function) from err
 
-		# to store or not to store the result as a class attribute? 
-		# user will be able to visualise the results of different calculations, but there needs
-		# to be one selected result to be used in the fusion...		
+		return self.recommendations_dict[function]
+
+	def reset_recommendations(self):
+		self.applied_function = None
+		self.recommendations_dict = dict()
+
+
+
+
+class IllegalArgumentError(ValueError):
+	pass

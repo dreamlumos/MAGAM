@@ -73,9 +73,9 @@ class DropMenu(QWidget):
 
         # self.browse_button_users = QPushButton("Browse...", self)
         # TODO here remove the file_name
-        file_name = "C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_users.csv"
+        file_name = "../data/motivation_users.csv"
         self.users_file = file_name
-        self.browse_button_users = QPushButton("C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_users.csv", self)
+        self.browse_button_users = QPushButton("../data/motivation_users.csv", self)
         self.browse_button_users.clicked.connect(self.load_users_file)
         layout.addWidget(self.browse_button_users)
         # Manually input the data
@@ -93,9 +93,9 @@ class DropMenu(QWidget):
         layout.addWidget(label_activities)
 
         # self.browse_button_acts = QPushButton("Browse...", self)
-        file_name = "C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_activities.csv"
+        file_name = "../data/motivation_activities.csv"
         self.activities_file = file_name
-        self.browse_button_acts = QPushButton("C:/Users/zloui/PycharmProjects/MAGAM/data/motivation_activities.csv", self)
+        self.browse_button_acts = QPushButton("../data/motivation_activities.csv", self)
         self.browse_button_acts.clicked.connect(self.load_acts_file)
         layout.addWidget(self.browse_button_acts)
         # Manually input the data
@@ -105,6 +105,10 @@ class DropMenu(QWidget):
 
         layout.addWidget(QLabel("Function"))
         layout.addWidget(self.pick_function)
+
+        self.calculate_btn = QPushButton("Calculate recommendations")
+        self.calculate_btn.clicked.connect(self.calculate)
+        layout.addWidget(calculate_btn)
 
         self.setLayout(layout)
         # self.setWindowTitle("combo box demo")
@@ -116,6 +120,9 @@ class DropMenu(QWidget):
     #         self.load_users_file()
     #     if self.create_btn.isChecked():
     #         self.create_users()
+
+    def calculate(self):
+        pass # TODO
 
     def function_picked(self):
         self.function = self.pick_function.currentText()
