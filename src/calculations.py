@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
 
-class BasicFunctions:
 
-	functions = {"product": product, "distance": distance, "time": time}
+class BasicFunctions:
 
 	@staticmethod
 	def product(users, activities):
@@ -37,6 +36,7 @@ class BasicFunctions:
 					recommendations[i,j] = 0
 				else:
 					recommendations[i,j] = 1 - (users[i] - activities[j])/users[i]
-		
 
 		return recommendations
+
+	basic_functions = {"Product": product, "Distance": distance, "Time": time}

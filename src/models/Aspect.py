@@ -9,7 +9,7 @@ class Aspect:
 
 	def __init__(self):
 
-		self.aspect_type = None # str
+		self.aspect_type = None  # str
 
 		# [users/activities]_file: str
 		# [users/activities]_array: Dataframe
@@ -18,12 +18,12 @@ class Aspect:
 
 		self.users_file = None
 		self.users_array = None
-		self.users_names = None # TODO: maybe remove
+		self.users_names = None  # TODO: maybe remove
 		self.users_scale = None
 
 		self.activities_file = None
 		self.activities_array = None
-		self.activities_names = None # TODO: maybe remove
+		self.activities_names = None  # TODO: maybe remove
 		self.activities_scale = None
 
 		self.applied_function = None # function
@@ -31,14 +31,14 @@ class Aspect:
 
 	# ---- GENERAL ---- #
 
-	def get_aspect_type():
+	def get_aspect_type(self):
 		return self.aspect_type
 
-	def set_aspect_type(aspect_type):
+	def set_aspect_type(self, aspect_type):
 		self.aspect_type = aspect_type
 
 	def aspect_filled(self):
-		if self.users_array == None or self.activities_array == None:
+		if self.users_array is None or self.activities_array is None:
 			return False
 		return True
 
@@ -48,9 +48,9 @@ class Aspect:
 		nb_columns_users = len(self.users_array.columns)
 		nb_rows_users = len(self.activities_array.rows)
 		if nb_rows_users == nb_columns_users:
-			return true
+			return True
 		else:
-			return false
+			return False
 
 	# ---- USERS ---- #
 
@@ -78,7 +78,7 @@ class Aspect:
 			raise IllegalArgumentError("Please input either a file or an array containing the users. If you did pass an argument, its value is probably 'None'. Please rectify that.")
 
 		self.users_names = list(users_array.columns.values)
-		reset_recommendations()
+		self.reset_recommendations()
 
 	def get_users_file(self):
 		return self.users_file	
@@ -86,7 +86,7 @@ class Aspect:
 	def get_users_array(self):
 		return self.users_array
 
-	def get_users_names(self);
+	def get_users_names(self):
 		return self.users_names
 
 	def set_users_scale(self, users_scale):
@@ -110,7 +110,7 @@ class Aspect:
 		"""
 
 		if activities_file != None:
-			if os.path.isfile(users_file) and users_file.endswith('.csv'):
+			if os.path.isfile(self.users_file) and self.users_file.endswith('.csv'):
 				self.activities_file = activities_file
 				self.activities_array = pd.read_csv(activities_file, sep=',', index_col=0)
 			else:
@@ -121,7 +121,7 @@ class Aspect:
 			raise IllegalArgumentError("Please input either a file or an array containing the activities. If you did pass an argument, its value is probably 'None'. Please rectify that.")
 
 		activities_names = list(activities_array.columns.values)
-		reset_recommendations()
+		self.reset_recommendations()
 
 	def get_activities_file(self):
 		return self.activities_file
@@ -129,7 +129,7 @@ class Aspect:
 	def get_activities_array(self):
 		return self.activities_array
 
-	def get_activities_names(self);
+	def get_activities_names(self):
 		return self.activities_names
 
 	def set_activities_scale(self, activities_scale):
@@ -145,7 +145,7 @@ class Aspect:
 
 	def set_applied_function(self, applied_function):
 		self.applied_function = applied_function
-		calculate_recommendations()
+		# calculate_recommendations()
 
 	def get_recommendations(self, function=None):
 		"""
@@ -157,11 +157,11 @@ class Aspect:
 		:rtype: DataFrame
 		"""
 
-		if !aspect_filled():
+		if not self.aspect_filled():
 			print("Please fill up the ", self.aspect_type, "aspect first.")
 			return None
 
-		if !coherent():
+		if not self.coherent():
 			raise ValueError("The number of columns in the users array and the number of rows in the activities array are not equal. Please rectify this.")
 
 		if function == None:

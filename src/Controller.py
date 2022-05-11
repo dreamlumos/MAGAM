@@ -1,5 +1,7 @@
 from models.SystemState import *
 from models.Aspect import *
+from calculations import *
+
 
 class Controller:
 
@@ -7,20 +9,20 @@ class Controller:
 		self.system_state = system_state
 		self.system_data = system_state.get_data()
 
-	def create_aspect_empty():
+	def create_aspect_empty(self):
 		aspect = Aspect()
 		self.system_data.add_aspect(aspect)
 
 	def update_aspect(self, aspect_id, aspect_type, users_file, activities_file, function_name):
 		# TODO: users/activities_file -> qtables
 
-		aspect = self.data.get_aspect(aspect_id)
+		aspect = self.system_data.get_aspect(aspect_id)
 
 		aspect.set_aspect_type(aspect_type)
 		aspect.set_users(users_file=users_file)
 		aspect.set_activities(activities_file=activities_file)
-		calc_fn = calculations.BasicFunctions.functions[function_name]
-		aspect.set_applied_function(cal_fn)
+		calc_fn = BasicFunctions.basic_functions[function_name]
+		aspect.set_applied_function(calc_fn)
 
 		users_array = aspect.get_users_array()
 		activities_array = aspect.get_activities_array()
@@ -40,12 +42,12 @@ class Controller:
 		:type users_array: Dataframe (TODO: other formats?)
 		"""
 
-		aspect = self.data.get_aspect(aspect_id)
+		aspect = self.system_data.get_aspect(aspect_id)
 
-		if users_file != None:
+		if users_file is not None:
 			aspect.set_users(users_file=users_file)
 
-		elif users_array != None:
+		elif users_array is not None:
 			aspect.set_users(users_file=users_file)
 
 		else:
@@ -63,7 +65,7 @@ class Controller:
 		:type activities_array: Dataframe (TODO: other formats?)
 		"""
 
-		aspect = self.data.get_aspect(aspect_id)
+		aspect = self.system_data.get_aspect(aspect_id)
 
 		if activities_file != None:
 			aspect.set_activities(activities_file=activities_file)
@@ -75,16 +77,37 @@ class Controller:
 			raise IllegalArgumentError
 
 	def change_function(self, aspect_id, function):
-		aspect = self.data.get_aspect(aspect_id)
+		aspect = self.system_data.get_aspect(aspect_id)
 		aspect.set_applied_function(function)
 
 	def get_recommendations(self, aspect_id, function=None):
-		aspect = self.data.get_aspect(aspect_id)
+		aspect = self.system_data.get_aspect(aspect_id)
 		return aspect.get_recommendations(function)
 
 	def delete_aspect(self, aspect_id):
-		self.system_date.delete_aspect(aspect_id)
+		self.system_data.delete_aspect(aspect_id)
 
-	def convert_to_csv(qtable):
-		# TODO
-		return "test.csv"
+	def convert_to_df(self, qtable):  # TODO check size of matrix with "headers"
+		col_count = qtable.columnCount()
+		row_count = qtable.rowCount()
+		headers = [str(qtable.item(0, i).text()) for i in range(1, col_count)]
+		ind = [str(qtable.item(i, 0).text()) for i in range(1, row_count)]
+		print(headers)
+		print(ind)
+		df_row = []
+		for row in range(1, row_count):
+			df_col = []
+			for col in range(1, col_count):
+				table_item = qtable.item(row, col)
+				df_col.append('' if table_item is None else str(table_item.text()))
+			df_row.append(df_col)
+
+		df = pd.DataFrame(df_row, index=ind, columns=headers)
+		return df
+
+	def convert_to_csv(self, qtable):
+		name = "random_name_for_now_later_pop_up.csv"
+		# name = 'users_input_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
+		self.convert_to_df(qtable).to_csv(name)
+		return name
+

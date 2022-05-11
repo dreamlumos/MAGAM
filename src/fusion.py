@@ -3,7 +3,6 @@ import pandas as pd
 
 class FusionFunctions:
 
-	functions = ["Mean", "Value_multiplication", "Min", "Max"]
 
 	@staticmethod
 	def mean(r1, r2, w1=1, w2=1):
@@ -29,9 +28,12 @@ class FusionFunctions:
 	def max(r1, r2):
 		return np.maximum(r1, r2)
 
-# check whether the shapes are the same? probably better to put safety mechanisms at a higher level 
+	fusion_functions = {"Mean": mean, "Value_multiplication": value_multiplication, "Min": min, "Max": max}
+
+# check whether the shapes are the same? probably better to put safety mechanisms at a higher level
 
 
 # todo: normalisation
 
 # todo: slide 11, selection of activity (best for each student, for the group, etc)
+

@@ -44,6 +44,7 @@ class ResultsTabs(QWidget):
         self.add_tabs(FusionTab(self.system_state, self), "Fusion")  # Fusion
         self.tab_button = QPushButton(self)
         self.tab_button.setText(' + ')
+        self.tabs.tabBar().setTabButton(1, QTabBar.RightSide, None)
 
         # self.tab_button = QComboBox(self)
         # self.list_tab = ["one", "two", "three"]
@@ -76,6 +77,27 @@ class ResultsTabs(QWidget):
         tab.setLayout(tab.layout)
         # self.tabs.addTab(tab, title)
         self.tabs.addTab(tab, "New Tab")
+        # self.tabs.addTab(splitter, "New Tab")
+
+        # splitter = QSplitter(Qt.Vertical)
+        # rec = EmptyTab(self.system_state, self)
+        #
+        # widg1 = QWidget()
+        # widg1.layout = QHBoxLayout()
+        # widg1.layout.addWidget(rec.table1)
+        # widg1.layout.addWidget(rec.table2)
+        # widg1.setLayout(widg1.layout)
+        #
+        # widg2 = QFrame()
+        # widg2.layout = QHBoxLayout()
+        # widg2.layout.addWidget(rec.table3)
+        # widg2.layout.addWidget(rec.table4)
+        # widg2.setLayout(widg2.layout)
+        #
+        # splitter.addWidget(widg1)
+        # splitter.addWidget(QTextEdit())
+        # splitter.setSizes([100, 200])
+        # self.tabs.addTab(splitter, "split")
 
     def add_tabs(self, tab, title):
         self.tabs.addTab(tab, title)
