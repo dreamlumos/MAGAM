@@ -2,7 +2,9 @@ import PyQt5.QtBluetooth
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from .Result import *
+from .EmptyTab import *
 from .FusionTab import *
+from models.Aspect import *
 from PyQt5.QtCore import *
 
 
@@ -22,74 +24,77 @@ class ResultsTabs(QWidget):
         self.tabs = QTabWidget()
         self.layout.addWidget(self.tabs)
         self.tabs.setTabsClosable(True)
+        self.tabs.setMovable(True)
         self.tabs.tabCloseRequested.connect(lambda index: self.tabs.removeTab(index))
+
+        self.main_menu = QWidget()
+        self.main_menu.layout = QHBoxLayout(self)
+        qtable = QTableWidget(1000, 1000, self)
+        self.main_menu.layout.addWidget(qtable)
+        self.main_menu.setLayout(self.main_menu.layout)
+        self.tabs.addTab(self.main_menu, "Main Menu")
+        self.tabs.tabBar().setTabButton(0, QTabBar.RightSide, None)
+
         # TODO add csv button
         # TODO add recalculate button
-    # def getResult(self):
+
         for i in range(self.asp_size):
             self.create_tab(i)
-            # for i in range(len(title_list)):
-            # self.add_tabs(Result(self.system_state, i, self), system_state.data.aspects[i].aspect_type)
-            # self.add_tabs(QWidget(), title_list[i])
+
         self.add_tabs(FusionTab(self.system_state, self), "Fusion")  # Fusion
-        self.tab_button = QToolButton(self)
+        self.tab_button = QPushButton(self)
         self.tab_button.setText(' + ')
-        # font = self.tab_button.font()
-        # font.setBold(True)
-        # self.tab_button.setFont(font)
-        self.tabs.setCornerWidget(self.tab_button)
-        self.tab_button.setToolTip("Open a new tab")
+
+        # self.tab_button = QComboBox(self)
+        # self.list_tab = ["one", "two", "three"]
+        # self.tab_button.addItems(self.list_tab)
+        # self.tab_button.currentIndexChanged.connect(lambda state, x= self.tab_button.currentIndex(): self.add_page(x))
         self.tab_button.clicked.connect(self.add_page)
+        # self.tab_button.setText()
+
+        self.tab_button.setToolTip("Open a new tab")
+        # self.tab_button.setMaximumSize(0, 25)
+        # self.corner_widget = QWidget()
+        # self.corner_widget.layout = QHBoxLayout(self)
+        # self.corner_widget.layout.addStretch(5)
+        # self.corner_widget.layout.addWidget(self.tab_button)
+
+        # self.corner_widget.setLayout(self.corner_widget.layout)
+        self.tabs.setCornerWidget(self.tab_button)
+        # self.tabs.setCornerWidget(self.corner_widget)
+        # self.tab_button.clicked.connect(self.add_page)
 
     def add_page(self):
-        self.tabs.addTab(QWidget(), "New Tab")
+        # title = self.list_tab[self.tab_button.currentIndex()]
+        tab = QWidget()
+        tab.layout = QGridLayout(self)
+        rec = EmptyTab(self.system_state, self)
+        tab.layout.addWidget(rec.table1, 0, 0, 1, 2)
+        tab.layout.addWidget(rec.table2, 0, 2, 1, 2)
+        tab.layout.addWidget(rec.table3, 1, 0, 1, 3)
+        tab.layout.addWidget(rec.table4, 1, 3, 1, 1)
+        tab.setLayout(tab.layout)
+        # self.tabs.addTab(tab, title)
+        self.tabs.addTab(tab, "New Tab")
 
     def add_tabs(self, tab, title):
         self.tabs.addTab(tab, title)
-        # self.tabs.insertTab(tab, "")
 
     def create_tab(self, indice):
-        layout = QVBoxLayout()
-
-        splitter = QSplitter(Qt.Horizontal)
-
         tab = QWidget()
         tab.layout = QGridLayout(self)
         title = self.system_state.data.aspects[indice].aspect_type
         rec = Result(self.system_state, indice, self)
 
-        # table1 = QWidget()
-        # table1.layout = QVBoxLayout(self)
-        # table1.layout.addWidget(rec.users_table)
-        # table1.layout.addWidget(QPushButton("Change Users Table"))
-        # table1.setLayout(table1.layout)
         tab.layout.addWidget(rec.table1, 0, 0, 1, 2)
 
-        # table2 = QWidget()
-        # table2.layout = QVBoxLayout(self)
-        # table2.layout.addWidget(rec.acts_table)
-        # table2.layout.addWidget(QPushButton("Change Activities Table"))
-        # table2.setLayout(table2.layout)
         tab.layout.addWidget(rec.table2, 0, 2, 1, 2)
 
-        # table3 = QWidget()
-        # table3.layout = QVBoxLayout(self)
-        # table3.layout.addWidget(rec.qtable_rec)
-        # table3.layout.addWidget(QPushButton("function"))
-        # table3.setLayout(table3.layout)
         tab.layout.addWidget(rec.table3, 1, 0, 1, 3)  # if i add the buttons directly to Results/createQTable, how do i link them?
 
-        # table4 = QWidget()
-        # table4.layout = QVBoxLayout(self)
-        # table4.layout.addWidget(QPushButton("Save as .csv"))
-        # table4.layout.addWidget(QPushButton("Recalculate"))
-        # table4.setLayout(table4.layout)
-        # table4.layout.setSpacing(0)
         tab.layout.addWidget(rec.table4, 1, 3, 1, 1)
 
         tab.setLayout(tab.layout)
-        splitter.addWidget(tab)
-        splitter.addWidget(QTextEdit())
 
         self.add_tabs(tab, title)
 
