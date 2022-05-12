@@ -8,13 +8,12 @@ from fusion import *
 
 class Aspects(QWidget):
 
-    def __init__(self, system_state, parent=None):
+    def __init__(self, controller, parent=None):
 
         super(Aspects, self).__init__(parent)
 
         self.parent = parent
-        print(type(self.parent))
-        self.system_state = system_state
+        self.controller = controller
 
         self.drop_menu_list = []
         # self.fusion = FusionFunctions.fusion_functions["Mean"]  # by default for now
@@ -27,6 +26,8 @@ class Aspects(QWidget):
 
         self.add_aspect_btn = QPushButton(" + ", self)
         self.add_aspect_btn.setMaximumSize(40, 35)
+        self.add_aspect_btn.clicked.connect(self.add_aspect)
+        self.layout.addWidget(self.add_aspect_btn, 0, 1)
 
         # self.calc_btn = QPushButton("Calculate", self)
         # self.calc_btn.setEnabled(False)
@@ -36,22 +37,22 @@ class Aspects(QWidget):
         # # self.pick_calc_btn.addItems(["------"])
         # self.pick_fusion.addItems(FusionFunctions.fusion_functions)
 
-        self.layout.addWidget(self.add_aspect_btn, 0, 1)
         # self.layout.addWidget(self.calc_btn, 2, 2)
         # self.layout.addWidget(QLabel("Fusion Function"), 0, 2)
         # self.layout.addWidget(self.pick_fusion, 1, 2)
 
-        self.add_aspect_btn.clicked.connect(self.add_aspect)
-        self.layout.addWidget(self.add_aspect(), 1, 0)
+        self.add_aspect()
         # self.calc_btn.clicked.connect(self.calculate)
         # self.calc_btn.clicked.connect(self.calculate)
         # self.pick_fusion.currentIndexChanged.connect(self.fusion_picked)
 
     def add_aspect(self):
+        aspect_id = self.controller.add_empty_aspect()
+
         # Add an aspect
         # Aspect() # TODO we said we'd have IDs for each aspect right? in this class i keep a list of drop menu widgets, but maybe i should keep a dict <ID:dropmenu_widget> ?
         l = len(self.drop_menu_list)
-        new_drop_menu = DropMenu(self.remove_aspect, parent=self)
+        new_drop_menu = DropMenu(self.controller, aspect_id, self.remove_aspect, parent=self)
         self.drop_menu_list.append(new_drop_menu)
         if l == 0:
             self.add_aspect_btn.setText(" + ")
@@ -81,6 +82,10 @@ class Aspects(QWidget):
             self.add_aspect_btn.setMaximumSize(300, 60)
         widg.deleteLater()
         # self.check()
+
+    def calculate(self):
+
+        self.controller.update_aspect()
 
     # def fusion_picked(self):
     #     self.fusion = self.pick_fusion.currentText()

@@ -3,26 +3,27 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from .Aspects import *
 from .Result import *
-from .EmptyTab import *
+from .AspectTab import *
 from .FusionTab import *
 from models.Aspect import *
 from PyQt5.QtCore import *
+from functools import partial
 
 
-class ResultsTabs(QWidget):
+class TabContainer(QWidget):
 
-    def __init__(self, system_state, parent=None):
-        # Recommendations as seen from the selection side, ie which activity for which student
-        super(ResultsTabs, self).__init__(parent)
+    def __init__(self, controller, parent=None):
+        super(TabContainer, self).__init__(parent)
 
-        self.system_state = system_state
-        self.asp_size = len(self.system_state.data.aspects)
+        self.controller = controller
+
         self.layout = QHBoxLayout(self)
 
         self.tabs = QTabWidget()
         self.layout.addWidget(self.tabs)
-        self.tabs.setTabsClosable(True)
+
         self.tabs.setMovable(True)
+        self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(lambda index: self.tabs.removeTab(index))
 
         # self.main_menu = QWidget()
@@ -32,20 +33,17 @@ class ResultsTabs(QWidget):
         # self.main_menu.setLayout(self.main_menu.layout)
         # self.tabs.addTab(self.main_menu, "Main Menu")
 
-        self.tabs.addTab(Aspects(system_state, self), "Aspects")
+        self.tabs.addTab(Aspects(controller, self), "Overview")
         self.tabs.tabBar().setTabButton(0, QTabBar.RightSide, None)
 
         # TODO add csv button
         # TODO add recalculate button
 
-        for i in range(self.asp_size):
-            self.create_tab(i)
-
-        self.add_tabs(FusionTab(self.system_state, self), "Fusion")  # Fusion
-        self.tab_button = QPushButton(self)
-        self.tab_button.setText(' + ')
+        self.tabs.addTab(FusionTab(self.controller, self), "Fusion")  # Fusion
         self.tabs.tabBar().setTabButton(1, QTabBar.RightSide, None)
 
+        self.tab_button = QPushButton(self)
+        self.tab_button.setText(' + ')
         # self.tab_button = QComboBox(self)
         # self.list_tab = ["one", "two", "three"]
         # self.tab_button.addItems(self.list_tab)
@@ -62,36 +60,35 @@ class ResultsTabs(QWidget):
 
         # self.corner_widget.setLayout(self.corner_widget.layout)
         self.tabs.setCornerWidget(self.tab_button)
-        # self.tabs.setCornerWidget(self.corner_widget)
-        # self.tab_button.clicked.connect(self.add_page)
 
-    def add_page(self):
-        # title = self.list_tab[self.tab_button.currentIndex()]
-        tab = QWidget()
-        tab.layout = QGridLayout(self)
-        rec = EmptyTab(self.system_state, self)
-        tab.layout.addWidget(rec.table1, 0, 0, 1, 2)
-        tab.layout.addWidget(rec.table2, 0, 2, 1, 2)
-        tab.layout.addWidget(rec.table3, 1, 0, 1, 3)
-        tab.layout.addWidget(rec.table4, 1, 3, 1, 1)
-        tab.setLayout(tab.layout)
-        # self.tabs.addTab(tab, title)
-        self.tabs.addTab(tab, "New Tab")
+    def add_page(self, aspect_type=None, users_qtable=None, activities_qtable=None, recommendations_qtable=None, function=None):
+        
+        aspect_id = self.controller.add_empty_aspect()
+        tab = AspectTab(self.controller, aspect_id, aspect_type, users_qtable, activities_qtable, recommendations_qtable, function, self)
+        
+        title = ""
+        if aspect_type == None or aspect_type == False:
+            title = "New Tab"
+        else:
+            title = aspect_type
+        tab_index = self.tabs.addTab(tab, title)
+        tab.set_index(tab_index)
+
         # self.tabs.addTab(splitter, "New Tab")
 
         # splitter = QSplitter(Qt.Vertical)
-        # rec = EmptyTab(self.system_state, self)
+        # tab = EmptyTab(self.controller, self)
         #
         # widg1 = QWidget()
         # widg1.layout = QHBoxLayout()
-        # widg1.layout.addWidget(rec.table1)
-        # widg1.layout.addWidget(rec.table2)
+        # widg1.layout.addWidget(tab.table1)
+        # widg1.layout.addWidget(tab.table2)
         # widg1.setLayout(widg1.layout)
         #
         # widg2 = QFrame()
         # widg2.layout = QHBoxLayout()
-        # widg2.layout.addWidget(rec.table3)
-        # widg2.layout.addWidget(rec.table4)
+        # widg2.layout.addWidget(tab.table3)
+        # widg2.layout.addWidget(tab.table4)
         # widg2.setLayout(widg2.layout)
         #
         # splitter.addWidget(widg1)
@@ -99,22 +96,19 @@ class ResultsTabs(QWidget):
         # splitter.setSizes([100, 200])
         # self.tabs.addTab(splitter, "split")
 
-    def add_tabs(self, tab, title):
-        self.tabs.addTab(tab, title)
-
     def create_tab(self, indice):
         tab = QWidget()
         tab.layout = QGridLayout(self)
-        title = self.system_state.data.aspects[indice].aspect_type
-        rec = Result(self.system_state, indice, self)
+        title = self.controller.data.aspects[indice].aspect_type
+        tab = Result(self.controller, indice, self)
 
-        tab.layout.addWidget(rec.table1, 0, 0, 1, 2)
+        tab.layout.addWidget(tab.table1, 0, 0, 1, 2)
 
-        tab.layout.addWidget(rec.table2, 0, 2, 1, 2)
+        tab.layout.addWidget(tab.table2, 0, 2, 1, 2)
 
-        tab.layout.addWidget(rec.table3, 1, 0, 1, 3)  # if i add the buttons directly to Results/createQTable, how do i link them?
+        tab.layout.addWidget(tab.table3, 1, 0, 1, 3)  # if i add the buttons directly to Results/createQTable, how do i link them?
 
-        tab.layout.addWidget(rec.table4, 1, 3, 1, 1)
+        tab.layout.addWidget(tab.table4, 1, 3, 1, 1)
 
         tab.setLayout(tab.layout)
 

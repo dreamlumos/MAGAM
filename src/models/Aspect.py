@@ -45,8 +45,8 @@ class Aspect:
 	def coherent(self, check_property_names=False):
 		# TODO: check property names?
 
-		nb_columns_users = len(self.users_array.columns)
-		nb_rows_users = len(self.activities_array.rows)
+		nb_columns_users = self.users_array.shape[0] # shape[0] because the array hasn't been transposed yet
+		nb_rows_users = self.activities_array.shape[0]
 		if nb_rows_users == nb_columns_users:
 			return True
 		else:
@@ -72,12 +72,12 @@ class Aspect:
 				self.users_array = pd.read_csv(users_file, sep=',', index_col=0)
 			else:
 				raise NotImplementedError("Sorry, this type of input file is not implemented yet.")
-		elif users_array != None:
+		elif type(users_array) == pd.DataFrame:
 			self.users_array = users_array
 		else:
-			raise IllegalArgumentError("Please input either a file or an array containing the users. If you did pass an argument, its value is probably 'None'. Please rectify that.")
+			raise IllegalArgumentError("Please input either a file or an array containing the users. If you did pass an argument, its value is probably 'None' or not a DataFrame. Please rectify that.")
 
-		self.users_names = list(users_array.columns.values)
+		self.users_names = list(self.users_array.columns.values)
 		self.reset_recommendations()
 
 	def get_users_file(self):
@@ -115,12 +115,12 @@ class Aspect:
 				self.activities_array = pd.read_csv(activities_file, sep=',', index_col=0)
 			else:
 				raise NotImplementedError("Sorry, this type of input file is not implemented yet.")
-		elif activities_array != None:
+		elif type(activities_array) == pd.DataFrame:
 			self.activities_array = activities_array
 		else:
-			raise IllegalArgumentError("Please input either a file or an array containing the activities. If you did pass an argument, its value is probably 'None'. Please rectify that.")
+			raise IllegalArgumentError("Please input either a file or an array containing the activities. If you did pass an argument, its value is probably 'None' or not a DataFrame. Please rectify that.")
 
-		activities_names = list(activities_array.columns.values)
+		self.activities_names = list(self.activities_array.columns.values)
 		self.reset_recommendations()
 
 	def get_activities_file(self):
@@ -165,25 +165,25 @@ class Aspect:
 			raise ValueError("The number of columns in the users array and the number of rows in the activities array are not equal. Please rectify this.")
 
 		if function == None:
-			if self.activities_array != None:
+			if self.applied_function != None:
 				function = self.applied_function
 			else: 
 				print("Please either set a function to apply with set_applied_function(), or pass a function in the arguments.")
 				return None
 
 		if function not in self.recommendations_dict:
-			try:
-				users = np.array(self.users_array)
-				users = users.T
-				activities = np.array(self.activities_array)
-				recommendations = function(users, activities)
+			#try:
+			users = np.array(self.users_array)
+			users = users.T
+			activities = np.array(self.activities_array)
+			recommendations = function(users, activities)
 
-				if type(recommendations) == numpy.ndarray:
-					recommendations = np.array(recommendations)
-				self.recommendations_dict[function] = recommendations
+			if type(recommendations) == np.ndarray:
+				recommendations = pd.DataFrame(recommendations, index=self.users_names, columns=self.activities_names)
+			self.recommendations_dict[function] = recommendations
 
-			except Exception as err:
-				raise IllegalArgumentError("Failed to calculate the recommendations with this function:", function) from err
+			# except Exception as err:
+			# 	raise IllegalArgumentError("Failed to calculate the recommendations with this function:", function) from err
 
 		return self.recommendations_dict[function]
 

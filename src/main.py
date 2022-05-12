@@ -3,14 +3,15 @@ from PyQt5.QtWidgets import QApplication
 
 from views.MainWindow import *
 from models.SystemState import *
-
+from Controller import *
 
 def main():
 
     system_state = SystemState()
+    controller = Controller(system_state)
 
     app = QApplication(sys.argv)
-    window = MainWindow(system_state)
+    gui = MainWindow(controller)
 
     # labels = dict()
     # style = ""
@@ -31,8 +32,8 @@ def main():
     with open("style.qss", "r") as s:
         style = s.read()
 
-    window.setStyleSheet(style)
-    window.show()
+    gui.setStyleSheet(style)
+    gui.show()
     app.exec_()
     sys.exit()
 

@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from models.Aspect import *
 from calculations import *
+from .AspectTab import *
 from .Aspects import *
 from .BKT import *
 
@@ -15,12 +16,15 @@ def path_leaf(path):
 class DropMenu(QWidget):
 
     # A drop-down menu for aspects, M matrices, Q Matrices
-    def __init__(self, remove, parent=None):
-        QWidget.__init__(self, parent)
+    def __init__(self, controller, aspect_id, remove, parent=None):
+        super().__init__(parent)
+
+        self.controller = controller
         self.remove = remove
         self.parent = parent
         self.setMinimumSize(100, 100)
 
+        self.aspect_id = aspect_id
         self.aspect_type = None
 
         if not(hasattr(self, "users_file")):
@@ -38,7 +42,7 @@ class DropMenu(QWidget):
         layout.addWidget(remove_btn)
 
         # Aspect types dropdown menu
-        label_aspect = QLabel("Aspect Type", self)
+        label_aspect = QLabel("Aspect type", self)
         label_aspect.setWordWrap(False)
         layout.addWidget(label_aspect)
 
@@ -98,7 +102,7 @@ class DropMenu(QWidget):
         layout.addWidget(QLabel("Function"))
         self.pick_function = QComboBox()
         self.pick_function.currentIndexChanged.connect(self.function_picked)
-        self.pick_function.addItems(BasicFunctions.basic_functions)
+        self.pick_function.addItems(basic_functions)
         layout.addWidget(self.pick_function)
 
         self.calculate_btn = QPushButton("Calculate recommendations")
@@ -107,15 +111,14 @@ class DropMenu(QWidget):
 
         self.setLayout(layout)
 
-        self.filled = False
+        self.check_filled()
 
     def calculate(self):
-        pass  # TODO
-        self.parent.update_aspect(self)
+        users_qtable, act_qtable, rec_qtable = self.controller.update_aspect_from_files(self.aspect_id, self.aspect_type, self.users_file, self.activities_file, self.function)
+        self.parent.parent.add_page(self.aspect_type, users_qtable, act_qtable, rec_qtable, self.function)
 
     def function_picked(self):
         self.function = self.pick_function.currentText()
-        print(self.function)
 
     def create_BKT(self):
         d = BKT(self)
@@ -136,7 +139,7 @@ class DropMenu(QWidget):
     def aspect_change(self):
         self.aspect_type = self.cb_aspect.currentText()
         # Enable BKT for didactic aspect
-        if self.aspect_type == Aspect.aspect_types[0]:  # Didatcic aspect
+        if self.aspect_type == Aspect.aspect_types[0]:  # Didactic aspect
             self.create_with_BKT.setEnabled(True)
         else:
             self.create_with_BKT.setEnabled(False)
@@ -144,7 +147,6 @@ class DropMenu(QWidget):
 
     def load_users_file(self):
         file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
-        print(file_name)
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"
         # print("here too:", self.users_file)
@@ -185,10 +187,15 @@ class DropMenu(QWidget):
             self.filled = False
         else: 
             self.filled = True
+
+        if self.filled == False:
+            self.calculate_btn.setEnabled(False)
+        else: 
+            self.calculate_btn.setEnabled(True)
         # self.parent.check()
 
-    def set_users_file(self, file):
-        self.users_file = file
-        print()
-        print(file)
-        print(self.users_file)
+    # def set_users_file(self, file):
+    #     self.users_file = file
+    #     print()
+    #     print(file)
+    #     print(self.users_file)

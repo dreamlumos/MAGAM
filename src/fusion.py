@@ -28,7 +28,7 @@ class FusionFunctions:
 	def max(r1, r2):
 		return np.maximum(r1, r2)
 
-	fusion_functions = {"Mean": mean, "Value_multiplication": value_multiplication, "Min": min, "Max": max}
+fusion_functions = {"Mean": FusionFunctions.mean, "Value_multiplication": FusionFunctions.value_multiplication, "Min": FusionFunctions.min, "Max": FusionFunctions.max}
 
 # check whether the shapes are the same? probably better to put safety mechanisms at a higher level
 

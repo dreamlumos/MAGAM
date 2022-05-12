@@ -18,11 +18,11 @@ def path_leaf(path):
 
 class FusionTab(QWidget):
 
-    def __init__(self, system_state, parent=None):
+    def __init__(self, controller, parent=None):
         # Recommendations as seen from the selection side, ie which activity for which student
         super(FusionTab, self).__init__(parent)
 
-        self.system_state = system_state
+        self.controller = controller
         self.layout = QHBoxLayout(self)
         self.tables = []  # list of the tables we want to fusion
 

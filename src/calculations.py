@@ -39,4 +39,4 @@ class BasicFunctions:
 
 		return recommendations
 
-	basic_functions = {"Product": product, "Distance": distance, "Time": time}
+basic_functions = {"Product": BasicFunctions.product, "Distance": BasicFunctions.distance, "Time": BasicFunctions.time}
