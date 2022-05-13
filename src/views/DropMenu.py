@@ -114,8 +114,17 @@ class DropMenu(QWidget):
         self.check_filled()
 
     def calculate(self):
-        users_qtable, act_qtable, rec_qtable = self.controller.update_aspect_from_files(self.aspect_id, self.aspect_type, self.users_file, self.activities_file, self.function)
-        self.parent.parent.add_page(self.aspect_type, users_qtable, act_qtable, rec_qtable, self.function)
+        try:
+            users_qtable, act_qtable, rec_qtable = self.controller.update_aspect_from_files(self.aspect_id, self.aspect_type, self.users_file, self.activities_file, self.function)
+        except ValueError as e:
+            msg = QMessageBox()
+            # msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText(str(e))
+            msg.setWindowTitle("Error")
+            msg.exec_()
+        else:
+            self.parent.parent.add_page(self.aspect_type, users_qtable, act_qtable, rec_qtable, self.function)
 
     def function_picked(self):
         self.function = self.pick_function.currentText()

@@ -1,3 +1,4 @@
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
@@ -117,6 +118,17 @@ class Controller:
 	def qtable_to_df(self, qtable):  # TODO check size of matrix with "headers"
 		col_count = qtable.columnCount()
 		row_count = qtable.rowCount()
+		for i in range(1, col_count):
+			if qtable.item(0, i) is None:
+				col_count = i
+				break
+		for i in range(1, row_count):
+			print(type(qtable.item(i, 0)) is None)
+			if qtable.item(i, 0) is None:
+				row_count = i
+				break
+		print(col_count)
+		print(row_count)
 		headers = [str(qtable.item(0, i).text()) for i in range(1, col_count)]
 		ind = [str(qtable.item(i, 0).text()) for i in range(1, row_count)]
 		print(headers)
@@ -140,8 +152,10 @@ class Controller:
 		headers = list(dataframe.columns.values)
 		index = dataframe.index
 
-		if qtable == None:
+		if qtable is None:
 			qtable = QTableWidget()
+
+		qtable.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
 		qtable.setRowCount(nb_rows)
 		qtable.setColumnCount(nb_columns)
@@ -154,10 +168,15 @@ class Controller:
 			item.setTextAlignment(Qt.AlignCenter)
 			qtable.setItem(i, 0, item)
 
+		# qtable.resizeColumnsToContents()
+
 		for i in range(1, nb_columns):
 			item = QTableWidgetItem(headers[i - 1])
 			item.setTextAlignment(Qt.AlignCenter)
 			qtable.setItem(0, i, item)
+			# qtable.resizeColumnsToContents()
+
+		# qtable.resizeColumnsToContents()
 
 		for i in range(nb_rows-1):
 			for j in range(nb_columns-1):
@@ -167,13 +186,7 @@ class Controller:
 				qtable.setItem(i+1, j+1, item)
 
 		# Resize the table to fit its content
-		qtable.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-		qtable.resizeColumnsToContents()
-
-		# Recommendations table cannot be edited
-		qtable.setEditTriggers(QAbstractItemView.NoEditTriggers)
-		qtable.setSelectionMode(QAbstractItemView.NoSelection)
-		qtable.setSelectionBehavior(QAbstractItemView.SelectRows)
+		# qtable.resizeColumnsToContents()
 
 		return qtable
 

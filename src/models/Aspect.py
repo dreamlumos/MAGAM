@@ -66,7 +66,7 @@ class Aspect:
 		:type users_array: Dataframe (TODO: other formats?)
 		"""
 
-		if users_file != None:
+		if users_file is not None:
 			if os.path.isfile(users_file) and users_file.endswith('.csv'):
 				self.users_file = users_file
 				self.users_array = pd.read_csv(users_file, sep=',', index_col=0)

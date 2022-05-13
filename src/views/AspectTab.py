@@ -33,7 +33,7 @@ class AspectTab(QWidget):
         self.users_widget = self._create_table_editing_widget("Users", users_qtable)
         self.activities_widget = self._create_table_editing_widget("Activities", activities_qtable)
         self.recommendations_widget = self._create_table_editing_widget("Recommendations", recommendations_qtable)
-        if users_qtable == None:
+        if users_qtable is None:
             recalc = False
         else: 
             recalc = True
@@ -152,6 +152,7 @@ class AspectTab(QWidget):
         self.aspect_type = self.change_aspect_type_menu.currentText()
         self.parent.tabs.setTabText(self.tab_index, self.aspect_type)
 
+
     def set_function(self):
         self.function = self.change_function_menu.currentText()
 
@@ -176,8 +177,9 @@ class AspectTab(QWidget):
         top_widget.setLayout(top_layout)
 
         # Bottom widget (QTable)
-        if table_widget == None:
+        if table_widget is None:
             table_widget = QTableWidget(50, 50, self)
+            table_widget.resizeColumnsToContents()
         widget_layout.addWidget(table_widget)        
 
         # Contents of top widget
@@ -222,18 +224,25 @@ class AspectTab(QWidget):
         clear_button.clicked.connect(self.reset_all_widgets)
 
         self.change_aspect_type_menu = QComboBox()
-        self.change_aspect_type_menu.setPlaceholderText("------")
-        if aspect_type != None:
-            self.change_aspect_type_menu.setCurrentText(aspect_type) # TODO: not working rn
         self.change_aspect_type_menu.addItems(Aspect.aspect_types)
+        self.change_aspect_type_menu.setPlaceholderText("------")
+        # if aspect_type is not None:
+        if type(aspect_type) == str:
+            self.change_aspect_type_menu.setCurrentText(aspect_type)
+        # else:
+        #     self.calculate_button.enabled(False)
         self.change_aspect_type_menu.currentIndexChanged.connect(self.set_aspect_type)
 
         self.change_function_menu = QComboBox()
         self.change_function_menu.setToolTip("Pick a different calculation function.")
-        self.change_function_menu.setPlaceholderText("------")
-        if function != None:
-            self.change_function_menu.setCurrentText(function) # TODO: not working rn
         self.change_function_menu.addItems(basic_functions)
+        self.change_function_menu.setPlaceholderText("------")  # placeholder not showing is a bug on Qt's side
+        # if function is not None:
+        if type(function) == str:
+            self.change_function_menu.setCurrentText(function)
+        # else:
+        #     self.calculate_button.enabled(False)
+
         self.change_function_menu.currentIndexChanged.connect(self.set_function)
 
         if recalc:
@@ -264,6 +273,7 @@ class AspectTab(QWidget):
         self.activities_table.clear()
         self.recommendations_table.clear()
         self.calculate_button.setText("Calculate")
+        # self.calculate_button.enabled(False)
 
     def calculate(self):
         self.controller.update_aspect_from_qtables(self.aspect_id, self.aspect_type, self.users_table, self.activities_table, self.recommendations_table, self.function)

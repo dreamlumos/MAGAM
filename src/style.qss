@@ -17,6 +17,10 @@ QComboBox {
     min-width: 6em;
 }
 
+QListView {
+background-color : #FAF2ED;
+}
+
 QComboBox:pressed, QComboBox:hover {
     background-color: #B0BACB;
     color: #FAF2ED;
@@ -39,6 +43,10 @@ QPushButton:pressed, QPushButton:hover {
 
 QPushButton:disabled {
 	/*TODO*/
+}
+
+QScrollBar {
+    background : #FAF2ED;
 }
 
 QTableWidget {

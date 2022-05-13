@@ -65,7 +65,9 @@ class TabContainer(QWidget):
         
         aspect_id = self.controller.add_empty_aspect()
         tab = AspectTab(self.controller, aspect_id, aspect_type, users_qtable, activities_qtable, recommendations_qtable, function, self)
-        
+        # users_qtable.resizeColumnsToContents()
+        # activities_qtable.resizeColumnsToContents()
+        # recommendations_qtable.resizeColumnsToContents()
         title = ""
         if aspect_type == None or aspect_type == False:
             title = "New Tab"
