@@ -79,55 +79,55 @@ class Controller:
 
 		return users_qtable, activities_qtable, recommendations_qtable
 
-	def change_users(self, aspect_id, users_file=None, users_array=None):
-		"""
-		Either enter users_file OR users_array. If both are provided, users_file will be used.
-		Raises an IllegalArgumentError if neither is provided, or if the argument value is None.
+	# def change_users(self, aspect_id, users_file=None, users_array=None):
+	# 	"""
+	# 	Either enter users_file OR users_array. If both are provided, users_file will be used.
+	# 	Raises an IllegalArgumentError if neither is provided, or if the argument value is None.
 
-		:param users_file: CSV file containing the users (TODO: other formats)
-		:param users_array: array containing the users
+	# 	:param users_file: CSV file containing the users (TODO: other formats)
+	# 	:param users_array: array containing the users
 
-		:type users_file: str
-		:type users_array: Dataframe (TODO: other formats?)
-		"""
+	# 	:type users_file: str
+	# 	:type users_array: Dataframe (TODO: other formats?)
+	# 	"""
 
-		aspect = self.system_data.get_aspect(aspect_id)
+	# 	aspect = self.system_data.get_aspect(aspect_id)
 
-		if users_file is not None:
-			aspect.set_users(users_file=users_file)
+	# 	if users_file is not None:
+	# 		aspect.set_users(users_file=users_file)
 
-		elif users_array is not None:
-			aspect.set_users(users_file=users_file)
+	# 	elif users_array is not None:
+	# 		aspect.set_users(users_file=users_file)
 
-		else:
-			raise IllegalArgumentError
+	# 	else:
+	# 		raise IllegalArgumentError
 
-	def change_activities(self, aspect_id, activities_file=None, activities_array=None):
-		"""
-		Either enter activities_file OR activities_array. If both are provided, activities_file will be used.
-		Raises an IllegalArgumentError if neither is provided, or if the argument value is None.
+	# def change_activities(self, aspect_id, activities_file=None, activities_array=None):
+	# 	"""
+	# 	Either enter activities_file OR activities_array. If both are provided, activities_file will be used.
+	# 	Raises an IllegalArgumentError if neither is provided, or if the argument value is None.
 
-		:param activities_file: CSV file containing the activities (TODO: other formats)
-		:param activities_array: array containing the activities
+	# 	:param activities_file: CSV file containing the activities (TODO: other formats)
+	# 	:param activities_array: array containing the activities
 
-		:type activities_file: str
-		:type activities_array: Dataframe (TODO: other formats?)
-		"""
+	# 	:type activities_file: str
+	# 	:type activities_array: Dataframe (TODO: other formats?)
+	# 	"""
 
-		aspect = self.system_data.get_aspect(aspect_id)
+	# 	aspect = self.system_data.get_aspect(aspect_id)
 
-		if activities_file != None:
-			aspect.set_activities(activities_file=activities_file)
+	# 	if activities_file != None:
+	# 		aspect.set_activities(activities_file=activities_file)
 
-		elif activities_array != None:
-			aspect.set_activities(activities_file=activities_file)
+	# 	elif activities_array != None:
+	# 		aspect.set_activities(activities_file=activities_file)
 
-		else:
-			raise IllegalArgumentError
+	# 	else:
+	# 		raise IllegalArgumentError
 
-	def change_function(self, aspect_id, function):
-		aspect = self.system_data.get_aspect(aspect_id)
-		aspect.set_applied_function(function)
+	# def change_function(self, aspect_id, function):
+	# 	aspect = self.system_data.get_aspect(aspect_id)
+	# 	aspect.set_applied_function(function)
 
 	def get_recommendations(self, aspect_id, function=None):
 		aspect = self.system_data.get_aspect(aspect_id)
