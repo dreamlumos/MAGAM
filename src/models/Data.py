@@ -32,7 +32,7 @@ class Data:
 		pass
 
 	def add_fusion(self, fusion, verbose=False):
-		fusion_id = self.aspect_counter
+		fusion_id = self.fusion_counter
 		self.fusions[fusion_id] = fusion  # fusion is a table
 		self.fusion_counter += 1
 

@@ -80,9 +80,11 @@ class AspectTab(QWidget):
     def set_aspect_type(self):
         self.aspect_type = self.change_aspect_type_menu.currentText()
         self.parent.tabs.setTabText(self.tab_index, self.aspect_type)
+        self.check_filled()
 
     def set_function(self):
         self.function = self.change_function_menu.currentText()
+        self.check_filled()
 
     def _create_table_editing_widget(self, widget_type, table_widget):
         """
@@ -163,21 +165,22 @@ class AspectTab(QWidget):
 
         self.change_function_menu = QComboBox()
         self.change_function_menu.setToolTip("Pick a different calculation function.")
-        self.change_function_menu.addItems(basic_functions)
         self.change_function_menu.setPlaceholderText("------")  # placeholder not showing is a bug on Qt's side
-        # if function is not None:
-        if type(function) == str:
-            self.change_function_menu.setCurrentText(function)
-        # else:
-        #     self.calculate_button.enabled(False)
 
-        self.change_function_menu.currentIndexChanged.connect(self.set_function)
+        self.change_function_menu.addItems(basic_functions)
 
         if recalc:
             self.calculate_button = QPushButton("Recalculate")
         else:
             self.calculate_button = QPushButton("Calculate")
         self.calculate_button.clicked.connect(self.calculate)
+        self.calculate_button.setEnabled(False)
+
+        # if function is not None:
+        if type(function) == str:
+            self.change_function_menu.setCurrentText(function)
+
+        self.change_function_menu.currentIndexChanged.connect(self.set_function)
 
         widget_layout.addWidget(clear_button, 0, 0, 1, 1)
         widget_layout.setRowStretch(1, 1)
@@ -205,3 +208,21 @@ class AspectTab(QWidget):
 
     def calculate(self):
         self.controller.update_aspect_from_qtables(self.aspect_id, self.aspect_type, self.users_table, self.activities_table, self.recommendations_table, self.function)
+
+    def check_filled(self):
+        if self.aspect_type is None:
+            self.filled = False
+        # elif self.users_table is None:
+        #     self.filled = False
+        # elif self.activities_table is None:
+        #     self.filled = False
+        elif self.function is None:
+            self.filled = False
+        else:
+            self.filled = True
+
+        if self.filled == False:
+            self.calculate_button.setEnabled(False)
+        else:
+            self.calculate_button.setEnabled(True)
+

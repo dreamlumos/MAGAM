@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 
 from models.SystemState import *
 from models.Aspect import *
+from models.Fusion import *
 from calculations import *
 from fusion import *
 
@@ -42,22 +43,24 @@ class Controller:
 
 		return users_qtable, activities_qtable, recommendations_qtable
 
-	def create_fusion(self, id1, id2, function_name):
+	def create_fusion(self, id1, id2, function_name, table):
 		func = fusion_functions[function_name]
 		if id1[0] == "A":
 			rec1 = self.system_data.get_aspect(int(id1[-1])).get_recommendations()
 		else:
-			rec1 = self.system_data.get_fusion(int(id1[-1]))
+			rec1 = self.system_data.get_fusion(int(id1[-1])).get_recommendations()
 
 		if id2[0] == "A":
 			rec2 = self.system_data.get_aspect(int(id2[-1])).get_recommendations()
 		else:
-			rec2 = self.system_data.get_fusion(int(id2[-1]))
+			rec2 = self.system_data.get_fusion(int(id2[-1])).get_recommendations()
 
-		rec = func(rec1, rec2)
-		self.system_data.add_fusion(rec)
+		f = Fusion(rec1, rec2, func)
+		self.system_data.add_fusion(f)
+		rec = f.get_recommendations()
 		print(rec)
-		return self.nparray_to_qtable(rec)
+		table = self.df_to_qtable(rec, table)
+		return table
 
 	def update_aspect_from_qtables(self, aspect_id, aspect_type, users_qtable, activities_qtable, recommendations_qtable, function_name):
 

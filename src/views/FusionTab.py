@@ -43,6 +43,7 @@ class FusionTab(QWidget):
 
         self.fusion_func = QComboBox()
         self.fusion_func.addItems(fusion_functions)
+        self.function = self.fusion_func.currentText()
         self.fusion_func.currentIndexChanged.connect(self.set_function)
         t_layout.addWidget(self.fusion_func)
 
@@ -158,7 +159,12 @@ class FusionTab(QWidget):
             self.calc.setEnabled(True)
 
     def calculate(self):
-        self.table_widget = self.controller.create_fusion(self.aspect_1, self.aspect_2, self.function)
+        self.controller.create_fusion(self.aspect_1, self.aspect_2, self.function, self.table_widget)
+        self.combo_list = self.get_ID()
+        self.table_1.clear()
+        self.table_1.addItems(self.combo_list)
+        self.table_2.clear()
+        self.table_2.addItems(self.combo_list)
 
     def get_ID(self):
         combo_list = []
