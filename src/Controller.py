@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 from models.SystemState import *
 from models.Aspect import *
 from calculations import *
+from fusion import *
 
 
 class Controller:
@@ -40,6 +41,23 @@ class Controller:
 		recommendations_qtable = self.df_to_qtable(recommendations_array)
 
 		return users_qtable, activities_qtable, recommendations_qtable
+
+	def create_fusion(self, id1, id2, function_name):
+		func = fusion_functions[function_name]
+		if id1[0] == "A":
+			rec1 = self.system_data.get_aspect(int(id1[-1])).get_recommendations()
+		else:
+			rec1 = self.system_data.get_fusion(int(id1[-1]))
+
+		if id2[0] == "A":
+			rec2 = self.system_data.get_aspect(int(id2[-1])).get_recommendations()
+		else:
+			rec2 = self.system_data.get_fusion(int(id2[-1]))
+
+		rec = func(rec1, rec2)
+		self.system_data.add_fusion(rec)
+		print(rec)
+		return self.nparray_to_qtable(rec)
 
 	def update_aspect_from_qtables(self, aspect_id, aspect_type, users_qtable, activities_qtable, recommendations_qtable, function_name):
 
@@ -143,6 +161,31 @@ class Controller:
 
 		df = pd.DataFrame(df_row, index=ind, columns=headers)
 		return df
+
+	def nparray_to_qtable(self, table):
+		nb_rows, nb_cols = table.shape
+		if nb_cols is None:
+			nb_cols = 0
+
+		qtable = QTableWidget()
+
+		qtable.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+
+		qtable.setRowCount(nb_rows)
+		qtable.setColumnCount(nb_cols)
+
+		qtable.verticalHeader().setVisible(False)
+		qtable.horizontalHeader().setVisible(False)
+
+		for i in range(nb_rows):
+			for j in range(nb_cols):
+				s = str(table[i, j])
+				item = QTableWidgetItem(s)
+				item.setTextAlignment(Qt.AlignCenter)
+				qtable.setItem(i+1, j+1, item)
+
+		return qtable
+
 
 	def df_to_qtable(self, dataframe, qtable=None):
 
