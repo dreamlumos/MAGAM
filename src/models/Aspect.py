@@ -38,6 +38,9 @@ class Aspect:
 		self.aspect_type = aspect_type
 
 	def aspect_filled(self):
+		"""
+		Returns True if the aspect contains the necessary information for recommendations to be calculated.
+		"""
 		if self.users_array is None or self.activities_array is None:
 			return False
 		return True

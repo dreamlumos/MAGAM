@@ -15,6 +15,8 @@ class Controller:
 		self.system_state = system_state
 		self.system_data = system_state.get_data()
 
+	# --------- ASPECTS --------- #
+
 	def add_empty_aspect(self):
 		aspect = Aspect()
 		aspect_id = self.system_data.add_aspect(aspect)
@@ -42,25 +44,6 @@ class Controller:
 		recommendations_qtable = self.df_to_qtable(recommendations_array)
 
 		return users_qtable, activities_qtable, recommendations_qtable
-
-	def create_fusion(self, id1, id2, function_name, table):
-		func = fusion_functions[function_name]
-		if id1[0] == "A":
-			rec1 = self.system_data.get_aspect(int(id1[-1])).get_recommendations()
-		else:
-			rec1 = self.system_data.get_fusion(int(id1[-1])).get_recommendations()
-
-		if id2[0] == "A":
-			rec2 = self.system_data.get_aspect(int(id2[-1])).get_recommendations()
-		else:
-			rec2 = self.system_data.get_fusion(int(id2[-1])).get_recommendations()
-
-		f = Fusion(rec1, rec2, func)
-		self.system_data.add_fusion(f)
-		rec = f.get_recommendations()
-		print(rec)
-		table = self.df_to_qtable(rec, table)
-		return table
 
 	def update_aspect_from_qtables(self, aspect_id, aspect_type, users_qtable, activities_qtable, recommendations_qtable, function_name):
 
@@ -135,6 +118,32 @@ class Controller:
 	def get_recommendations(self, aspect_id, function=None):
 		aspect = self.system_data.get_aspect(aspect_id)
 		return aspect.get_recommendations(function)
+
+
+	# --------- FUSION --------- #
+	def create_fusion(self, id1, id2, function_name, table):
+		func = fusion_functions[function_name]
+		if id1[0] == "A":
+			rec1 = self.system_data.get_aspect(int(id1[-1])).get_recommendations()
+		else:
+			rec1 = self.system_data.get_fusion(int(id1[-1])).get_recommendations()
+
+		if id2[0] == "A":
+			rec2 = self.system_data.get_aspect(int(id2[-1])).get_recommendations()
+		else:
+			rec2 = self.system_data.get_fusion(int(id2[-1])).get_recommendations()
+
+		f = Fusion(rec1, rec2, func)
+		self.system_data.add_fusion(f)
+		rec = f.get_recommendations()
+		print(rec)
+		table = self.df_to_qtable(rec, table)
+		return table
+
+
+	# --------- UTILS --------- #
+
+	# TODO: move them to a separate util file
 
 	def qtable_to_df(self, qtable):  # TODO check size of matrix with "headers"
 		col_count = qtable.columnCount()
