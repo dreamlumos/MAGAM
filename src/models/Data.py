@@ -33,7 +33,7 @@ class Data:
 
 	def add_fusion(self, fusion, verbose=False):
 		fusion_id = self.fusion_counter
-		self.fusions[fusion_id] = fusion  # fusion is a table
+		self.fusions[fusion_id] = fusion
 		self.fusion_counter += 1
 
 		if verbose:

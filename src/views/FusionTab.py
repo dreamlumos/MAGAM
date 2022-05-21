@@ -25,20 +25,20 @@ class FusionTab(QWidget):
         self.setLayout(self.layout)
 
         self.controller = controller
+        self.controller.set_fusion_tab(self)
         self.parent = parent
 
         self.function = function
         self.aspect_1 = None
         self.aspect_2 = None
 
-        self.combo_list = []
-        self.update_combo_list()
+        self.combobox_list = []
 
         top_widget = QWidget()
         t_layout = QHBoxLayout()
         self.table_1 = QComboBox()
         self.table_1.setPlaceholderText("NO")
-        self.table_1.addItems(self.combo_list)
+        self.table_1.addItems(self.combobox_list)
         self.table_1.currentIndexChanged.connect(self.set_aspect_1)
         t_layout.addWidget(self.table_1)
 
@@ -50,9 +50,11 @@ class FusionTab(QWidget):
 
         self.table_2 = QComboBox()
         self.table_2.setPlaceholderText("NO")
-        self.table_2.addItems(self.combo_list)
+        self.table_2.addItems(self.combobox_list)
         self.table_2.currentIndexChanged.connect(self.set_aspect_2)
         t_layout.addWidget(self.table_2)
+
+        self.controller.update_fusion_tab()
 
         self.calc = QPushButton("Calculate")
         self.calc.clicked.connect(self.calculate)
@@ -161,26 +163,19 @@ class FusionTab(QWidget):
 
     def calculate(self):
         self.controller.create_fusion(self.aspect_1, self.aspect_2, self.function, self.table_widget)
-        # self.combo_list = []
-        self.update_combo_list()
+        # self.combobox_list = []
+        self.update_combobox_list()
         self.table_1.clear()
-        self.table_1.addItems(self.combo_list)
+        self.table_1.addItems(self.combobox_list)
         self.table_2.clear()
-        self.table_2.addItems(self.combo_list)
+        self.table_2.addItems(self.combobox_list)
 
-    # def update_combo_list(self, aspects_dict, fusions_dict):
-    def update_combo_list(self):
-        combo_list = []
-        aspects_dict = self.controller.system_data.get_aspects()
-        for a in list(aspects_dict.keys()):
-            aspect_type = str(aspects_dict.get(a).get_aspect_type())
-            if aspect_type == "None":
-                continue
-            combo_list.append("Aspect " + aspect_type + " " + str(a))
-        fusions_dict = self.controller.system_data.get_fusions()
-        for f in list(fusions_dict.keys()):
-            combo_list.append("Fusion " + str(f))
-        return combo_list
+    def update_combobox_list(self, combobox_list):
+        self.combobox_list = combobox_list
+        self.table_1.clear()
+        self.table_1.addItems(self.combobox_list)
+        self.table_2.clear()
+        self.table_2.addItems(self.combobox_list)
 
     def _create_table_editing_widget(self, table_widget):
         """

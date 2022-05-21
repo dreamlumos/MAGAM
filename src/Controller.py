@@ -15,12 +15,18 @@ class Controller:
 	def __init__(self, system_state):
 		self.system_state = system_state
 		self.system_data = system_state.get_data()
+		self.fusion_tab = None
+
+	def set_fusion_tab(self, fusion_tab):
+		self.fusion_tab = fusion_tab
+		print("test")
 
 	# --------- ASPECTS --------- #
 
 	def add_empty_aspect(self):
 		aspect = Aspect()
 		aspect_id = self.system_data.add_aspect(aspect)
+		self.update_fusion_tab()
 		return aspect_id
 
 	def delete_aspect(self, aspect_id):
@@ -43,9 +49,9 @@ class Controller:
 		users_qtable = utils.df_to_qtable(users_array)
 		activities_qtable = utils.df_to_qtable(activities_array)
 		recommendations_qtable = utils.df_to_qtable(recommendations_array)
-		# self.update_fusion_combo_list(FusionTab.combo_list)
-		# fusion_tab_index = TabContainer.tabs.count()
-		# FusionTab.update_combo_list(TabContainer.tabs.widget(fusion_tab_index - 1))
+
+		self.update_fusion_tab()
+
 		return users_qtable, activities_qtable, recommendations_qtable
 
 	def update_aspect_from_qtables(self, aspect_id, aspect_type, users_qtable, activities_qtable, recommendations_qtable, function_name):
@@ -65,11 +71,9 @@ class Controller:
 		# activities_array = aspect.get_activities_array()
 		recommendations_array = aspect.get_recommendations()
 		recommendations_qtable = utils.df_to_qtable(recommendations_array, recommendations_qtable)
-		# fusion_tab_index = TabContainer.tabs.count()
-		# FusionTab.update_combo_list(TabContainer.tabs.widget(fusion_tab_index - 1))
-		# self.update_fusion_combo_list(FusionTab.combo_list)
-		# FusionTab.update_combo_list()
-		# FusionTab.update_combo_list(self.system_data.get_aspects(), self.system_data.get_fusion())
+		
+		self.update_fusion_tab()
+
 		return users_qtable, activities_qtable, recommendations_qtable
 
 	# def change_users(self, aspect_id, users_file=None, users_array=None):
@@ -155,6 +159,23 @@ class Controller:
 		print(rec)
 		table = utils.df_to_qtable(rec, table)
 		return table
+
+	def update_fusion_tab(self):
+
+		combobox_list = []
+
+		aspects_dict = self.system_data.get_aspects()
+		for a in aspects_dict.keys():
+			aspect_type = aspects_dict.get(a).get_aspect_type()
+			if aspect_type != None:
+				combobox_list.append("Aspect " + aspect_type + " " + str(a))
+
+		fusions_dict = self.system_data.get_fusions()
+		for f in fusions_dict.keys():
+			combobox_list.append("Fusion " + str(f))
+
+		if self.fusion_tab != None:
+			self.fusion_tab.update_combobox_list(combobox_list)
 
 	# def update_fusion_combo_list(self, combo_list):
 	# 	# combo_list = []
