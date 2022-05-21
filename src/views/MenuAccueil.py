@@ -1,12 +1,12 @@
+import ntpath
+
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from models.Aspect import *
-from calculations import *
-from .Aspects import *
-from .BKT import *
 
-import ntpath
+from models.Aspect import *
+from .BKT import *
+from calculations import *
 
 
 def path_leaf(path):

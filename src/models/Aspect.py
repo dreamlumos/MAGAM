@@ -18,12 +18,12 @@ class Aspect:
 
 		self.users_file = None
 		self.users_array = None
-		self.users_names = None  # TODO: maybe remove
+		self.users_names = None 
 		self.users_scale = None
 
 		self.activities_file = None
 		self.activities_array = None
-		self.activities_names = None  # TODO: maybe remove
+		self.activities_names = None 
 		self.activities_scale = None
 
 		self.applied_function = None # function

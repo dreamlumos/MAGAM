@@ -8,6 +8,7 @@ from PyQt5.QtCore import *
 
 from calculations import *
 from models.Aspect import *
+import utils
 
 
 def path_leaf(path):
@@ -119,12 +120,12 @@ class AspectTab(QWidget):
 
         load_from_file_button = QPushButton("Load From File...")
         load_from_file_button.setToolTip("Load the "+widget_type+" table from a CSV file.") # TODO: eventually add other file types
-        load_from_file_button.clicked.connect(lambda state, qtable = table_widget: self.controller.load_from_csv(self, qtable))
+        load_from_file_button.clicked.connect(lambda state, qtable = table_widget: utils.load_from_csv(self, qtable))
         top_layout.addWidget(load_from_file_button)
 
         save_as_csv_button = QPushButton("Save As...")
         save_as_csv_button.setToolTip("Save the "+widget_type+" table as a CSV file.") # TODO: eventually add other file types
-        save_as_csv_button.clicked.connect(lambda state, qtable = table_widget: self.controller.save_as_csv(self, qtable))
+        save_as_csv_button.clicked.connect(lambda state, qtable = table_widget: utils.save_as_csv(self, qtable))
         top_layout.addWidget(save_as_csv_button)
 
         if widget_type == "Users":

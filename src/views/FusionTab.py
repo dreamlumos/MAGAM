@@ -1,15 +1,15 @@
 import datetime
+import ntpath
 import os
 
 import PyQt5.QtBluetooth
-import pandas
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from fusion import *
-import numpy as np
 
-import ntpath
+from fusion import *
+import utils
+
 
 def path_leaf(path):
     head, tail = ntpath.split(path)
@@ -75,7 +75,7 @@ class FusionTab(QWidget):
 
         save_as_csv_button = QPushButton("Save As...")
         save_as_csv_button.setToolTip("Save the fusion table as a CSV file.")  # TODO: eventually add other file types
-        save_as_csv_button.clicked.connect(lambda state, qtable=self.table_widget: self.controller.save_as_csv(self, qtable))
+        save_as_csv_button.clicked.connect(lambda state, qtable=self.table_widget: utils.save_as_csv(self, qtable))
         b_layout.addWidget(save_as_csv_button)
 
         self.layout.addWidget(bottom_widget, 1, 0)
@@ -206,12 +206,12 @@ class FusionTab(QWidget):
 
         # load_from_file_button = QPushButton("Load From File...")
         # load_from_file_button.setToolTip("Load the  table from a CSV file.") # TODO: eventually add other file types
-        # load_from_file_button.clicked.connect(lambda state, qtable = table_widget: self.controller.load_from_csv(self, qtable))
+        # load_from_file_button.clicked.connect(lambda state, qtable = table_widget: utils.load_from_csv(self, qtable))
         # top_layout.addWidget(load_from_file_button)
 
         save_as_csv_button = QPushButton("Save As...")
         save_as_csv_button.setToolTip("Save the fusion table as a CSV file.")  # TODO: eventually add other file types
-        save_as_csv_button.clicked.connect(lambda state, qtable = table_widget: self.controller.save_as_csv(self, qtable))
+        save_as_csv_button.clicked.connect(lambda state, qtable = table_widget: utils.save_as_csv(self, qtable))
         top_layout.addWidget(save_as_csv_button)
 
         # if widget_type == "Users":

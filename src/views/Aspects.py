@@ -83,9 +83,9 @@ class Aspects(QWidget):
         widg.deleteLater()
         # self.check()
 
-    def calculate(self):
+    # def calculate(self):
 
-        self.controller.update_aspect()
+    #     self.controller.update_aspect()
 
     # def fusion_picked(self):
     #     self.fusion = self.pick_fusion.currentText()
