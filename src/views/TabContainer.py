@@ -73,7 +73,9 @@ class TabContainer(QWidget):
             title = "New Tab"
         else:
             title = aspect_type
-        tab_index = self.tabs.addTab(tab, title)
+        # tab_index = self.tabs.addTab(tab, title)
+        curr_index = self.tabs.count()
+        tab_index = self.tabs.insertTab(curr_index - 1, tab, title)
         tab.set_index(tab_index)
 
         # self.tabs.addTab(splitter, "New Tab")

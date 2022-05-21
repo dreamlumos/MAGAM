@@ -17,11 +17,21 @@ QComboBox {
     min-width: 6em;
 }
 
+QComboBox QAbstractItemView {
+	selection-background-color: #B0BACB;
+	selection-color: #FAF2ED;
+}
+
 QListView {
 background-color : #FAF2ED;
 }
 
-QComboBox:pressed, QComboBox:hover {
+QComboBox:pressed {
+    background-color: #8A8FB2;
+    color: #FAF2ED;
+}
+
+QComboBox:hover:!pressed {
     background-color: #B0BACB;
     color: #FAF2ED;
 }
@@ -36,13 +46,20 @@ QPushButton {
 	padding: 3px 10px 3px 10px;
 }
 
-QPushButton:pressed, QPushButton:hover {
+QPushButton:pressed {
+    background-color: #8A8FB2;
+    color: #FAF2ED;
+}
+
+QPushButton:hover:!pressed {
     background-color: #B0BACB;
     color: #FAF2ED;
 }
 
 QPushButton:disabled {
-	/*TODO*/
+	background-color: #DAD5D2;
+	border-color: #DAD5D2;
+    color: #FAF2ED;
 }
 
 QScrollBar {
@@ -52,3 +69,157 @@ QScrollBar {
 QTableWidget {
 	border: 1px solid #4F658A;
 }
+
+/* Scrollbars test */
+
+QScrollBar:horizontal {
+    border: none;
+    background: #FAF2ED;
+    height: 8px;
+    margin: 0px 21px 0 21px;
+	border-radius: 0px;
+}
+QScrollBar::handle:horizontal {
+    background: #B0BACB;
+    min-width: 25px;
+	border-radius: 4px
+}
+QScrollBar::add-line:horizontal {
+    border: none;
+    background: #FAF2ED;
+    width: 20px;
+	border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background: #FAF2ED;
+    width: 20px;
+	border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal
+{
+     background: #B0BACB;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
+{
+     background: none;
+}
+ QScrollBar:vertical {
+	border: none;
+    background-color: #FAF2ED;
+    width: 8px;
+    margin: 21px 0 21px 0;
+	border-radius: 0px;
+ }
+ QScrollBar::handle:vertical {
+	background: #B0BACB;
+    min-height: 25px;
+	border-radius: 4px
+ }
+ QScrollBar::add-line:vertical {
+     border: none;
+    background: #FAF2ED;
+     height: 20px;
+	border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+     subcontrol-position: bottom;
+     subcontrol-origin: margin;
+ }
+ QScrollBar::sub-line:vertical {
+	border: none;
+    background: #FAF2ED;
+    height: 20px;
+	border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+ }
+ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+     background: #B0BACB;
+ }
+
+
+ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+     background: none;
+ }
+
+/* table widget test */
+
+QTableWidget {
+	/*background-color: transparent;*/
+	background-color: #FAF2ED;
+	gridline-color: #B0BACB;
+	selection-gridline-color: #FAF2ED;
+	padding: 10px;
+	border-radius: 5px;
+    outline: none;
+}
+QTableWidget::item{
+	padding-left: 5px;
+	padding-right: 5px;
+	gridline-color: #B0BACB;
+}
+QTableWidget::item:selected{
+	background-color: #B0BACB;
+	selected-gridline-color: #FAF2ED;
+	border-color: #FAF2ED;
+    color: #FAF2ED;
+}
+QTableWidget QTableCornerButton::section {
+    background-color: #FAF2ED;
+    border-style: none;
+    border-bottom: 1px solid #B0BACB;
+    border-right: 1px solid #B0BACB;
+}
+
+QHeaderView::section:horizontal{
+	background-color: #FAF2ED;
+	gridline-color: #B0BACB;
+	max-width: 30px;
+	border-style: none;
+    border-bottom: 2px solid #B0BACB;
+    border-right: 1px solid #B0BACB;
+    border-left: 1px solid #B0BACB;
+ /*   selected-background-color: #B0BACB;
+    selected-color: #FAF2ED;*/
+}
+
+QHeaderView::section:vertical{
+	background-color: #FAF2ED;
+	gridline-color: #B0BACB;
+	max-width: 30px;
+	border-style: none;
+    border-bottom: 1px solid #B0BACB;
+    border-right: 2px solid #B0BACB;
+    border-top: 1px solid #B0BACB;
+}
+/*
+QTableWidget {
+	background-color: transparent;
+	padding: 10px;
+	border-radius: 5px;
+	gridline-color: #9faeda;
+    outline: none;
+}
+QTableWidget::item{
+	border-color: #9faeda;
+	padding-left: 5px;
+	padding-right: 5px;
+	gridline-color: #9faeda;
+}
+QTableWidget::item:selected{
+	background-color: rgb(189, 147, 249);
+    color: #f8f8f2;
+}
+QHeaderView::section{
+	background-color: #6272a4;
+	max-width: 30px;
+	border: none;
+	border-style: none;
+}*/

@@ -31,7 +31,8 @@ class FusionTab(QWidget):
         self.aspect_1 = None
         self.aspect_2 = None
 
-        self.combo_list = self.get_ID()
+        self.combo_list = []
+        self.update_combo_list()
 
         top_widget = QWidget()
         t_layout = QHBoxLayout()
@@ -160,17 +161,22 @@ class FusionTab(QWidget):
 
     def calculate(self):
         self.controller.create_fusion(self.aspect_1, self.aspect_2, self.function, self.table_widget)
-        self.combo_list = self.get_ID()
+        # self.combo_list = []
+        self.update_combo_list()
         self.table_1.clear()
         self.table_1.addItems(self.combo_list)
         self.table_2.clear()
         self.table_2.addItems(self.combo_list)
 
-    def get_ID(self):
+    # def update_combo_list(self, aspects_dict, fusions_dict):
+    def update_combo_list(self):
         combo_list = []
         aspects_dict = self.controller.system_data.get_aspects()
         for a in list(aspects_dict.keys()):
-            combo_list.append("Aspect " + str(a))
+            aspect_type = str(aspects_dict.get(a).get_aspect_type())
+            if aspect_type == "None":
+                continue
+            combo_list.append("Aspect " + aspect_type + " " + str(a))
         fusions_dict = self.controller.system_data.get_fusions()
         for f in list(fusions_dict.keys()):
             combo_list.append("Fusion " + str(f))

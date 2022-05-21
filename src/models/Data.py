@@ -5,7 +5,7 @@ class Data:
 		self.aspects = dict()
 		self.aspect_counter = 0
 
-		self.fusions = dict()  # key: fusion id, value: DataFrame containing recommendations
+		self.fusions = dict()  # key: fusion id, value: Fusion object
 		self.fusion_counter = 0
 
 	def add_aspect(self, aspect, verbose=False):

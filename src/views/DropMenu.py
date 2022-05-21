@@ -67,11 +67,11 @@ class DropMenu(QWidget):
         # layout.addWidget(self.create_btn)
         # layout.addWidget(self.load_btn)
 
-        # self.browse_button_usersers = QPushButton("Browse Files...", self)
+        self.browse_button_users = QPushButton("Browse Files...", self)
         # TODO here remove the file_name
-        file_name = "../data/motivation_users.csv"
-        self.users_file = file_name
-        self.browse_button_users = QPushButton("../data/motivation_users.csv", self)
+        # file_name = "../data/motivation_users.csv"
+        # self.users_file = file_name
+        # self.browse_button_users = QPushButton("../data/motivation_users.csv", self)
         self.browse_button_users.clicked.connect(self.load_users_file)
         layout.addWidget(self.browse_button_users)
         # Manually input the data
@@ -88,10 +88,10 @@ class DropMenu(QWidget):
         label_activities = QLabel("Upload Q matrix (activities)", self)
         layout.addWidget(label_activities)
 
-        # self.browse_button_acts = QPushButton("Browse Files...", self)
-        file_name = "../data/motivation_activities.csv"
-        self.activities_file = file_name
-        self.browse_button_acts = QPushButton("../data/motivation_activities.csv", self)
+        self.browse_button_acts = QPushButton("Browse Files...", self)
+        # file_name = "../data/motivation_activities.csv"
+        # self.activities_file = file_name
+        # self.browse_button_acts = QPushButton("../data/motivation_activities.csv", self)
         self.browse_button_acts.clicked.connect(self.load_acts_file)
         layout.addWidget(self.browse_button_acts)
         # Manually input the data

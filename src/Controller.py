@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from models.SystemState import *
 from models.Aspect import *
 from models.Fusion import *
+from views.TabContainer import *
 from calculations import *
 from fusion import *
 import utils
@@ -42,7 +43,9 @@ class Controller:
 		users_qtable = utils.df_to_qtable(users_array)
 		activities_qtable = utils.df_to_qtable(activities_array)
 		recommendations_qtable = utils.df_to_qtable(recommendations_array)
-
+		# self.update_fusion_combo_list(FusionTab.combo_list)
+		# fusion_tab_index = TabContainer.tabs.count()
+		# FusionTab.update_combo_list(TabContainer.tabs.widget(fusion_tab_index - 1))
 		return users_qtable, activities_qtable, recommendations_qtable
 
 	def update_aspect_from_qtables(self, aspect_id, aspect_type, users_qtable, activities_qtable, recommendations_qtable, function_name):
@@ -62,7 +65,11 @@ class Controller:
 		# activities_array = aspect.get_activities_array()
 		recommendations_array = aspect.get_recommendations()
 		recommendations_qtable = utils.df_to_qtable(recommendations_array, recommendations_qtable)
-
+		# fusion_tab_index = TabContainer.tabs.count()
+		# FusionTab.update_combo_list(TabContainer.tabs.widget(fusion_tab_index - 1))
+		# self.update_fusion_combo_list(FusionTab.combo_list)
+		# FusionTab.update_combo_list()
+		# FusionTab.update_combo_list(self.system_data.get_aspects(), self.system_data.get_fusion())
 		return users_qtable, activities_qtable, recommendations_qtable
 
 	# def change_users(self, aspect_id, users_file=None, users_array=None):
@@ -119,19 +126,28 @@ class Controller:
 		aspect = self.system_data.get_aspect(aspect_id)
 		return aspect.get_recommendations(function)
 
-
 	# --------- FUSION --------- #
+
 	def create_fusion(self, id1, id2, function_name, table):
 		func = fusion_functions[function_name]
-		if id1[0] == "A":
-			rec1 = self.system_data.get_aspect(int(id1[-1])).get_recommendations()
-		else:
+		# if id1[0] == "A":
+		# 	rec1 = self.system_data.get_aspect(int(id1[-1])).get_recommendations()
+		# else:
+		# 	rec1 = self.system_data.get_fusion(int(id1[-1])).get_recommendations()
+		#
+		# if id2[0] == "A":
+		# 	rec2 = self.system_data.get_aspect(int(id2[-1])).get_recommendations()
+		# else:
+		# 	rec2 = self.system_data.get_fusion(int(id2[-1])).get_recommendations()
+		if id1[0:6] == "Fusion":
 			rec1 = self.system_data.get_fusion(int(id1[-1])).get_recommendations()
-
-		if id2[0] == "A":
-			rec2 = self.system_data.get_aspect(int(id2[-1])).get_recommendations()
 		else:
+			rec1 = self.system_data.get_aspect(int(id1[-1])).get_recommendations()
+
+		if id2[0:6] == "Fusion":
 			rec2 = self.system_data.get_fusion(int(id2[-1])).get_recommendations()
+		else:
+			rec2 = self.system_data.get_aspect(int(id2[-1])).get_recommendations()
 
 		f = Fusion(rec1, rec2, func)
 		self.system_data.add_fusion(f)
@@ -139,3 +155,16 @@ class Controller:
 		print(rec)
 		table = utils.df_to_qtable(rec, table)
 		return table
+
+	# def update_fusion_combo_list(self, combo_list):
+	# 	# combo_list = []
+	# 	aspects_dict = self.system_data.get_aspects()
+	# 	for a in list(aspects_dict.keys()):
+	# 		aspect_type = str(aspects_dict.get(a).get_aspect_type())
+	# 		if aspect_type == "None":
+	# 			continue
+	# 		combo_list.append("Aspect " + aspect_type + " " + str(a))
+	# 	fusions_dict = self.system_data.get_fusions()
+	# 	for f in list(fusions_dict.keys()):
+	# 		combo_list.append("Fusion " + str(f))
+	# 	return combo_list
