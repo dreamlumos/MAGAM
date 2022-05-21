@@ -244,8 +244,8 @@ class Result(QWidget):
         y_size = len(y) + 1
         x_size = len(x) + 1
         qtable = QTableWidget(y_size, x_size, self)
-        qtable.verticalHeader().setVisible(False)
-        qtable.horizontalHeader().setVisible(False)
+        # qtable.verticalHeader().setVisible(False)
+        # qtable.horizontalHeader().setVisible(False)
 
         for i in range(1, y_size):
             item = QTableWidgetItem(y[i - 1])
@@ -270,8 +270,8 @@ class Result(QWidget):
 
         # recommandation table cannot be edited
         qtable.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        qtable.setSelectionMode(QAbstractItemView.NoSelection)
-        qtable.setSelectionBehavior(QAbstractItemView.SelectRows)
+        # qtable.setSelectionMode(QAbstractItemView.NoSelection)
+        # qtable.setSelectionBehavior(QAbstractItemView.SelectRows)
 
         return qtable
 

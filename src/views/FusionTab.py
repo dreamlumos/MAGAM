@@ -164,7 +164,7 @@ class FusionTab(QWidget):
     def calculate(self):
         self.controller.create_fusion(self.aspect_1, self.aspect_2, self.function, self.table_widget)
         # self.combobox_list = []
-        self.update_combobox_list()
+        # self.update_combobox_list()
         self.table_1.clear()
         self.table_1.addItems(self.combobox_list)
         self.table_2.clear()

@@ -138,8 +138,8 @@ class AspectTab(QWidget):
 
         elif widget_type == "Recommendations":
             table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-            table_widget.setSelectionMode(QAbstractItemView.NoSelection)
-            table_widget.setSelectionBehavior(QAbstractItemView.SelectRows)
+            # table_widget.setSelectionMode(QAbstractItemView.NoSelection)
+            # table_widget.setSelectionBehavior(QAbstractItemView.SelectRows)
             self.recommendations_table = table_widget
             self.layout.addWidget(widget, 1, 0, 1, 5)
 

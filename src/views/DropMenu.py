@@ -37,7 +37,10 @@ class DropMenu(QWidget):
         layout = QVBoxLayout()
 
         remove_btn = QPushButton("-", self)
-        remove_btn.setMaximumSize(35, 25)
+        remove_btn.setMaximumSize(40, 40)
+        # remove_btn.setFixedSize(35, 25)
+        # remove_btn.setStyleSheet(
+        #     "*{width: 35;}")
         remove_btn.clicked.connect(lambda state, x=self: self.remove(x))
         layout.addWidget(remove_btn)
 

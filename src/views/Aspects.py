@@ -23,9 +23,13 @@ class Aspects(QWidget):
         # self.drop_menu_list.append(self.dropmenu)
 
         self.layout = QGridLayout(self)
-
-        self.add_aspect_btn = QPushButton(" + ", self)
-        self.add_aspect_btn.setMaximumSize(40, 35)
+        #
+        # self.add_aspect_btn = QPushButton("New aspect", self)
+        # self.add_aspect_btn.setMinimumSize(100, 35)
+        self.add_aspect_btn = QPushButton(" + ")
+        self.add_aspect_btn.setMinimumSize(40, 40)
+        # self.add_aspect_btn.setMinimumSize(60, 60)
+        self.add_aspect_btn.setMaximumSize(60, 40)
         self.add_aspect_btn.clicked.connect(self.add_aspect)
         self.layout.addWidget(self.add_aspect_btn, 0, 1)
 
@@ -56,7 +60,8 @@ class Aspects(QWidget):
         self.drop_menu_list.append(new_drop_menu)
         if l == 0:
             self.add_aspect_btn.setText(" + ")
-            self.add_aspect_btn.setMaximumSize(40, 35)
+            self.add_aspect_btn.setMinimumSize(40, 40)
+            # self.add_aspect_btn.setMaximumSize(60, 60)
         # curr = len(self.drop_menu_list)
         # print(l)
         # self.pick_fusion.setEnabled(curr > 1)
