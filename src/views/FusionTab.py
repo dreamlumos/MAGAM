@@ -83,71 +83,6 @@ class FusionTab(QWidget):
 
         self.layout.addWidget(bottom_widget, 1, 0)
 
-
-        # self.buttons_widget = self._create_buttons_widget(aspect_type, function)
-
-    # def __init__(self, controller, parent=None):
-    #     # Recommendations as seen from the selection side, ie which activity for which student
-    #     super(FusionTab, self).__init__(parent)
-    #
-    #     self.controller = controller
-    #     self.layout = QHBoxLayout(self)
-    #     self.tables = []  # list of the tables we want to fusion
-    #
-    #     self.calculate_btn = QPushButton("Calculate")
-    #     self.calculate_btn.setEnabled(False)
-    #
-    #     self.add_btn = QPushButton(" + ")
-    #     self.remove_btn = QPushButton(" - ")
-    #
-    #     self.add_btn.setToolTip("Add a table to fusion with the precedent.")
-    #     # self.add_btn.clicked.connect(self.add_table)
-    #
-    #     self.remove_btn.setToolTip("Remove the table and its associated fusion's function.")
-    #     # self.remove_btn.clicked.connect(self.remove_table)
-    #
-    #     self.add_table()
-    #
-    #     self.setLayout(self.layout)
-
-    # def add_table(self):
-    #     l = len(self.tables)
-    #     new_table = QPushButton("Browse...")
-    #     new_table.clicked.connect(lambda state, x=new_table: self.load_file(x))
-    #     self.tables.append(new_table)
-    #
-    #     curr = len(self.tables)
-    #     self.calculate_btn.setEnabled(curr > 1)
-    #     self.layout.addWidget(self.tables[-1])
-    #     self.layout.addWidget(self.add_btn)
-    #     self.layout.addWidget(self.remove_btn)
-    #     self.layout.addWidget(self.calculate_btn)
-    #     # self.layout.addWidget(self.add_aspect_btn)
-    #
-    # def remove_table(self, widg):
-    #     # Remove the aspect from the display
-    #     self.layout.removeWidget(widg)
-    #     # self.layout.removeWidget(self.remove_btns[i])
-    #     # Remove the aspect from the list
-    #     place = self.tables.index(widg)
-    #     self.tables.remove(widg)
-    #     for k in range(place, len(self.tables)):
-    #         # print(self.drop_menu_list[k])
-    #         self.layout.addWidget(self.tables[k])
-    #     self.layout.addWidget(self.add_btn)
-    #     self.layout.addWidget(self.remove_btn)
-    #     self.layout.addWidget(self.calculate_btn)
-    #     # self.pick_fusion.setEnabled(l > 1)
-    #     widg.deleteLater()
-    #     # self.check()
-    #
-    # def load_file(self, btn):
-    #     file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
-    #     if len(file_name[0]) > 0:
-    #         btn.setText(path_leaf(file_name[0]))
-    #     elif len(file_name[0]) == 0:
-    #         btn.setText("Browse...")
-
     def set_function(self):
         self.function = self.fusion_func.currentText()
 
@@ -163,8 +98,7 @@ class FusionTab(QWidget):
 
     def calculate(self):
         self.controller.create_fusion(self.aspect_1, self.aspect_2, self.function, self.table_widget)
-        # self.combobox_list = []
-        # self.update_combobox_list()
+
         self.table_1.clear()
         self.table_1.addItems(self.combobox_list)
         self.table_2.clear()
@@ -205,28 +139,9 @@ class FusionTab(QWidget):
         top_layout.addWidget(top_label)
         top_layout.addStretch(1)
 
-        # load_from_file_button = QPushButton("Load From File...")
-        # load_from_file_button.setToolTip("Load the  table from a CSV file.") # TODO: eventually add other file types
-        # load_from_file_button.clicked.connect(lambda state, qtable = table_widget: utils.load_from_csv(self, qtable))
-        # top_layout.addWidget(load_from_file_button)
-
         save_as_csv_button = QPushButton("Save As...")
         save_as_csv_button.setToolTip("Save the fusion table as a CSV file.")  # TODO: eventually add other file types
         save_as_csv_button.clicked.connect(lambda state, qtable = table_widget: utils.save_as_csv(self, qtable))
         top_layout.addWidget(save_as_csv_button)
-
-        # if widget_type == "Users":
-        #     self.users_table = table_widget
-        #     self.layout.addWidget(widget, 0, 0, 1, 3)
-        #
-        # elif widget_type == "Activities":
-        #     self.activities_table = table_widget
-        #     self.layout.addWidget(widget, 0, 3, 1, 3)
-        #
-        # table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # table_widget.setSelectionMode(QAbstractItemView.NoSelection)
-        # table_widget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        # self.recommendations_table = table_widget
-        # self.layout.addWidget(widget, 1, 0)
 
         return widget

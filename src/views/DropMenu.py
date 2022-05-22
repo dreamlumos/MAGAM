@@ -60,28 +60,10 @@ class DropMenu(QWidget):
         label_users.setWordWrap(False)
         layout.addWidget(label_users)
 
-        # self.browse_btn = QRadioButton('Browse')
-        # self.create_btn = QRadioButton('Create Table')
-        # self.browse_btn.toggled.connect(lambda: self.btnstate(self.browse_btn))
-        # self.create_btn.toggled.connect(lambda: self.btnstate(self.create_btn))
-        # self.load_btn = QPushButton("Load")
-        # self.load_btn.clicked.connect(self.check_radio_btns)
-        # layout.addWidget(self.browse_btn)
-        # layout.addWidget(self.create_btn)
-        # layout.addWidget(self.load_btn)
-
         self.browse_button_users = QPushButton("Browse Files...", self)
-        # TODO here remove the file_name
-        # file_name = "../data/motivation_users.csv"
-        # self.users_file = file_name
-        # self.browse_button_users = QPushButton("../data/motivation_users.csv", self)
         self.browse_button_users.clicked.connect(self.load_users_file)
         layout.addWidget(self.browse_button_users)
-        # Manually input the data
-        # self.create_users_table = QPushButton("Create Users Table")
-        # self.create_users_table.clicked.connect(self.create_users)
-        # layout.addWidget(self.create_users_table)
-        # Create using BKT for aspect type didactic
+
         self.create_with_BKT = QPushButton("Create With BKT")
         self.create_with_BKT.setEnabled(False)
         self.create_with_BKT.clicked.connect(self.create_BKT)
@@ -92,15 +74,8 @@ class DropMenu(QWidget):
         layout.addWidget(label_activities)
 
         self.browse_button_acts = QPushButton("Browse Files...", self)
-        # file_name = "../data/motivation_activities.csv"
-        # self.activities_file = file_name
-        # self.browse_button_acts = QPushButton("../data/motivation_activities.csv", self)
         self.browse_button_acts.clicked.connect(self.load_acts_file)
         layout.addWidget(self.browse_button_acts)
-        # Manually input the data
-        # self.create_activities_table = QPushButton("Create Activities Table")
-        # self.create_activities_table.clicked.connect(self.create_acts)
-        # layout.addWidget(self.create_activities_table)
 
         layout.addWidget(QLabel("Function"))
         self.pick_function = QComboBox()
@@ -121,7 +96,6 @@ class DropMenu(QWidget):
             users_qtable, act_qtable, rec_qtable = self.controller.update_aspect_from_files(self.aspect_id, self.aspect_type, self.users_file, self.activities_file, self.function)
         except ValueError as e:
             msg = QMessageBox()
-            # msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
             msg.setInformativeText(str(e))
             msg.setWindowTitle("Error")
@@ -169,9 +143,7 @@ class DropMenu(QWidget):
             self.browse_button_users.setText(path_leaf(self.users_file))
         elif len(file_name[0]) == 0:
             self.browse_button_users.setText("Browse Files...")
-        # else:
-        #     self.users_file = file_name[0]
-        #     self.browse_button_users.setText(path_leaf(file_name[0]))
+
         self.check_filled()
 
     def load_acts_file(self):
@@ -185,9 +157,7 @@ class DropMenu(QWidget):
             self.browse_button_users.setText(path_leaf(self.activities_file))
         elif len(file_name[0]) == 0:
             self.browse_button_acts.setText("Browse Files...")
-        # else:
-        #     self.activities_file = file_name[0]
-        #     self.browse_button_acts.setText(path_leaf(file_name[0]))
+
         self.check_filled()
 
     def check_filled(self):
@@ -204,10 +174,3 @@ class DropMenu(QWidget):
             self.calculate_btn.setEnabled(False)
         else: 
             self.calculate_btn.setEnabled(True)
-        # self.parent.check()
-
-    # def set_users_file(self, file):
-    #     self.users_file = file
-    #     print()
-    #     print(file)
-    #     print(self.users_file)

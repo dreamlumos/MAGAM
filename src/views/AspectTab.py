@@ -40,41 +40,6 @@ class AspectTab(QWidget):
             recalc = True
         self.buttons_widget = self._create_buttons_widget(aspect_type, function, recalc)
 
-    # def create_QTable(self, y, x, body):
-    #     y_size = len(y) + 1
-    #     x_size = len(x) + 1
-    #     qtable = QTableWidget(y_size, x_size, self)
-    #     qtable.verticalHeader().setVisible(False)
-    #     qtable.horizontalHeader().setVisible(False)
-
-    #     for i in range(1, y_size):
-    #         item = QTableWidgetItem(y[i - 1])
-    #         item.setTextAlignment(Qt.AlignCenter)
-    #         qtable.setItem(i, 0, item)
-
-    #     for i in range(1, x_size):
-    #         item = QTableWidgetItem(x[i - 1])
-    #         item.setTextAlignment(Qt.AlignCenter)
-    #         qtable.setItem(0, i, item)
-
-    #     for i in range(y_size - 1):
-    #         for j in range(x_size - 1):
-    #             s = str(body[i][j])
-    #             item = QTableWidgetItem(s)
-    #             item.setTextAlignment(Qt.AlignCenter)
-    #             qtable.setItem(i + 1, j + 1, item)
-
-    #     # Resize the table to fit its content
-    #     qtable.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-    #     qtable.resizeColumnsToContents()
-
-    #     # recommandation table cannot be edited
-    #     qtable.setEditTriggers(QAbstractItemView.NoEditTriggers)
-    #     qtable.setSelectionMode(QAbstractItemView.NoSelection)
-    #     qtable.setSelectionBehavior(QAbstractItemView.SelectRows)
-
-    #     return qtable
-
     def set_index(self, tab_index):
         self.tab_index = tab_index
 

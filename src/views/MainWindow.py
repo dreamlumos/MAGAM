@@ -10,7 +10,6 @@ class MainWindow(QMainWindow):
     def __init__(self, controller, parent=None):
         super().__init__(parent)
 
-        # self.resize(600, 500)
         self.setGeometry(200, 50, 1000, 650)
         self.setWindowTitle('MAGAM')
 

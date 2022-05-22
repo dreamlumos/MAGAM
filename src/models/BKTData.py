@@ -9,7 +9,7 @@ class BKTData():
 
 		self.training_data_path = training_data_path
 
-		if model_defaults == None:
+		if model_defaults is None:
 			self.model_defaults = {'user_id': 'user_id', 'skill_name': 'skill_name', 'correct': 'correct'}
 		else:
 			self.model_defaults = model_defaults
@@ -37,8 +37,8 @@ class BKTData():
 		self.concepts = np.unique(preds_np[:, concepts_column_index]) # list of concepts
 
 		all_knowledge_states = []
-		for id in self.user_ids:
-			preds_id = preds_df[preds_df[user_id_column_name] == id]
+		for u_id in self.user_ids:
+			preds_id = preds_df[preds_df[user_id_column_name] == u_id]
 			preds_id_np = np.flipud(np.array(preds_id)) # reverse chronological order (last activity done being on top)
 			knowledge_states = []
 			for c in self.concepts:

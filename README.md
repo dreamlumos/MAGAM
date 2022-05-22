@@ -13,9 +13,9 @@ We were supervised for this project by Amel Yessad, associate professor at Sorbo
 
 ### Libraries:
 
-- numpy
+- NumPy
 - pandas
-- pyqt5
+- PyQt5
 
 With pip:
 - pip install numpy

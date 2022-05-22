@@ -125,7 +125,7 @@ def load_csv(parent):
 
 def load_from_csv(parent, qtable=None):
 	file_name = load_csv(parent)
-	if file_name != None:
+	if file_name is not None:
 		dataframe = pd.read_csv(file_name, sep=',', index_col=0)
 		qtable = df_to_qtable(dataframe, qtable)
 		return qtable

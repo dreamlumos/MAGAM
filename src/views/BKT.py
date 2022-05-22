@@ -12,6 +12,7 @@ def path_leaf(path):
     head, tail = ntpath.split(path)
     return tail or ntpath.basename(head)
 
+
 class BKT(QDialog):
 
     def __init__(self, parent=None):
@@ -24,10 +25,8 @@ class BKT(QDialog):
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
 
         self.buttonBox = QDialogButtonBox(QBtn)
-        # QBtn.Ok.setEnabled(False)
         self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(False)
         self.buttonBox.accepted.connect(self.calculate_BKT)
-        # self.buttonBox.accepted.connect(self.ac)
         self.buttonBox.rejected.connect(self.reject)
 
         self.layout = QVBoxLayout()
@@ -51,14 +50,12 @@ class BKT(QDialog):
             self.browse_button_users.setText("Browse...")
         else:
             self.browse_button_users.setText(path_leaf(file_name[0]))
-            # self.buttonBox.accepted.setEnabled(True)
             self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(True)
 
     def calculate_BKT(self):
         print("calculating bkt")
         d = BKTData(self.users_file)  # {'User': 'user_id', 'KC': 'skill_name', 'IsCorrect': 'correct'}
         name = 'bkt_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
-        # name = self.users_file
         self.final_file = d.save_preds_to_csv(name)
         print(self.final_file)
         self.final_file = name

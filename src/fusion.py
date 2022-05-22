@@ -1,32 +1,33 @@
 import numpy as np
 import pandas as pd
 
+
 class FusionFunctions:
 
+    @staticmethod
+    def mean(r1, r2, w1=1, w2=1):
+        return np.average([r1, r2], axis=0, weights=[w1, w2])
 
-	@staticmethod
-	def mean(r1, r2, w1=1, w2=1):
-		return np.average([r1, r2], axis=0, weights=[w1, w2])
-	
-	@staticmethod
-	def value_multiplication(r1, r2):
+    @staticmethod
+    def value_multiplication(r1, r2):
 
-		rows, columns = r1.shape
+        rows, columns = r1.shape
 
-		recommendations = np.zeros((rows, columns))
-		for i in range(rows):
-			for j in range(columns):
-				recommendations[i, j] = r1[i, j] * r2[i, j]
+        recommendations = np.zeros((rows, columns))
+        for i in range(rows):
+            for j in range(columns):
+                recommendations[i, j] = r1[i, j] * r2[i, j]
 
-		return recommendations
+        return recommendations
 
-	@staticmethod
-	def min(r1, r2):
-		return np.minimum(r1, r2)
+    @staticmethod
+    def min(r1, r2):
+        return np.minimum(r1, r2)
 
-	@staticmethod
-	def max(r1, r2):
-		return np.maximum(r1, r2)
+    @staticmethod
+    def max(r1, r2):
+        return np.maximum(r1, r2)
+
 
 fusion_functions = {"Mean": FusionFunctions.mean, "Value_multiplication": FusionFunctions.value_multiplication, "Min": FusionFunctions.min, "Max": FusionFunctions.max}
 
@@ -36,4 +37,3 @@ fusion_functions = {"Mean": FusionFunctions.mean, "Value_multiplication": Fusion
 # todo: normalisation
 
 # todo: slide 11, selection of activity (best for each student, for the group, etc)
-
