@@ -24,7 +24,6 @@ QComboBox QAbstractItemView {
 
 QListView {
     background-color: #FAF2ED;
-    drop-shadow: none;
 }
 
 QComboBox:pressed {
