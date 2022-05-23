@@ -29,6 +29,7 @@ class AspectTab(QWidget):
         self.aspect_id = aspect_id
 
         self.aspect_type = aspect_type
+        print(aspect_type)
         self.function = function
 
         self.users_widget = self._create_table_editing_widget("Users", users_qtable)
@@ -120,8 +121,8 @@ class AspectTab(QWidget):
         clear_button.clicked.connect(self.reset_all_widgets)
 
         self.change_aspect_type_menu = QComboBox()
-        self.change_aspect_type_menu.addItems(Aspect.aspect_types)
         self.change_aspect_type_menu.setPlaceholderText("------")
+        self.change_aspect_type_menu.addItems(Aspect.aspect_types)
         # if aspect_type is not None:
         if type(aspect_type) == str:
             self.change_aspect_type_menu.setCurrentText(aspect_type)
@@ -176,7 +177,7 @@ class AspectTab(QWidget):
         self.controller.update_aspect_from_qtables(self.aspect_id, self.aspect_type, self.users_table, self.activities_table, self.recommendations_table, self.function)
 
     def check_filled(self):
-        if self.aspect_type is None:
+        if self.aspect_type is None or self.aspect_type is False:
             self.filled = False
         # elif self.users_table is None:
         #     self.filled = False

@@ -110,6 +110,8 @@ class Controller:
 		for a in aspects_dict.keys():
 			aspect_type = aspects_dict.get(a).get_aspect_type()
 			if aspect_type is not None:
+				print(aspect_type)
+				print(a)
 				combobox_list.append("Aspect " + aspect_type + " " + str(a))
 
 		fusions_dict = self.system_data.get_fusions()

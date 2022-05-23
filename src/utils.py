@@ -27,7 +27,7 @@ def qtable_to_df(qtable):
 		df_col = []
 		for col in range(1, col_count):
 			table_item = qtable.item(row, col)
-			df_col.append(0 if table_item is None else int(table_item.text()))
+			df_col.append(0 if table_item is None else float(table_item.text()))  # Changed int to float
 		df_row.append(df_col)
 
 	df = pd.DataFrame(df_row, index=ind, columns=headers)

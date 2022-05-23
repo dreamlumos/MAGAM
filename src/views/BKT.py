@@ -55,9 +55,17 @@ class BKT(QDialog):
 
     def calculate_BKT(self):
         print("calculating bkt")
-        d = BKTData(self.users_file)  # {'User': 'user_id', 'KC': 'skill_name', 'IsCorrect': 'correct'}
-        name = 'bkt_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
-        self.final_file = d.save_preds_to_csv(name)
-        print(self.final_file)
-        self.final_file = name
-        self.accept()
+        try:
+            d = BKTData(self.users_file)  # {'User': 'user_id', 'KC': 'skill_name', 'IsCorrect': 'correct'}
+        except KeyError as e:
+            msg = QMessageBox()
+            msg.setText("Formatting Error")
+            msg.setInformativeText(str(e) + "\nPlease either reformat your file or choose a different one.")
+            msg.setWindowTitle("Error")
+            msg.exec_()
+        else:
+            name = 'bkt_' + str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')) + '.csv'
+            self.final_file = d.save_preds_to_csv(name)
+            print(self.final_file)
+            self.final_file = name
+            self.accept()

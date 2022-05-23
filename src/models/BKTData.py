@@ -1,3 +1,4 @@
+from PyQt5.QtWidgets import QMessageBox
 from pyBKT.models import Model
 import pandas as pd
 import numpy as np
@@ -21,7 +22,6 @@ class BKTData():
 		self.model.fit(self.training_data_path)
 
 	def predict(self, data_path=None):
-
 		if data_path == None:
 			data_path = self.training_data_path
 
