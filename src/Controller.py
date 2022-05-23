@@ -31,6 +31,7 @@ class Controller:
 
 	def delete_aspect(self, aspect_id):
 		self.system_data.delete_aspect(aspect_id)
+		self.update_fusion_tab()
 
 	def update_aspect_from_files(self, aspect_id, aspect_type, users_file, activities_file, function_name):
 

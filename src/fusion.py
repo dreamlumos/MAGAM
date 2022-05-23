@@ -14,9 +14,10 @@ class FusionFunctions:
         rows, columns = r1.shape
 
         recommendations = np.zeros((rows, columns))
+        print(recommendations)
         for i in range(rows):
             for j in range(columns):
-                recommendations[i, j] = r1[i, j] * r2[i, j]
+                recommendations[i, j] = r1.iloc[i, j] * r2.iloc[i, j]
 
         return recommendations
 

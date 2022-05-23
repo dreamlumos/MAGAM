@@ -201,7 +201,7 @@ QTabWidget::pane { /* The tab widget frame */
     top: -1px;
 }
 QTabBar::tab {
-    background: #DAD5D2;
+    background: #B0BACB;
     color: #FAF2ED;
     border: 1px solid #4F658A;
     border-top-left-radius: 4px;
@@ -211,7 +211,7 @@ QTabBar::tab {
     padding: 4px 10px 4px 10px;
 }
 QTabBar::tab:hover:!selected {
-    background: #B0BACB;
+    background: #4F658A;
 }
 QTabBar::tab:selected:!hover {
     background: #FAF2ED;

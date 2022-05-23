@@ -107,7 +107,7 @@ def df_to_qtable(dataframe, qtable=None):
 
 
 def save_as_csv(parent, qtable):
-	file_name = QFileDialog.getSaveFileName(parent, "Save as .csv", "./", "*.csv")
+	file_name = QFileDialog.getSaveFileName(parent, "Save as .csv", "../data", "*.csv")
 	if file_name != ('', ''):
 		file = open(file_name[0], "a")
 		file.write(qtable_to_df(qtable).to_csv())
@@ -116,7 +116,7 @@ def save_as_csv(parent, qtable):
 
 
 def load_csv(parent):
-	file = QFileDialog.getOpenFileName(parent, "Open File", "./", "CSV (*.csv)")
+	file = QFileDialog.getOpenFileName(parent, "Open File", "../data", "CSV (*.csv)")
 	file_name = file[0]
 	if len(file_name) > 0:
 		return file_name
