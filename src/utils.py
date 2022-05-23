@@ -3,7 +3,8 @@ from PyQt5.QtCore import *
 
 import pandas as pd
 
-def qtable_to_df(qtable):  # TODO check size of matrix with "headers"
+
+def qtable_to_df(qtable):
 	col_count = qtable.columnCount()
 	row_count = qtable.rowCount()
 	for i in range(1, col_count):
@@ -115,7 +116,7 @@ def save_as_csv(parent, qtable):
 
 
 def load_csv(parent):
-	file = QFileDialog.getOpenFileName(parent, "Open File", "../data", "CSV (*.csv)")
+	file = QFileDialog.getOpenFileName(parent, "Open File", "./", "CSV (*.csv)")
 	file_name = file[0]
 	if len(file_name) > 0:
 		return file_name

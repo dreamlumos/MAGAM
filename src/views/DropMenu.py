@@ -65,6 +65,7 @@ class DropMenu(QWidget):
         layout.addWidget(self.browse_button_users)
 
         self.create_with_BKT = QPushButton("Create With BKT")
+        self.create_with_BKT.setToolTip("BKT is used to infer students’ mastery of specific knowledge components.\nIt requires a specific CSV formatting.\nPlease refer to the User Manual for more details.")
         self.create_with_BKT.setEnabled(False)
         self.create_with_BKT.clicked.connect(self.create_BKT)
         layout.addWidget(self.create_with_BKT)
@@ -132,7 +133,7 @@ class DropMenu(QWidget):
         self.check_filled()
 
     def load_users_file(self):
-        file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
+        file_name = QFileDialog.getOpenFileName(self, "Open File", "./", "CSV (*.csv)")
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"
         # print("here too:", self.users_file)
@@ -147,7 +148,7 @@ class DropMenu(QWidget):
         self.check_filled()
 
     def load_acts_file(self):
-        file_name = QFileDialog.getOpenFileName(self, "Open File", "../data", "CSV (*.csv)")
+        file_name = QFileDialog.getOpenFileName(self, "Open File", "./", "CSV (*.csv)")
         # TODO: in final version set QFileDialog open location as "./"
         # TODO: eventually "CSV (*.csv);; PKL (*.pkl);; JSON (*json)"        self.activities_file = file_name[0]
         if len(file_name[0]) > 0:  # chosen file has a name

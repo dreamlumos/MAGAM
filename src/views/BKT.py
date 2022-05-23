@@ -21,6 +21,7 @@ class BKT(QDialog):
         self.users_file = None
         self.final_file = None
         self.setWindowTitle("Create a table using BKT")
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)  # removing the "?" button as no doc is linked to the help
 
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
 

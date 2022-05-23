@@ -223,3 +223,11 @@ QTabBar::tab:selected:hover {
     border-bottom: 0;
     color: #4F658A;
 }
+
+QToolTip {
+    background: #FAF2ED;
+    color: #4F658A;
+    border: 1px solid #4F658A;
+    padding: 5px;
+    border-radius: 3px;
+}

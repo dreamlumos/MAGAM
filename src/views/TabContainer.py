@@ -35,7 +35,7 @@ class TabContainer(QWidget):
         self.tab_button.setText(' + ')
         self.tab_button.clicked.connect(self.add_page)
 
-        self.tab_button.setToolTip("Open a new tab")
+        self.tab_button.setToolTip("Open a new blank tab")
 
         self.tabs.setCornerWidget(self.tab_button)
 
