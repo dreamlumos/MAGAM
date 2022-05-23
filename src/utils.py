@@ -95,7 +95,7 @@ def df_to_qtable(dataframe, qtable=None):
 
 	for i in range(nb_rows-1):
 		for j in range(nb_columns-1):
-			s = str(dataframe.iloc[i, j])
+			s = str(round(dataframe.iloc[i, j], 2))
 			item = QTableWidgetItem(s)
 			item.setTextAlignment(Qt.AlignCenter)
 			qtable.setItem(i+1, j+1, item)

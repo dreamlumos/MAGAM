@@ -50,8 +50,9 @@ class DropMenu(QWidget):
         layout.addWidget(label_aspect)
 
         self.cb_aspect = QComboBox()
-        self.cb_aspect.setPlaceholderText("------")
+        # self.cb_aspect.setPlaceholderText("")
         self.cb_aspect.addItems(Aspect.aspect_types)
+        self.aspect_type = self.cb_aspect.currentText()
         self.cb_aspect.currentIndexChanged.connect(self.aspect_change)
         layout.addWidget(self.cb_aspect)
 
