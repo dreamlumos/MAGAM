@@ -121,7 +121,8 @@ class AspectTab(QWidget):
         clear_button.clicked.connect(self.reset_all_widgets)
 
         self.change_aspect_type_menu = QComboBox()
-        self.change_aspect_type_menu.setPlaceholderText("------")
+        self.change_aspect_type_menu.addItem("------")
+        self.change_aspect_type_menu.model().item(0).setEnabled(False)
         self.change_aspect_type_menu.addItems(Aspect.aspect_types)
         # if aspect_type is not None:
         if type(aspect_type) == str:
@@ -132,7 +133,9 @@ class AspectTab(QWidget):
 
         self.change_function_menu = QComboBox()
         self.change_function_menu.setToolTip("Pick a different calculation function.")
-        self.change_function_menu.setPlaceholderText("------")  # placeholder not showing is a bug on Qt's side
+        # self.change_function_menu.setPlaceholderText("------")  # placeholder not showing is a bug on Qt's side
+        self.change_function_menu.addItem("------")
+        self.change_function_menu.model().item(0).setEnabled(False)
 
         self.change_function_menu.addItems(basic_functions)
 

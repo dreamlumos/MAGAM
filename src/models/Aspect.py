@@ -5,7 +5,7 @@ import os
 
 class Aspect:
 
-	aspect_types = ["Didactic", "Pedagogic", "Motivational", "Strategic", "Learning style", "Gaming", "Practical"]
+	aspect_types = ["Pedagogic", "Didactic", "Motivational", "Strategic", "Learning style", "Gaming", "Practical"]
 
 	def __init__(self):
 
