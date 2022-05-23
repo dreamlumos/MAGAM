@@ -127,7 +127,7 @@ class DropMenu(QWidget):
     def aspect_change(self):
         self.aspect_type = self.cb_aspect.currentText()
         # Enable BKT for didactic aspect
-        if self.aspect_type == Aspect.aspect_types[0]:  # Didactic aspect
+        if self.aspect_type == Aspect.aspect_types[1]:  # Didactic aspect
             self.create_with_BKT.setEnabled(True)
         else:
             self.create_with_BKT.setEnabled(False)
